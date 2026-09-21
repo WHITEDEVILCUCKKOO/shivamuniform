@@ -565,7 +565,7 @@ function getImagePath(product) {
 
 function createProductCard(product) {
 
-    const productUrl = `product.php?slug=${encodeURIComponent(product.slug)}`;
+    const productUrl = `product_details.php?slug=${encodeURIComponent(product.slug)}`;
     // ↑ agar product.php me id se link chahiye to: `product.php?id=${product.id}`
 
     const imageSrc = getImagePath(product);
