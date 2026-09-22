@@ -9,6 +9,8 @@
      WHITE : #FFFFFF
 ========================================================= -->
 
+<link rel="icon" type="image/x-icon" href="assets/logos/favicon.jpeg">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -863,6 +865,11 @@
                     class="sh-nav-link">
                     Home
                 </a>
+                <a
+                    href="products.php"
+                    class="sh-nav-link">
+                    Products
+                </a>
 
 
                 <a
@@ -944,6 +951,13 @@
                 href="index.php"
                 class="sh-mobile-link">
                 <span>Home</span>
+                <span class="sh-mobile-arrow">›</span>
+            </a>
+
+            <a
+                href="products.php"
+                class="sh-mobile-link">
+                <span>Products00</span>
                 <span class="sh-mobile-arrow">›</span>
             </a>
 

@@ -1014,7 +1014,7 @@
             <div class="sac-action">
 
                 <a
-                    href="/about/"
+                    href="about.php"
                     class="sac-btn"
                 >
 

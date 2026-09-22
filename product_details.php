@@ -1,3 +1,10 @@
+<?php
+
+require_once __DIR__ . '/includes/header.php';
+
+?>
+
+
 <style>
     /* ============================================================
    SHIVAM UNIFORM - PRODUCT DETAIL PAGE
@@ -1561,3 +1568,11 @@ function renderProduct(){
 
 document.addEventListener("DOMContentLoaded", renderProduct);
 </script>
+
+
+
+<?php
+
+require_once __DIR__ . '/includes/footer.php';
+
+?>
