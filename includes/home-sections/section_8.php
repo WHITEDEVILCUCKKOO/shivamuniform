@@ -9,8 +9,8 @@ if (isset($_POST['submit_from_home'])) {
     $messege       = htmlspecialchars(trim($_POST['your_message'] ?? ''));
     $time          = date('Y-m-d H:i:s');
 
-    // $recipient = "shivamuniform605@gmail.com";
-    $recipient = "jibip82180@dreameg.com";
+    $recipient = "shivamuniform605@gmail.com";
+    // $recipient = "jibip82180@dreameg.com";
 
     // Email Subject
     $email_subject = "New Contact Form Submission";
