@@ -1191,9 +1191,6 @@ if (isset($_POST['submit_from_home'])) {
                 }
 
 
-                /* =========================
-   TABLET
-========================= */
 
                 @media (max-width: 700px) {
 
@@ -1219,10 +1216,6 @@ if (isset($_POST['submit_from_home'])) {
 
                 }
 
-
-                /* =========================
-   MOBILE
-========================= */
 
                 @media (max-width: 480px) {
 

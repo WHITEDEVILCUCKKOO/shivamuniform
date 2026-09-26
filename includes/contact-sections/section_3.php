@@ -1145,7 +1145,285 @@ button[type="submit"]:hover{
 
                 <div class="seq-form-slot">
 
-                    [fluentform id="1"]
+                   
+
+
+
+
+
+
+
+
+            <div class="sfc-form-slot">
+
+                <!-- <div class="sfc-form-box"> -->
+
+
+
+
+                <form class="sfc-custom-form" method="post">
+
+                    <div class="sfc-form-row">
+
+                        <div class="sfc-form-group">
+                            <label>First Name <span>*</span></label>
+                            <input type="text" name="first_name" placeholder="First Name" required>
+                        </div>
+
+                        <div class="sfc-form-group">
+                            <label>Last Name <span>*</span></label>
+                            <input type="text" name="last_name" placeholder="Last Name">
+                        </div>
+
+                    </div>
+
+                    <div class="sfc-form-row">
+                        <div class="sfc-form-group">
+                            <label>Email <span>*</span></label>
+
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email Address"
+                                required
+                                autocomplete="email">
+                        </div>
+
+
+                        <div class="sfc-form-group">
+                            <label>Phone Number <span>*</span></label>
+
+                            <input
+                                type="tel"
+                                name="phone_number"
+                                placeholder="Phone Number"
+                                required
+                                inputmode="numeric"
+                                maxlength="10"
+                                pattern="[0-9]{10}"
+                                title="Please enter exactly 10 digits">
+                        </div>
+                    </div>
+
+                    <div class="sfc-form-group sfc-message-group">
+                        <label>Your Message <span>*</span></label>
+                        <textarea name="your_message" placeholder="Your Message"></textarea>
+                    </div>
+
+                    <button type="submit" name="submit_from_home" value="1" class="sfc-submit-btn">
+                        Submit Form
+                    </button>
+
+                </form>
+
+                <!-- </div> -->
+
+            </div>
+
+
+            <style>
+                .sfc-form-slot {
+                    width: 100%;
+                    padding: 0;
+                    box-sizing: border-box;
+                }
+
+                .sfc-form-slot * {
+                    box-sizing: border-box;
+                }
+
+                .sfc-form-box {
+                    width: 100%;
+                    background: #ffffff;
+                    border-radius: 14px;
+                    padding: 32px;
+                    border-top: 4px solid #238b57;
+                    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+                    font-family: Arial, sans-serif;
+                }
+
+                .sfc-form-label {
+                    font-size: 13px;
+                    font-weight: 700;
+                    letter-spacing: 1px;
+                    color: #238b57;
+                    margin-bottom: 14px;
+                }
+
+                .sfc-form-box h2 {
+                    margin: 0 0 12px;
+                    font-size: 29px;
+                    line-height: 1.25;
+                    font-weight: 700;
+                    color: #071535;
+                }
+
+                .sfc-form-description {
+                    margin: 0 0 34px;
+                    max-width: 95%;
+                    font-size: 17px;
+                    line-height: 1.65;
+                    color: #858b91;
+                }
+
+                .sfc-custom-form {
+                    width: 100%;
+                }
+
+                .sfc-form-row {
+                    width: 100%;
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 17px;
+                    margin-bottom: 23px;
+                }
+
+                .sfc-form-group {
+                    width: 100%;
+                }
+
+                .sfc-form-group label {
+                    display: block;
+                    margin-bottom: 11px;
+                    font-size: 15px;
+                    line-height: 1.3;
+                    font-weight: 600;
+                    color: #101c35;
+                }
+
+                .sfc-form-group label span {
+                    color: #ed5360;
+                }
+
+                .sfc-form-group input,
+                .sfc-form-group textarea {
+                    width: 100%;
+                    border: 1px solid #e1e5e9;
+                    background: #fbfcfd;
+                    border-radius: 7px;
+                    outline: none;
+                    font-size: 15px;
+                    color: #172033;
+                    font-family: inherit;
+                    transition: 0.2s ease;
+                }
+
+                .sfc-form-group input {
+                    height: 52px;
+                    padding: 0 15px;
+                }
+
+                .sfc-form-group textarea {
+                    height: 118px;
+                    padding: 14px 15px;
+                    resize: vertical;
+                }
+
+                .sfc-form-group input::placeholder,
+                .sfc-form-group textarea::placeholder {
+                    color: #9da3aa;
+                }
+
+                .sfc-form-group input:focus,
+                .sfc-form-group textarea:focus {
+                    border-color: #238b57;
+                    background: #ffffff;
+                }
+
+                .sfc-message-group {
+                    margin-bottom: 16px;
+                }
+
+                .sfc-submit-btn {
+                    width: 100%;
+                    height: 55px;
+                    border: none;
+                    border-radius: 7px;
+                    background: #090f43;
+                    color: #ffffff;
+                    font-size: 15px;
+                    font-weight: 700;
+                    font-family: inherit;
+                    cursor: pointer;
+                    transition: 0.25s ease;
+                }
+
+                .sfc-submit-btn:hover {
+                    background: #111957;
+                }
+
+
+
+                @media (max-width: 700px) {
+
+                    .sfc-form-box {
+                        padding: 26px 22px;
+                    }
+
+                    .sfc-form-box h2 {
+                        font-size: 25px;
+                    }
+
+                    .sfc-form-description {
+                        font-size: 15px;
+                        line-height: 1.55;
+                        margin-bottom: 27px;
+                    }
+
+                    .sfc-form-row {
+                        grid-template-columns: 1fr;
+                        gap: 20px;
+                        margin-bottom: 20px;
+                    }
+
+                }
+
+
+                @media (max-width: 480px) {
+
+                    .sfc-form-box {
+                        padding: 24px 18px;
+                        border-radius: 12px;
+                    }
+
+                    .sfc-form-label {
+                        font-size: 11px;
+                        margin-bottom: 11px;
+                    }
+
+                    .sfc-form-box h2 {
+                        font-size: 23px;
+                    }
+
+                    .sfc-form-description {
+                        font-size: 14px;
+                        margin-bottom: 25px;
+                    }
+
+                    .sfc-form-group label {
+                        font-size: 14px;
+                    }
+
+                    .sfc-form-group input {
+                        height: 50px;
+                    }
+
+                    .sfc-form-group textarea {
+                        height: 115px;
+                    }
+
+                    .sfc-submit-btn {
+                        height: 52px;
+                    }
+
+                }
+            </style>
+
+
+
+
+
+
 
                 </div>
 

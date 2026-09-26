@@ -1,3 +1,12 @@
+
+<?php include"admin_access/db_config.php" ?>
+
+<?php 
+include "./admin_access/functions/global_info.php";
+$global_info = get_global_info($mydb);
+?>
+
+
 <!-- =========================================================
      SHIVAM UNIFORM
      FINAL COMPACT PREMIUM HEADER
@@ -9,7 +18,7 @@
      WHITE : #FFFFFF
 ========================================================= -->
 
-<link rel="icon" type="image/x-icon" href="assets/logos/favicon.jpeg">
+<link rel="icon" type="image/x-icon" href="assets/logos/<?php echo htmlspecialchars($global_info['facion_icon'] ?? ''); ?>">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -847,7 +856,7 @@
 
                 <img
                     class="sh-logo"
-                    src="https://shivamuniform.hiralgems.com/wp-content/uploads/2026/09/shivam_uniform_logo-removebg-preview.png"
+                    src="assets/logos/<?php echo htmlspecialchars($global_info['facion_icon'] ?? ''); ?>"
                     alt="Shivam Uniform">
 
             </a>
@@ -883,6 +892,11 @@
                     href="gallary.php"
                     class="sh-nav-link">
                     Gallery
+                </a>
+                <a
+                    href="login.php"
+                    class="sh-nav-link">
+                    Login
                 </a>
 
 
