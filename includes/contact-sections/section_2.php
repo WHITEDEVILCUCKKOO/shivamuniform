@@ -772,9 +772,7 @@
 
 
                     <p>
-                        Plot No. 3948, Balaji Mandir Road,
-                        Near Rao Rattan Singh Farm,
-                        Ballabgarh, Faridabad
+                        <?php echo htmlspecialchars($global_info['footer_address'] ?? ''); ?>
                     </p>
 
                 </div>
@@ -810,7 +808,7 @@
 
 
                     <a href="mailto:shivamuniform605@gmail.com">
-                        shivamuniform605@gmail.com
+                        <?php echo htmlspecialchars($global_info['footer_email_1'] ?? ''); ?>
                     </a>
 
 
@@ -853,7 +851,7 @@
 
 
                     <p>
-                        +91 95829 29878
+                       <?php echo htmlspecialchars($global_info['globle_call_phone'] ?? ''); ?>
                     </p>
 
 

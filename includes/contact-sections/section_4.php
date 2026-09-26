@@ -10,6 +10,11 @@
      WHITE : #FFFFFF
 ========================================================= -->
 
+<?php  include'./admin_access/db_config.php' ?>
+
+
+
+
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -830,10 +835,7 @@
 
                     <p class="scm-address">
 
-                        Plot No. 3948,<br>
-                        Balaji Mandir Road,<br>
-                        Near Rao Rattan Singh Farm,<br>
-                        Ballabgarh, Faridabad
+                        <?php echo htmlspecialchars($global_info['footer_address'] ?? ''); ?>
 
                     </p>
 
@@ -857,8 +859,8 @@
                                 Email Us
                             </strong>
 
-                            <a href="mailto:shivamuniform605@gmail.com">
-                                shivamuniform605@gmail.com
+                            <a href="mailto:<?php echo htmlspecialchars($global_info['footer_email_1'] ?? ''); ?>">
+                                <?php echo htmlspecialchars($global_info['footer_email_1'] ?? ''); ?>
                             </a>
 
                         </div>
@@ -926,7 +928,7 @@
 
 
                 <iframe
-                    src="https://www.google.com/maps?q=Plot%20No.%203948%2C%20Balaji%20Mandir%20Road%2C%20Near%20Rao%20Rattan%20Singh%20Farm%2C%20Ballabgarh%2C%20Faridabad&output=embed"
+                    src="<?php echo htmlspecialchars($global_info['map_link'] ?? ''); ?>"
                     loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"
                     allowfullscreen=""

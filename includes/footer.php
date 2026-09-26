@@ -860,11 +860,7 @@
 
 
                             <div class="suf-contact-text">
-
-                                Plot No. 3948,<br>
-                                Balaji Mandir Road,<br>
-                                Near Rao Rattan Singh Farm,<br>
-                                Ballabgarh, Faridabad
+<?php echo htmlspecialchars($global_info['footer_address'] ?? ''); ?>
 
                             </div>
 
@@ -900,7 +896,7 @@
 
                                 <a href="mailto:shivamuniform605@gmail.com">
 
-                                    shivamuniform605@gmail.com
+                                    <?php echo htmlspecialchars($global_info['footer_email_1'] ?? ''); ?>
 
                                 </a>
 
@@ -938,7 +934,7 @@
 
                                 <a href="tel:+919582929878">
 
-                                    +91 95829 29878
+                                    <?php echo htmlspecialchars($global_info['globle_call_phone'] ?? ''); ?>
 
                                 </a>
 
