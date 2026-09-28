@@ -13,8 +13,6 @@ function get_brand_info($mydb)
     $result = mysqli_query($mydb, $query);
 
     if (!$result) {
-        // TEMPORARY DEBUG - iske baad hata dena
-        echo "<pre style='background:#300;color:#fff;padding:10px;'>SQL ERROR: " . mysqli_error($mydb) . "</pre>";
         return [];
     }
 
@@ -23,9 +21,6 @@ function get_brand_info($mydb)
     while ($row = mysqli_fetch_assoc($result)) {
         $brand_info[] = $row;
     }
-
-    // TEMPORARY DEBUG - kitni rows aayi ye dekhne ke liye
-    echo "<pre style='background:#030;color:#fff;padding:10px;'>Rows found: " . count($brand_info) . "</pre>";
 
     return $brand_info;
 }
@@ -63,7 +58,8 @@ function add_brand_info(
     $stmt = mysqli_prepare($mydb, $query);
 
     if (!$stmt) {
-        return false;
+        // Prepare hi fail ho gaya (jaise galat column naam)
+        return 'PREPARE_ERROR: ' . mysqli_error($mydb);
     }
 
     $created_at = time();
@@ -85,9 +81,16 @@ function add_brand_info(
 
     $result = mysqli_stmt_execute($stmt);
 
+    if (!$result) {
+        // Close karne se PEHLE hi error nikal lo, warna kho jayega
+        $error = mysqli_stmt_error($stmt);
+        mysqli_stmt_close($stmt);
+        return $error !== '' ? $error : 'Unknown DB error (execute failed)';
+    }
+
     mysqli_stmt_close($stmt);
 
-    return $result;
+    return true;
 }
 
 
@@ -165,10 +168,18 @@ function handle_brand_add($mydb)
         $brand_status
     );
 
-    if ($added) {
+    if ($added === true) {
         $response['success_msg'] = "Brand added successfully!";
     } else {
-        $response['error_msg'] = "Brand add fail ho gaya, dubara try karo.";
+
+        // Ab $added khud hi asli DB error string hai
+        $db_error = (string) $added;
+
+        if (stripos($db_error, 'Duplicate entry') !== false) {
+            $response['error_msg'] = "Ye Brand Slug (\"" . htmlspecialchars($brand_slug) . "\") pehle se kisi aur brand me use ho raha hai. Alag slug daalo.";
+        } else {
+            $response['error_msg'] = "Brand add fail ho gaya: " . htmlspecialchars($db_error ?: 'Unknown error');
+        }
     }
 
     return $response;
@@ -278,10 +289,86 @@ function handle_brand_update($mydb)
     if (mysqli_stmt_execute($stmt)) {
         $response['success_msg'] = "Brand updated successfully!";
     } else {
-        $response['error_msg'] = "Update fail ho gaya, dubara try karo.";
+
+        $db_error = mysqli_error($mydb);
+
+        if (stripos($db_error, 'Duplicate entry') !== false) {
+            $response['error_msg'] = "Ye Brand Slug (\"" . htmlspecialchars($brand_slug) . "\") pehle se kisi aur brand me use ho raha hai. Alag slug daalo.";
+        } else {
+            $response['error_msg'] = "Update fail ho gaya: " . htmlspecialchars($db_error ?: 'Unknown error');
+        }
     }
 
     mysqli_stmt_close($stmt);
+
+    return $response;
+}
+
+
+// =========================================================
+// DELETE BRAND (row + uski logo file bhi hatata hai)
+// =========================================================
+function delete_brand_info($mydb, $brand_id)
+{
+    // Pehle logo file ka path nikal lo taaki delete kar sakein
+    $logo_path = '';
+
+    $check_stmt = mysqli_prepare($mydb, "SELECT brand_logo FROM brands WHERE brand_id = ? LIMIT 1");
+    if ($check_stmt) {
+        mysqli_stmt_bind_param($check_stmt, "i", $brand_id);
+        mysqli_stmt_execute($check_stmt);
+        $result = mysqli_stmt_get_result($check_stmt);
+        $row    = $result ? mysqli_fetch_assoc($result) : null;
+        $logo_path = $row['brand_logo'] ?? '';
+        mysqli_stmt_close($check_stmt);
+    }
+
+    // Ab brand row delete karo
+    $stmt = mysqli_prepare($mydb, "DELETE FROM brands WHERE brand_id = ?");
+
+    if (!$stmt) {
+        return false;
+    }
+
+    mysqli_stmt_bind_param($stmt, "i", $brand_id);
+    $result = mysqli_stmt_execute($stmt);
+    mysqli_stmt_close($stmt);
+
+    // Row delete hone ke baad uski logo file bhi hata do
+    if ($result && $logo_path !== '' && file_exists($logo_path)) {
+        unlink($logo_path);
+    }
+
+    return $result;
+}
+
+
+// =========================================================
+// HANDLE DELETE BRAND (reads $_POST khud)
+// =========================================================
+function handle_brand_delete($mydb)
+{
+    $response = [
+        'success_msg' => '',
+        'error_msg'   => '',
+    ];
+
+    if (!isset($_POST['delete_single_brand'])) {
+        return $response;
+    }
+
+    $brand_id = (int) ($_POST['delete_brand_id'] ?? 0);
+
+    if ($brand_id <= 0) {
+        $response['error_msg'] = "Invalid brand.";
+        return $response;
+    }
+
+    if (delete_brand_info($mydb, $brand_id)) {
+        $response['success_msg'] = "Brand deleted successfully!";
+    } else {
+        $response['error_msg'] = "Brand delete fail ho gaya, dubara try karo.";
+    }
 
     return $response;
 }

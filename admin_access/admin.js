@@ -100,6 +100,55 @@
 
             });
 
+
+            document.addEventListener("DOMContentLoaded", function () {
+
+    const haamer_id_btn = document.getElementById("haamer_id_adase");
+    const dash_box_slie = document.getElementById("left_section_box");
+    const close_linw969 = document.getElementById("close_linw969");
+    const haw_linw969 = document.getElementById("haw_linw969");
+
+    if (
+        !haamer_id_btn ||
+        !dash_box_slie ||
+        !close_linw969 ||
+        !haw_linw969
+    ) {
+        return;
+    }
+
+    // Initial state
+    close_linw969.style.display = "none";
+    haw_linw969.style.display = "flex";
+
+
+    haamer_id_btn.addEventListener("click", function (e) {
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Sidebar toggle
+        dash_box_slie.classList.toggle("dashbord_revile_gl");
+        haamer_id_btn.classList.toggle("haamer_btn_nikw5");
+
+        const isOpen = haamer_id_btn.classList.contains("haamer_btn_nikw5");
+
+        if (isOpen) {
+
+            close_linw969.style.display = "flex";
+            haw_linw969.style.display = "none";
+
+        } else {
+
+            close_linw969.style.display = "none";
+            haw_linw969.style.display = "flex";
+
+        }
+
+    }, true);
+
+});
+
             function show_this_box(el) {
 
                 let overview_box_show = document.getElementById("overview_contect_box");

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2026 at 05:09 AM
+-- Generation Time: Sep 26, 2026 at 03:05 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -73,7 +73,9 @@ CREATE TABLE `brands` (
 --
 
 INSERT INTO `brands` (`brand_id`, `root_id`, `brand_name`, `brand_slug`, `brand_logo`, `brand_description`, `meta_title`, `meta_description`, `meta_keywords`, `brand_status`, `created_at`, `updated_at`) VALUES
-(25, 27, 'asdasd', 'asdasd', 'assets/brands/asdasd-1790512031.png', 'ghuyg', 'asdasd', 'ghuyg', '54465', 'Active', '1790512031', '');
+(13, 24, 'Summer Uniforms', 'summer-uniforms', 'assets/brands/summer-uniforms-1790426374.png', 'Stay cool and comfortable with our collection of lightweight summer uniforms. Breathable fabrics and breezy designs tailored for schools, offices, and warm-weather work environments.', 'Summer Uniforms', 'Stay cool and comfortable with our collection of lightweight summer uniforms. Breathable fabrics and breezy designs tailored for schools, offices, and warm-weat', 'summer uniforms, lightweight school uniforms, summer workwear, breathable staff uniforms, hot weather office attire, summer seasonal clothing', 'Active', '1790425473', '1790426374'),
+(14, 24, 'Winter Uniforms', 'winter-uniforms', 'assets/brands/winter-uniforms-1790425659.jpeg', 'Stay warm and professional through the cold months with our collection of winter uniforms. Thermal-insulated layers and cozy apparel designed for schools, offices, and outdoor work.', 'Winter Uniforms', 'Stay warm and professional through the cold months with our collection of winter uniforms. Thermal-insulated layers and cozy apparel designed for schools, offic', 'winter uniforms, cold weather workwear, thermal school uniforms, warm staff clothing, winter season apparel, heavy-duty winter uniforms', 'Active', '1790425659', ''),
+(15, 24, 'School Uniform Coats', 'school-uniform-coats', 'assets/brands/school-uniform-coats-1790427904.png', 'Keep students warm and cozy during cold weather with our durable collection of school uniform coats and winter outerwear, designed for comfort and classic style.', 'School Uniform Coats', 'Keep students warm and cozy during cold weather with our durable collection of school uniform coats and winter outerwear, designed for comfort and classic style', 'school uniform coats, kids winter coats, student outerwear, school winter jackets, warm school coats for boys girls', 'Active', '1790427723', '1790427904');
 
 -- --------------------------------------------------------
 
@@ -138,8 +140,6 @@ CREATE TABLE `products` (
   `product_name` varchar(255) NOT NULL,
   `product_slug` varchar(255) NOT NULL,
   `product_sku` varchar(100) DEFAULT NULL,
-  `product_color` varchar(233) NOT NULL,
-  `product_size` text NOT NULL,
   `product_image` varchar(255) DEFAULT NULL,
   `product_description` longtext DEFAULT NULL,
   `meta_title` varchar(60) DEFAULT NULL,
@@ -157,14 +157,6 @@ CREATE TABLE `products` (
   `created_at` varchar(113) NOT NULL,
   `updated_at` varchar(113) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `products`
---
-
-INSERT INTO `products` (`product_id`, `root_id`, `brand_id`, `product_name`, `product_slug`, `product_sku`, `product_color`, `product_size`, `product_image`, `product_description`, `meta_title`, `meta_description`, `meta_keywords`, `canonical_url`, `og_title`, `og_description`, `product_other_info_desc`, `original_price`, `sale_price`, `discount_visibility`, `product_status`, `product_views`, `created_at`, `updated_at`) VALUES
-(31, 27, 25, 'fs fsf wfwfsd', 'fs-fsf-wfwfsd', '', '', '', 'assets/products/product_31/main.png', 'jujb', 'fs fsf wfwfsd', 'jujb', 'ihiuh', '', 'fs fsf wfwfsd', 'jujb', 'ghuuh', 5614.00, 54.00, 'Show', 'Active', 0, '1790512064', ''),
-(37, 28, 25, 'swe', 'swewewe', '', '', '', 'assets/products/product_37/main.jpeg', 'dffs', 'swe', 'dffs', '', '', 'swe', 'dffs', 'hii ihid\r\n\r\naojsduoasjdopuapodjopajsd\r\n\r\njasdijhdias\r\n>\r\ndja\r\n;kaspdkas', 132123.00, 123.00, 'Show', 'Active', 0, '1790512268', '1790564820');
 
 -- --------------------------------------------------------
 
@@ -198,14 +190,6 @@ CREATE TABLE `products_images` (
   `product_video_1` varchar(233) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `products_images`
---
-
-INSERT INTO `products_images` (`product_id`, `product_img_1`, `product_img_1_alt`, `product_img_2`, `product_img_2_alt`, `product_img_3`, `product_img_3_alt`, `product_img_4`, `product_img_4_alt`, `product_img_5`, `product_img_5_alt`, `product_img_6`, `product_img_6_alt`, `product_img_7`, `product_img_7_alt`, `product_img_8`, `product_img_8_alt`, `product_img_9`, `product_img_9_alt`, `product_img_10`, `product_img_10_alt`, `product_brochure`, `product_video_1`) VALUES
-(31, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
-(37, 'assets/products/product_37/gallery_1.png', '', 'assets/products/product_37/gallery_2.png', '', 'assets/products/product_37/gallery_3.png', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'assets/products/product_37/video_1.mp4');
-
 -- --------------------------------------------------------
 
 --
@@ -234,7 +218,7 @@ INSERT INTO `root_categories` (`root_id`, `root_name`, `root_slug`, `root_descri
 (25, 'Corporate Uniforms', 'corporate-uniforms', 'Shop professional corporate uniforms and office wear designed for comfort and style. Premium quality business attire and staff uniforms customized with your company logo.', 'Corporate Uniforms', 'Shop professional corporate uniforms and office wear designed for comfort and style. Premium quality business attire and staff uniforms customized with your com', 'corporate uniforms, office wear uniforms, formal business attire, professional staff uniforms, corporate clothing manufacturer, company uniform supplier, business formal wear, custom corporate wear', 'Active', '1790422107', ''),
 (26, 'Industrial Uniforms', 'industrial-uniforms', 'Explore durable industrial uniforms and heavy-duty workwear designed for factory staff and manufacturing units. High-performance, safety-compliant work clothes built for tough environments.', 'Industrial Uniforms', 'Explore durable industrial uniforms and heavy-duty workwear designed for factory staff and manufacturing units. High-performance, safety-compliant work clothes ', 'industrial uniforms, industrial workwear, factory staff uniforms, heavy-duty work clothes, protective workwear supplier, manufacturing unit uniforms', 'Active', '1790422220', ''),
 (27, 'Hospitality Uniforms', 'hospitality-uniforms', 'Discover premium hospitality uniforms designed for hotels, resorts, and restaurants. Stylish, comfortable, and professional attire tailored for front desk and guest-facing staff.', 'Hospitality Uniforms', 'Discover premium hospitality uniforms designed for hotels, resorts, and restaurants. Stylish, comfortable, and professional attire tailored for front desk and g', 'hospitality uniforms, hotel staff uniforms, restaurant wear, resort staff attire, hotel front desk uniforms, catering staff clothing', 'Active', '1790422254', ''),
-(28, 'Security Uniforms', 'security-uniforms', 'Explore professional security uniforms and duty apparel designed for security guards and personnel. Durable, authoritative, and comfortable clothing builsor long shifts.', 'Security Uniforms', 'Explore professional security uniforms and duty apparel designed for security guards and personnel. Durable, authoritative, and comfortable clothing built for l', 'security uniforms, security guard dress, private security clothing, guard duty apparel, professional security uniforms supplier', 'Active', '1790422301', '1790452573');
+(28, 'Security Uniforms', 'security-uniforms', 'Explore professional security uniforms and duty apparel designed for security guards and personnel. Durable, authoritative, and comfortable clothing built for long shifts.', 'Security Uniforms', 'Explore professional security uniforms and duty apparel designed for security guards and personnel. Durable, authoritative, and comfortable clothing built for l', 'security uniforms, security guard dress, private security clothing, guard duty apparel, professional security uniforms supplier', 'Active', '1790422301', '');
 
 --
 -- Indexes for dumped tables
@@ -296,7 +280,7 @@ ALTER TABLE `blog`
 -- AUTO_INCREMENT for table `brands`
 --
 ALTER TABLE `brands`
-  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `brand_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `global_info`
@@ -314,13 +298,13 @@ ALTER TABLE `login_users`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `root_categories`
 --
 ALTER TABLE `root_categories`
-  MODIFY `root_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `root_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- Constraints for dumped tables
