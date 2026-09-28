@@ -3045,6 +3045,20 @@ $brand_options          = get_brand_info($mydb);
                                             placeholder="e.g. PSG2740">
                                     </div>
 
+                                    <!-- color -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-color">Product Color <span>*</span></label>
+                                        <input type="text" id="kd-product-color" name="product_color"
+                                            placeholder="yellow">
+                                    </div>
+
+                                    <!-- size -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-size">Product Size <span>*</span></label>
+                                        <input type="text" id="kd-product-size" name="product_size"
+                                            placeholder="M/34">
+                                    </div>
+
                                     <!-- Status -->
                                     <div class="kd-root-field">
                                         <label for="kd-product-status">Status <span>*</span></label>
@@ -3299,6 +3313,20 @@ $brand_options          = get_brand_info($mydb);
                                         <label for="kd-update-product-sku">Product SKU</label>
                                         <input type="text" id="kd-update-product-sku" name="product_sku"
                                             placeholder="e.g. PSG2740">
+                                    </div>
+
+                                    <!-- color -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-color">Product Color</label>
+                                        <input type="text" id="kd-update-product-color" name="product_color"
+                                            placeholder="red">
+                                    </div>
+
+                                    <!-- size -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-size">Product Size</label>
+                                        <input type="text" id="kd-update-product-size" name="product_size"
+                                            placeholder="M / 32">
                                     </div>
 
                                     <!-- Status -->
@@ -3569,6 +3597,8 @@ $brand_options          = get_brand_info($mydb);
                                 document.getElementById('kd-update-product-name').value = product.product_name || '';
                                 document.getElementById('kd-update-product-slug').value = product.product_slug || '';
                                 document.getElementById('kd-update-product-sku').value = product.product_sku || '';
+                                document.getElementById('kd-update-product-color').value = product.product_color || '';
+                                document.getElementById('kd-update-product-size').value = product.product_size || '';
                                 document.getElementById('kd-update-product-status').value = product.product_status || 'Active';
                                 document.getElementById('kd-update-product-original-price').value = product.original_price || '';
                                 document.getElementById('kd-update-product-sale-price').value = product.sale_price || '';

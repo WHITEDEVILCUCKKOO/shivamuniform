@@ -76,53 +76,76 @@ function get_random_products($mydb, $limit = 6)
 function add_product_info($mydb, $data)
 {
     $query = "INSERT INTO products (
-        root_id, brand_id, product_name, product_slug, product_sku,
-        product_image, product_description, meta_title, meta_description,
-        meta_keywords, canonical_url, og_title, og_description,
-        product_other_info_desc, original_price, sale_price,
-        discount_visibility, product_status, product_views, created_at
-    ) VALUES (?, ?, ?, ?, ?, '', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    root_id,
+    brand_id,
+    product_name,
+    product_slug,
+    product_sku,
+    product_color,
+    product_size,
+    product_image,
+    product_description,
+    meta_title,
+    meta_description,
+    meta_keywords,
+    canonical_url,
+    og_title,
+    og_description,
+    product_other_info_desc,
+    original_price,
+    sale_price,
+    discount_visibility,
+    product_status,
+    product_views,
+    created_at
+) VALUES (
+    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+)";
 
-    $stmt = mysqli_prepare($mydb, $query);
+$stmt = mysqli_prepare($mydb, $query);
 
-    if (!$stmt) {
-        return false;
-    }
+if (!$stmt) {
+    return false;
+}
 
-    $created_at    = time();
-    $product_views = 0;
+$created_at    = time();
+$product_views = 0;
 
-    mysqli_stmt_bind_param(
-        $stmt,
-        "iisssssssssssddssis",
-        $data['root_id'],
-        $data['brand_id'],
-        $data['product_name'],
-        $data['product_slug'],
-        $data['product_sku'],
-        $data['product_description'],
-        $data['meta_title'],
-        $data['meta_description'],
-        $data['meta_keywords'],
-        $data['canonical_url'],
-        $data['og_title'],
-        $data['og_description'],
-        $data['product_other_info_desc'],
-        $data['original_price'],
-        $data['sale_price'],
-        $data['discount_visibility'],
-        $data['product_status'],
-        $product_views,
-        $created_at
-    );
+mysqli_stmt_bind_param(
+    $stmt,
+    "ii" . str_repeat("s", 14) . "ddssii",
 
-    $executed = mysqli_stmt_execute($stmt);
+    $data['root_id'],
+    $data['brand_id'],
+    $data['product_name'],
+    $data['product_slug'],
+    $data['product_sku'],
+    $data['product_color'],
+    $data['product_size'],
+    $data['product_image'],
+    $data['product_description'],
+    $data['meta_title'],
+    $data['meta_description'],
+    $data['meta_keywords'],
+    $data['canonical_url'],
+    $data['og_title'],
+    $data['og_description'],
+    $data['product_other_info_desc'],
+    $data['original_price'],
+    $data['sale_price'],
+    $data['discount_visibility'],
+    $data['product_status'],
+    $product_views,
+    $created_at
+);
 
-    $new_product_id = $executed ? mysqli_insert_id($mydb) : false;
+$executed = mysqli_stmt_execute($stmt);
 
-    mysqli_stmt_close($stmt);
+$new_product_id = $executed ? mysqli_insert_id($mydb) : false;
 
-    return $new_product_id;
+mysqli_stmt_close($stmt);
+
+return $new_product_id;
 }
 
 
@@ -174,16 +197,26 @@ function add_product_images($mydb, $product_id, $images)
         $stmt,
         "issssssssssssssssssssss",
         $product_id,
-        $images['product_img_1'], $images['product_img_1_alt'],
-        $images['product_img_2'], $images['product_img_2_alt'],
-        $images['product_img_3'], $images['product_img_3_alt'],
-        $images['product_img_4'], $images['product_img_4_alt'],
-        $images['product_img_5'], $images['product_img_5_alt'],
-        $images['product_img_6'], $images['product_img_6_alt'],
-        $images['product_img_7'], $images['product_img_7_alt'],
-        $images['product_img_8'], $images['product_img_8_alt'],
-        $images['product_img_9'], $images['product_img_9_alt'],
-        $images['product_img_10'], $images['product_img_10_alt'],
+        $images['product_img_1'],
+        $images['product_img_1_alt'],
+        $images['product_img_2'],
+        $images['product_img_2_alt'],
+        $images['product_img_3'],
+        $images['product_img_3_alt'],
+        $images['product_img_4'],
+        $images['product_img_4_alt'],
+        $images['product_img_5'],
+        $images['product_img_5_alt'],
+        $images['product_img_6'],
+        $images['product_img_6_alt'],
+        $images['product_img_7'],
+        $images['product_img_7_alt'],
+        $images['product_img_8'],
+        $images['product_img_8_alt'],
+        $images['product_img_9'],
+        $images['product_img_9_alt'],
+        $images['product_img_10'],
+        $images['product_img_10_alt'],
         $images['product_brochure'],
         $images['product_video_1']
     );
@@ -260,6 +293,8 @@ function handle_product_add($mydb)
     $product_name            = trim($_POST['product_name'] ?? '');
     $product_slug            = trim($_POST['product_slug'] ?? '');
     $product_sku             = trim($_POST['product_sku'] ?? '');
+    $product_color           = trim($_POST['product_color'] ?? '');
+    $product_size           = trim($_POST['product_size'] ?? '');
     $product_description     = trim($_POST['product_description'] ?? '');
     $meta_title              = trim($_POST['meta_title'] ?? '');
     $meta_description        = trim($_POST['meta_description'] ?? '');
@@ -284,6 +319,8 @@ function handle_product_add($mydb)
         'product_name'            => $product_name,
         'product_slug'            => $product_slug,
         'product_sku'             => $product_sku,
+        'product_color'             => $product_color,
+        'product_size'             => $product_size,
         'product_description'     => $product_description,
         'meta_title'              => $meta_title,
         'meta_description'        => $meta_description,
@@ -362,7 +399,7 @@ function update_product_info($mydb, $product_id, $data)
 {
     $query = "UPDATE products SET
                 root_id = ?, brand_id = ?, product_name = ?, product_slug = ?,
-                product_sku = ?, product_description = ?, meta_title = ?,
+                product_sku = ?, product_color = ? ,product_size = ? ,product_description = ?, meta_title = ?,
                 meta_description = ?, meta_keywords = ?, canonical_url = ?,
                 og_title = ?, og_description = ?, product_other_info_desc = ?,
                 original_price = ?, sale_price = ?, discount_visibility = ?,
@@ -377,8 +414,8 @@ function update_product_info($mydb, $product_id, $data)
 
     $updated_at = time();
 
-    // Type string safely banaya hai taaki count me galti na ho
-    $types = 'ii' . str_repeat('s', 11) . 'dd' . str_repeat('s', 3) . 'i';
+    // Total 21 variables ke liye correct type string
+    $types = 'ii' . str_repeat('s', 13) . 'dd' . 'ssii';
 
     mysqli_stmt_bind_param(
         $stmt,
@@ -388,6 +425,8 @@ function update_product_info($mydb, $product_id, $data)
         $data['product_name'],
         $data['product_slug'],
         $data['product_sku'],
+        $data['product_color'],
+        $data['product_size'],
         $data['product_description'],
         $data['meta_title'],
         $data['meta_description'],
@@ -444,16 +483,26 @@ function update_product_images($mydb, $product_id, $images)
     mysqli_stmt_bind_param(
         $stmt,
         $types,
-        $images['product_img_1'], $images['product_img_1_alt'],
-        $images['product_img_2'], $images['product_img_2_alt'],
-        $images['product_img_3'], $images['product_img_3_alt'],
-        $images['product_img_4'], $images['product_img_4_alt'],
-        $images['product_img_5'], $images['product_img_5_alt'],
-        $images['product_img_6'], $images['product_img_6_alt'],
-        $images['product_img_7'], $images['product_img_7_alt'],
-        $images['product_img_8'], $images['product_img_8_alt'],
-        $images['product_img_9'], $images['product_img_9_alt'],
-        $images['product_img_10'], $images['product_img_10_alt'],
+        $images['product_img_1'],
+        $images['product_img_1_alt'],
+        $images['product_img_2'],
+        $images['product_img_2_alt'],
+        $images['product_img_3'],
+        $images['product_img_3_alt'],
+        $images['product_img_4'],
+        $images['product_img_4_alt'],
+        $images['product_img_5'],
+        $images['product_img_5_alt'],
+        $images['product_img_6'],
+        $images['product_img_6_alt'],
+        $images['product_img_7'],
+        $images['product_img_7_alt'],
+        $images['product_img_8'],
+        $images['product_img_8_alt'],
+        $images['product_img_9'],
+        $images['product_img_9_alt'],
+        $images['product_img_10'],
+        $images['product_img_10_alt'],
         $images['product_brochure'],
         $images['product_video_1'],
         $product_id
@@ -499,6 +548,8 @@ function handle_product_update($mydb)
     $product_name            = trim($_POST['product_name'] ?? '');
     $product_slug            = trim($_POST['product_slug'] ?? '');
     $product_sku             = trim($_POST['product_sku'] ?? '');
+    $product_color             = trim($_POST['product_color'] ?? '');
+    $product_size             = trim($_POST['product_size'] ?? '');
     $product_description     = trim($_POST['product_description'] ?? '');
     $meta_title              = trim($_POST['meta_title'] ?? '');
     $meta_description        = trim($_POST['meta_description'] ?? '');
@@ -523,6 +574,8 @@ function handle_product_update($mydb)
         'product_name'            => $product_name,
         'product_slug'            => $product_slug,
         'product_sku'             => $product_sku,
+        'product_color'           => $product_color,
+        'product_size'            => $product_size,
         'product_description'     => $product_description,
         'meta_title'              => $meta_title,
         'meta_description'        => $meta_description,
@@ -741,5 +794,3 @@ function handle_product_bulk_delete($mydb)
 
     return $response;
 }
-
-?>
