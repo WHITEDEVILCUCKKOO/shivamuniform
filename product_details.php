@@ -3,7 +3,7 @@
 require_once __DIR__ . '/includes/header.php';
 
 ?>
-<?php include"admin_access/db_config.php" ?>
+<?php include "admin_access/db_config.php" ?>
 
 <style>
     /* ============================================================
@@ -34,16 +34,12 @@ require_once __DIR__ . '/includes/header.php';
     .su-product-detail-container {
         position: relative;
         z-index: 1;
-
         max-width: 1240px;
         margin: 0 auto;
-
         display: flex !important;
         flex-wrap: wrap;
         gap: 0;
-
         padding: 34px;
-
         background: linear-gradient(145deg, rgba(255, 255, 255, .985), rgba(250, 253, 251, .97));
         border: 1px solid rgba(6, 113, 46, .13);
         border-radius: 26px;
@@ -67,11 +63,9 @@ require_once __DIR__ . '/includes/header.php';
         flex: 0 0 46%;
         box-sizing: border-box;
         padding: 13px;
-
         background:
             radial-gradient(circle at 15% 12%, rgba(6, 113, 46, .08), transparent 28%),
             linear-gradient(145deg, #f8fbf9, #edf4f0);
-
         border: 1px solid rgba(6, 113, 46, .14);
         border-radius: 21px;
     }
@@ -93,7 +87,7 @@ require_once __DIR__ . '/includes/header.php';
         padding: 16px;
     }
 
-    /* HOVER ZOOM - image zooms exactly where the mouse is */
+    /* HOVER ZOOM */
     .su-main-image {
         position: relative;
         cursor: zoom-in;
@@ -110,7 +104,6 @@ require_once __DIR__ . '/includes/header.php';
         transform: scale(2);
     }
 
-    /* Zoom is for desktop/mouse only. Mobile stays normal for touch devices. */
     @media (max-width:921px) {
         .su-main-image {
             cursor: default;
@@ -211,7 +204,6 @@ require_once __DIR__ . '/includes/header.php';
         margin: 14px 0 20px;
         padding: 17px 20px 17px 37px;
         list-style: none;
-
         background: linear-gradient(135deg, rgba(1, 22, 65, .035), rgba(6, 113, 46, .065));
         border: 1px solid #dce8e1;
         border-radius: 14px;
@@ -242,7 +234,6 @@ require_once __DIR__ . '/includes/header.php';
     .su-variations {
         margin-top: 18px;
         padding: 19px;
-
         background: linear-gradient(135deg, rgba(1, 22, 65, .025), rgba(6, 113, 46, .055));
         border: 1px solid rgba(6, 113, 46, .13);
         border-radius: 16px;
@@ -359,7 +350,6 @@ require_once __DIR__ . '/includes/header.php';
     .su-enquiry-box {
         margin-top: 18px;
         padding: 17px;
-
         background: linear-gradient(135deg, rgba(255, 255, 255, .8), rgba(6, 113, 46, .055));
         border: 1px solid #d9e6de;
         border-radius: 14px;
@@ -606,12 +596,7 @@ require_once __DIR__ . '/includes/header.php';
         border-radius: 14px;
     }
 
-    /* ============================================================
-   RESPONSIVE FIX
-   Colors / fonts / original design are unchanged.
-============================================================ */
-
-    /* Prevent padding/borders from making elements wider than their parent */
+    /* RESPONSIVE FIX */
     .su-product-detail,
     .su-product-detail *,
     .su-product-detail *::before,
@@ -640,9 +625,7 @@ require_once __DIR__ . '/includes/header.php';
         max-width: 100%;
     }
 
-    /* TABLET */
     @media screen and (max-width:921px) {
-
         .su-product-detail {
             width: 100%;
             padding: 35px 16px 55px;
@@ -673,9 +656,7 @@ require_once __DIR__ . '/includes/header.php';
         }
     }
 
-    /* MOBILE */
     @media screen and (max-width:600px) {
-
         .su-product-detail {
             width: 100%;
             padding: 25px 8px 50px;
@@ -788,9 +769,7 @@ require_once __DIR__ . '/includes/header.php';
         }
     }
 
-    /* VERY SMALL PHONES */
     @media screen and (max-width:380px) {
-
         .su-product-detail {
             padding-left: 5px;
             padding-right: 5px;
@@ -827,15 +806,13 @@ require_once __DIR__ . '/includes/header.php';
         }
     }
 
-
-
     .lisre_awb b {
         color: #646464;
     }
 
-    .jojsa{
-            color: #65727d;
-            font-size: 14px;
+    .jojsa {
+        color: #65727d;
+        font-size: 14px;
     }
 </style>
 
@@ -851,7 +828,7 @@ require_once __DIR__ . '/includes/header.php';
             <div class="su-main-image">
                 <img id="su-main-img" src="" alt="">
             </div>
-            <div class="su-thumbs" id="su-thumbs"><!-- JS fills non-empty images only --></div>
+            <div class="su-thumbs" id="su-thumbs"></div>
         </div>
 
         <!-- SUMMARY -->
@@ -865,7 +842,7 @@ require_once __DIR__ . '/includes/header.php';
 
             <p class="su-short-desc" id="su-desc"></p>
 
-            <ul class="su-specs" id="su-specs"><!-- JS fills fabric/category/design --></ul>
+            <ul class="su-specs" id="su-specs"></ul>
 
             <div class="su-variations">
 
@@ -921,7 +898,7 @@ require_once __DIR__ . '/includes/header.php';
                 <h3>Product Details</h3>
 
                 <ul class="lisre_awb">
-                    <li id="li_product_sec_name"><b>Product: </b><span class="jojsa"  id="product_sec_name"></span></li>
+                    <li id="li_product_sec_name"><b>Product: </b><span class="jojsa" id="product_sec_name"></span></li>
                     <li id="li_product_sec_design"><b>Design: </b><span class="jojsa" id="product_sec_design"></span></li>
                     <li id="li_product_sec_model"><b>Model: </b><span class="jojsa" id="product_sec_model"></span></li>
                     <li id="li_product_sec_size"><b>Available Sizes: </b><span class="jojsa" id="product_sec_size"></span></li>
@@ -939,70 +916,78 @@ require_once __DIR__ . '/includes/header.php';
 
 
 <!-- =====================================================
-     1) PRODUCT DATA - AB DATABASE SE AA RAHA HAI
-     Pehle ye hardcoded JS array tha, ab admin panel ke
-     products.php functions se real data khींch ke JSON
-     me convert kar diya gaya hai. Neeche wali rendering
-     JS bilkul waisi hi hai jaisi pehle thi - design me
-     koi change nahi. (Ye wahi block hai jo catalogue
-     page - products.php - me bhi use hota hai)
+     1) PRODUCT DATA (DATABASE SE)
+     NOTE: yahan apni alag query hai (pi.* nahi), taaki
+     products_images row na ho to product_id NULL na ho jaye.
+     Isliye admin_access/functions/products.php ko change
+     karne ki zaroorat nahi.
 ====================================================== -->
 <?php
 
-include_once __DIR__ . '/admin_access/functions/products.php';
-include_once __DIR__ . '/admin_access/functions/category_info.php';
-
-$all_db_products = get_product_info($mydb);
-
 $catalogue_products = [];
 
-foreach ($all_db_products as $p) {
+$detail_query = "SELECT
+                    p.*,
+                    c.root_name,
+                    pi.product_img_2, pi.product_img_3, pi.product_img_4, pi.product_img_5,
+                    pi.product_img_6, pi.product_img_7, pi.product_img_8
+                 FROM products p
+                 LEFT JOIN root_categories c ON p.root_id = c.root_id
+                 LEFT JOIN products_images pi ON p.product_id = pi.product_id
+                 WHERE p.product_status = 'Active'
+                 ORDER BY p.product_id DESC";
 
-    if (($p['product_status'] ?? '') !== 'Active') {
-        continue;
+$detail_result = mysqli_query($mydb, $detail_query);
+
+if ($detail_result) {
+    while ($p = mysqli_fetch_assoc($detail_result)) {
+
+        $main_image_filename = !empty($p['product_image']) ? basename($p['product_image']) : '';
+
+        $gallery_images = [];
+        for ($i = 2; $i <= 8; $i++) {
+            $gallery_images[$i] = !empty($p['product_img_' . $i]) ? basename($p['product_img_' . $i]) : '';
+        }
+
+        // product_size: "34,36,38" ya new line / | se alag
+        $size_list = preg_split('/[,\n|]+/', (string) ($p['product_size'] ?? ''));
+        $size_list = array_values(array_filter(array_map('trim', $size_list), 'strlen'));
+
+        $color_val = trim((string) ($p['product_color'] ?? ''));
+
+        $catalogue_products[] = [
+            'id'           => (int) $p['product_id'],
+            'name'         => $p['product_name'],
+            'slug'         => $p['product_slug'],
+            'product_code' => $p['product_sku'] ?? '',
+            'category'     => $p['root_name'] ?: 'Uniform Collection',
+            'fabric'       => '',
+            'design'       => '',
+            'color'        => $color_val,
+            'sizes'        => $size_list,
+            'image1'       => $main_image_filename,
+            'image2'       => $gallery_images[2],
+            'image3'       => $gallery_images[3],
+            'image4'       => $gallery_images[4],
+            'image5'       => $gallery_images[5],
+            'image6'       => $gallery_images[6],
+            'image7'       => $gallery_images[7],
+            'image8'       => $gallery_images[8],
+            'description'  => $p['product_description'] ?? '',
+            'availability' => 'In Stock',
+            'order_type'   => 'Bulk Order Available',
+        ];
     }
-
-    $main_image_filename = !empty($p['product_image']) ? basename($p['product_image']) : '';
-
-    $gallery_images = [];
-    for ($i = 2; $i <= 8; $i++) {
-        $gallery_images[$i] = !empty($p['product_img_' . $i]) ? basename($p['product_img_' . $i]) : '';
-    }
-
-    $catalogue_products[] = [
-        'id'           => (int) $p['product_id'],
-        'name'         => $p['product_name'],
-        'slug'         => $p['product_slug'],
-        'product_code' => $p['product_sku'] ?? '',
-        'category'     => $p['root_name'] ?: 'Uniform Collection',
-        'fabric'       => '',
-        'design'       => '',
-        'colors'       => [],
-        'sizes'        => [],
-        'image1'       => $main_image_filename,
-        'image2'       => $gallery_images[2],
-        'image3'       => $gallery_images[3],
-        'image4'       => $gallery_images[4],
-        'image5'       => $gallery_images[5],
-        'image6'       => $gallery_images[6],
-        'image7'       => $gallery_images[7],
-        'image8'       => $gallery_images[8],
-        'description'  => $p['product_description'] ?? '',
-        'availability' => 'In Stock',
-        'order_type'   => 'Bulk Order Available',
-    ];
 }
 
 ?>
 <script>
-    const products = <?php echo json_encode($catalogue_products, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?>;
+    const products = <?php echo json_encode($catalogue_products, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG); ?>;
 </script>
 
 
 <!-- =====================================================
      2) COLOR NAME → SWATCH BACKGROUND
-     (sirf visual gol button ka color, actual image se ye
-     link nahi hai — image link filename-matching se hota hai)
 ====================================================== -->
 <script>
     const colorMap = {
@@ -1028,8 +1013,8 @@ foreach ($all_db_products as $p) {
     function normalizeColor(str) {
         return String(str)
             .toLowerCase()
-            .replace(/[^a-z]/g, "") // remove spaces, hyphens, dots etc
-            .replace(/gray/g, "grey"); // treat "gray" and "grey" as same
+            .replace(/[^a-z]/g, "")
+            .replace(/gray/g, "grey");
     }
 </script>
 
@@ -1038,381 +1023,339 @@ foreach ($all_db_products as $p) {
      3) RENDERING LOGIC
 ====================================================== -->
 <script>
-const IMAGE_FOLDER_BASE = "assets/products/"; // product_<id> folder ka base path
+    const IMAGE_FOLDER_BASE = "assets/products/";
 
-function getSlugFromUrl(){
-    const params = new URLSearchParams(window.location.search);
-    return params.get("slug");
-}
-
-function getProductImages(product){
-    const images = [];
-
-    for (let i = 1; i <= 8; i++){
-        const filename = product["image" + i];
-
-        if (filename && filename.trim() !== ""){
-            images.push({
-                filename: filename,
-                path: IMAGE_FOLDER_BASE + "product_" + product.id + "/" + filename
-            });
-        }
+    function getSlugFromUrl() {
+        return new URLSearchParams(window.location.search).get("slug");
     }
 
-    return images;
-}
-
-function findImageForColor(images, colorName){
-    const target = normalizeColor(colorName);
-
-    return images.find(function(img){
-        const base = img.filename.replace(/\.[a-zA-Z0-9]+$/, "");
-        return normalizeColor(base) === target;
-    });
-}
-
-function renderProduct(){
-
-    const slug = getSlugFromUrl();
-    const product = products.find(function(p){ return p.slug === slug; });
-
-    if (!product){
-        document.getElementById("su-not-found").style.display = "block";
-        return;
-    }
-
-    document.getElementById("su-product-container").style.display = "flex";
-
-    const images = getProductImages(product);
-    const mainImg = document.getElementById("su-main-img");
-
-    /* HOVER ZOOM */
-    const mainImageBox = document.querySelector(".su-main-image");
-
-    if (mainImageBox && mainImg){
-        mainImageBox.addEventListener("mouseenter", function(){
-            if (window.innerWidth <= 921) return;
-            mainImageBox.classList.add("is-zoomed");
-        });
-
-        mainImageBox.addEventListener("mousemove", function(e){
-            if (window.innerWidth <= 921) return;
-
-            const rect = mainImg.getBoundingClientRect();
-
-            let x = ((e.clientX - rect.left) / rect.width) * 100;
-            let y = ((e.clientY - rect.top) / rect.height) * 100;
-
-            x = Math.max(0, Math.min(100, x));
-            y = Math.max(0, Math.min(100, y));
-
-            mainImg.style.transformOrigin = x + "% " + y + "%";
-        });
-
-        mainImageBox.addEventListener("mouseleave", function(){
-            mainImageBox.classList.remove("is-zoomed");
-            mainImg.style.transformOrigin = "center center";
+    function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function(ch) {
+            return {"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[ch];
         });
     }
 
-    if (images.length > 0){
-        mainImg.src = images[0].path;
-        mainImg.alt = product.name;
-    }
-
-    /* THUMBNAILS */
-    const thumbsBox = document.getElementById("su-thumbs");
-    thumbsBox.innerHTML = "";
-
-    images.forEach(function(img, index){
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "su-thumb" + (index === 0 ? " active" : "");
-        btn.innerHTML = `<img src="${img.path}" alt="${product.name}">`;
-
-        btn.addEventListener("click", function(){
-            mainImg.src = img.path;
-
-            thumbsBox.querySelectorAll(".su-thumb").forEach(function(t){ t.classList.remove("active"); });
-            btn.classList.add("active");
-
-            syncColorSwatchWithImage(img);
-        });
-
-        thumbsBox.appendChild(btn);
-    });
-
-    /* TITLE, DESCRIPTION, BREADCRUMB */
-    document.getElementById("su-title").textContent = product.name;
-    const descEl = document.getElementById("su-desc");
-    descEl.textContent = product.description || "";
-    descEl.style.display = product.description && product.description.trim() ? "block" : "none";
-    document.getElementById("su-breadcrumb-cat").textContent = product.category || "Uniform Collection";
-    document.title = product.name + " | Shivam Uniform";
-
-    /* DESCRIPTION / ADDITIONAL INFORMATION TABS */
-    const tabsBox = document.getElementById("su-product-tabs");
-    const additionalTab = document.getElementById("su-additional-tab");
-    const descriptionPanel = document.getElementById("su-description-panel");
-    const additionalPanel = document.getElementById("su-additional-panel");
-    const descriptionTitle = document.getElementById("su-tab-description-title");
-    const descriptionText = document.getElementById("su-tab-description-text");
-    const additionalContent = document.getElementById("su-additional-content");
-
-    descriptionTitle.textContent = product.name || "Product Description";
-    descriptionText.textContent = product.description || "";
-
-    const tabValidColors = (product.colors || [])
-        .filter(function(c){ return c && String(c).trim() !== ""; })
-        .map(function(color){ return { name: color, image: findImageForColor(images, color) }; })
-        .filter(function(item){ return !!item.image; });
-
-    const tabValidSizes = (product.sizes || [])
-        .filter(function(size){ return size && String(size).trim() !== ""; });
-
-    additionalContent.innerHTML = "";
-
-    if (tabValidColors.length > 0){
-        const colorItem = document.createElement("div");
-        colorItem.className = "su-additional-item";
-        colorItem.innerHTML = '<span class="su-additional-label">Available Colours</span><div class="su-additional-values"></div>';
-        const values = colorItem.querySelector(".su-additional-values");
-        tabValidColors.forEach(function(item){
-            const value = document.createElement("span");
-            value.className = "su-additional-value";
-            value.textContent = item.name;
-            values.appendChild(value);
-        });
-        additionalContent.appendChild(colorItem);
-    }
-
-    if (tabValidSizes.length > 0){
-        const sizeItem = document.createElement("div");
-        sizeItem.className = "su-additional-item";
-        sizeItem.innerHTML = '<span class="su-additional-label">Available Sizes</span><div class="su-additional-values"></div>';
-        const values = sizeItem.querySelector(".su-additional-values");
-        tabValidSizes.forEach(function(size){
-            const value = document.createElement("span");
-            value.className = "su-additional-value";
-            value.textContent = size;
-            values.appendChild(value);
-        });
-        additionalContent.appendChild(sizeItem);
-    }
-
-    const hasAdditionalInfo = tabValidColors.length > 0 || tabValidSizes.length > 0;
-    tabsBox.style.display = "block";
-    additionalTab.style.display = hasAdditionalInfo ? "block" : "none";
-
-    document.querySelectorAll("#su-product-tabs .su-tab-btn").forEach(function(tabBtn){
-        tabBtn.addEventListener("click", function(){
-            document.querySelectorAll("#su-product-tabs .su-tab-btn").forEach(function(btn){
-                btn.classList.toggle("active", btn === tabBtn);
-            });
-            if (tabBtn.dataset.tab === "additional" && hasAdditionalInfo){
-                descriptionPanel.style.display = "none";
-                additionalPanel.style.display = "block";
-            } else {
-                descriptionPanel.style.display = "block";
-                additionalPanel.style.display = "none";
+    function getProductImages(product) {
+        const images = [];
+        for (let i = 1; i <= 8; i++) {
+            const filename = product["image" + i];
+            if (filename && filename.trim() !== "") {
+                images.push({
+                    filename: filename,
+                    path: IMAGE_FOLDER_BASE + "product_" + product.id + "/" + filename
+                });
             }
-        });
-    });
-
-    /* SPECIFICATIONS LIST */
-    const specs = document.getElementById("su-specs");
-    specs.innerHTML = "";
-
-    const specRows = [
-        ["Category", product.category],
-        ["Fabric", product.fabric],
-        ["Design", product.design],
-        ["Product Code", product.product_code]
-    ];
-
-    specRows.forEach(function(row){
-        if (row[1] && row[1].trim() !== ""){
-            const li = document.createElement("li");
-            li.innerHTML = `<strong>${row[0]}:</strong> ${row[1]}`;
-            specs.appendChild(li);
         }
-    });
+        return images;
+    }
 
-    specs.style.display = specs.children.length ? "block" : "none";
+    /* Same name wale products = color variants.
+       Har variant ka alag slug hota hai, click par usi ke page par jaate hain. */
+    function getColorVariants(product) {
+        const nameKey = String(product.name).trim().toLowerCase();
+        const seen = {};
+        const list = [];
 
-    /* COLOR SWATCHES */
-    const variationsBox = document.querySelector(".su-variations");
-    const colorSection = document.getElementById("su-color-section");
-    const colorsBox = document.getElementById("su-colors");
-    const colorNameLabel = document.getElementById("su-color-name");
-    colorsBox.innerHTML = "";
-    variationsBox.style.display = "none";
+        // current product sabse pehle, taaki duplicate color me wahi rahe
+        [product].concat(products).forEach(function(p) {
+            if (String(p.name).trim().toLowerCase() !== nameKey) return;
+            const c = (p.color || "").trim();
+            if (!c) return;
+            const key = normalizeColor(c);
+            if (seen[key]) return;
+            seen[key] = true;
+            list.push({ name: c, slug: p.slug });
+        });
 
-    const validColors = (product.colors || [])
-        .filter(function(c){ return c && c.trim() !== ""; })
-        .map(function(color){
-            return { name: color, image: findImageForColor(images, color) };
-        })
-        .filter(function(item){ return !!item.image; });
+        // Sirf ek hi color hai to bhi dikhega (apna khud ka)
+        return list;
+    }
 
-    if (validColors.length > 0){
+    function renderProduct() {
 
-        colorSection.style.display = "block";
-        variationsBox.style.display = "block";
+        const slug = getSlugFromUrl();
+        const product = products.find(function(p) { return p.slug === slug; });
 
-        validColors.forEach(function(item, index){
+        if (!product) {
+            document.getElementById("su-not-found").style.display = "block";
+            return;
+        }
 
-            const color = item.name;
-            const matchedImage = item.image;
+        document.getElementById("su-product-container").style.display = "flex";
 
+        const images = getProductImages(product);
+        const mainImg = document.getElementById("su-main-img");
+
+        const validColors = getColorVariants(product);
+        const validSizes = (product.sizes || []).filter(function(s) { return s && String(s).trim() !== ""; });
+        const sizeFromUrl = new URLSearchParams(window.location.search).get("size");
+        let selectedSize = "";
+
+        /* HOVER ZOOM */
+        const mainImageBox = document.querySelector(".su-main-image");
+
+        if (mainImageBox && mainImg) {
+            mainImageBox.addEventListener("mouseenter", function() {
+                if (window.innerWidth <= 921) return;
+                mainImageBox.classList.add("is-zoomed");
+            });
+
+            mainImageBox.addEventListener("mousemove", function(e) {
+                if (window.innerWidth <= 921) return;
+                const rect = mainImg.getBoundingClientRect();
+                let x = ((e.clientX - rect.left) / rect.width) * 100;
+                let y = ((e.clientY - rect.top) / rect.height) * 100;
+                x = Math.max(0, Math.min(100, x));
+                y = Math.max(0, Math.min(100, y));
+                mainImg.style.transformOrigin = x + "% " + y + "%";
+            });
+
+            mainImageBox.addEventListener("mouseleave", function() {
+                mainImageBox.classList.remove("is-zoomed");
+                mainImg.style.transformOrigin = "center center";
+            });
+        }
+
+        if (images.length > 0) {
+            mainImg.src = images[0].path;
+            mainImg.alt = product.name;
+        }
+
+        /* THUMBNAILS */
+        const thumbsBox = document.getElementById("su-thumbs");
+        thumbsBox.innerHTML = "";
+
+        images.forEach(function(img, index) {
             const btn = document.createElement("button");
             btn.type = "button";
-            btn.className = "shivam-color-option" + (index === 0 ? " active" : "");
-            btn.title = color;
-            btn.setAttribute("aria-label", color);
-            btn.dataset.colorName = color;
+            btn.className = "su-thumb" + (index === 0 ? " active" : "");
+            btn.innerHTML = '<img src="' + img.path + '" alt="' + escapeHtml(product.name) + '">';
 
-            const key = normalizeColor(color);
-            if (key === "whiteonblack" || key === "blackandwhite" || key === "whiteblack") {
-                btn.style.background = "linear-gradient(135deg, #ffffff 0 50%, #111111 50% 100%)";
-            } else {
-                btn.style.backgroundColor = colorMap[key] || "#cccccc";
-            }
-
-            btn.addEventListener("click", function(){
-
-                colorsBox.querySelectorAll(".shivam-color-option").forEach(function(s){
-                    s.classList.remove("active");
-                });
+            btn.addEventListener("click", function() {
+                mainImg.src = img.path;
+                thumbsBox.querySelectorAll(".su-thumb").forEach(function(t) { t.classList.remove("active"); });
                 btn.classList.add("active");
+            });
 
-                colorNameLabel.textContent = "Selected: " + color;
+            thumbsBox.appendChild(btn);
+        });
 
-                if (matchedImage){
-                    mainImg.src = matchedImage.path;
+        /* TITLE, DESCRIPTION, BREADCRUMB */
+        document.getElementById("su-title").textContent = product.name;
+        const descEl = document.getElementById("su-desc");
+        descEl.textContent = product.description || "";
+        descEl.style.display = product.description && product.description.trim() ? "block" : "none";
+        document.getElementById("su-breadcrumb-cat").textContent = product.category || "Uniform Collection";
+        document.title = product.name + " | Shivam Uniform";
 
-                    thumbsBox.querySelectorAll(".su-thumb").forEach(function(t, i){
-                        t.classList.toggle("active", images[i].path === matchedImage.path);
-                    });
+        /* TABS */
+        const tabsBox = document.getElementById("su-product-tabs");
+        const additionalTab = document.getElementById("su-additional-tab");
+        const descriptionPanel = document.getElementById("su-description-panel");
+        const additionalPanel = document.getElementById("su-additional-panel");
+        const additionalContent = document.getElementById("su-additional-content");
+
+        document.getElementById("su-tab-description-title").textContent = product.name || "Product Description";
+        document.getElementById("su-tab-description-text").textContent = product.description || "";
+
+        additionalContent.innerHTML = "";
+
+        function addAdditionalBlock(label, items) {
+            const item = document.createElement("div");
+            item.className = "su-additional-item";
+            item.innerHTML = '<span class="su-additional-label">' + label + '</span><div class="su-additional-values"></div>';
+            const values = item.querySelector(".su-additional-values");
+            items.forEach(function(text) {
+                const v = document.createElement("span");
+                v.className = "su-additional-value";
+                v.textContent = text;
+                values.appendChild(v);
+            });
+            additionalContent.appendChild(item);
+        }
+
+        if (validColors.length > 0) {
+            addAdditionalBlock("Available Colours", validColors.map(function(c) { return c.name; }));
+        }
+        if (validSizes.length > 0) {
+            addAdditionalBlock("Available Sizes", validSizes);
+        }
+
+        const hasAdditionalInfo = validColors.length > 0 || validSizes.length > 0;
+        tabsBox.style.display = "block";
+        additionalTab.style.display = hasAdditionalInfo ? "block" : "none";
+
+        document.querySelectorAll("#su-product-tabs .su-tab-btn").forEach(function(tabBtn) {
+            tabBtn.addEventListener("click", function() {
+                document.querySelectorAll("#su-product-tabs .su-tab-btn").forEach(function(btn) {
+                    btn.classList.toggle("active", btn === tabBtn);
+                });
+                if (tabBtn.dataset.tab === "additional" && hasAdditionalInfo) {
+                    descriptionPanel.style.display = "none";
+                    additionalPanel.style.display = "block";
+                } else {
+                    descriptionPanel.style.display = "block";
+                    additionalPanel.style.display = "none";
                 }
             });
-
-            colorsBox.appendChild(btn);
         });
 
-        // Default active color = currently shown image ka color
-        let initialColor = null;
-        if (images.length > 0){
-            const initialItem = validColors.find(function(item){
-                return item.image && item.image.path === images[0].path;
-            });
-            if (initialItem){
-                initialColor = initialItem.name;
+        /* SPECIFICATIONS LIST */
+        const specs = document.getElementById("su-specs");
+        specs.innerHTML = "";
+
+        const specRows = [
+            ["Category", product.category],
+            ["Fabric", product.fabric],
+            ["Design", product.design],
+            ["Product Code", product.product_code]
+        ];
+
+        specRows.forEach(function(row) {
+            if (row[1] && String(row[1]).trim() !== "") {
+                const li = document.createElement("li");
+                li.innerHTML = "<strong>" + row[0] + ":</strong> " + escapeHtml(row[1]);
+                specs.appendChild(li);
             }
-        }
-
-        if (!initialColor){
-            initialColor = validColors[0].name;
-        }
-
-        colorsBox.querySelectorAll(".shivam-color-option").forEach(function(s){
-            s.classList.toggle("active", s.dataset.colorName === initialColor);
         });
 
-        colorNameLabel.textContent = "Selected: " + initialColor;
+        specs.style.display = specs.children.length ? "block" : "none";
 
-    } else {
+        /* WHATSAPP */
+        function updateWhatsapp() {
+            const phone = "919582929878";
+            let text = "Hello Shivam Uniform, I am interested in " + product.name;
+            if (product.color) text += " (Color: " + product.color + ")";
+            if (selectedSize) text += " (Size: " + selectedSize + ")";
+            text += ". Please share details for bulk order.";
+            document.getElementById("su-whatsapp-btn").href = "https://wa.me/" + phone + "?text=" + encodeURIComponent(text);
+        }
+
+        /* COLOR SWATCHES + SIZE BUTTONS */
+        const variationsBox = document.querySelector(".su-variations");
+        const colorSection = document.getElementById("su-color-section");
+        const colorsBox = document.getElementById("su-colors");
+        const colorNameLabel = document.getElementById("su-color-name");
+        const sizeSection = document.getElementById("su-size-section");
+        const sizesBox = document.getElementById("su-sizes");
+
+        colorsBox.innerHTML = "";
+        sizesBox.innerHTML = "";
+        variationsBox.style.display = "none";
         colorSection.style.display = "none";
-    }
-
-    /* SIZE BUTTONS */
-    const sizeSection = document.getElementById("su-size-section");
-    const sizesBox = document.getElementById("su-sizes");
-    sizesBox.innerHTML = "";
-
-    const validSizes = (product.sizes || []).filter(function(s){ return s && s.trim() !== ""; });
-
-    if (validSizes.length > 0){
-
-        sizeSection.style.display = "block";
-        variationsBox.style.display = "block";
-
-        validSizes.forEach(function(size){
-            const btn = document.createElement("button");
-            btn.type = "button";
-            btn.className = "shivam-size-option";
-            btn.textContent = size;
-
-            btn.addEventListener("click", function(){
-                sizesBox.querySelectorAll(".shivam-size-option").forEach(function(s){ s.classList.remove("active"); });
-                btn.classList.add("active");
-            });
-
-            sizesBox.appendChild(btn);
-        });
-
-    } else {
         sizeSection.style.display = "none";
-    }
 
-    /* PRODUCT DETAILS LIST (data na ho to li / poora box hide) */
-    const detailsBox = document.getElementById("su-product-details-box");
+        /* SIZES */
+        if (validSizes.length > 0) {
+            sizeSection.style.display = "block";
+            variationsBox.style.display = "block";
 
-    const detailRows = [
-        { id: "product_sec_name",   value: product.name },
-        { id: "product_sec_design", value: product.design },
-        { id: "product_sec_model",  value: product.product_code },
-        { id: "product_sec_size",   value: validSizes.join(", ") },
-        { id: "product_sec_color",  value: validColors.map(function(c){ return c.name; }).join(", ") }
-    ];
+            validSizes.forEach(function(size) {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                btn.className = "shivam-size-option";
+                btn.textContent = size;
 
-    let hasDetails = false;
+                if (sizeFromUrl && String(size).trim().toLowerCase() === sizeFromUrl.trim().toLowerCase()) {
+                    btn.classList.add("active");
+                    selectedSize = size;
+                }
 
-    detailRows.forEach(function(row){
-        const span = document.getElementById(row.id);
-        const li = document.getElementById("li_" + row.id);
-        const value = row.value ? String(row.value).trim() : "";
+                btn.addEventListener("click", function() {
+                    sizesBox.querySelectorAll(".shivam-size-option").forEach(function(s) { s.classList.remove("active"); });
+                    btn.classList.add("active");
+                    selectedSize = size;
 
-        if (value !== ""){
-            span.textContent = value;
-            li.style.display = "list-item";
-            hasDetails = true;
-        } else {
-            li.style.display = "none";
+                    // URL me size update (page reload nahi hoga)
+                    const u = new URL(window.location.href);
+                    u.searchParams.set("size", size);
+                    history.replaceState(null, "", u.toString());
+
+                    updateWhatsapp();
+                });
+
+                sizesBox.appendChild(btn);
+            });
         }
-    });
 
-    detailsBox.style.display = hasDetails ? "block" : "none";
+        /* COLORS (same name ke products) */
+        if (validColors.length > 0) {
+            colorSection.style.display = "block";
+            variationsBox.style.display = "block";
 
-    /* META */
-    document.getElementById("su-meta").innerHTML =
-        `Availability: <strong>${product.availability || "In Stock"}</strong> &nbsp;|&nbsp; ${product.order_type || ""}`;
+            validColors.forEach(function(item) {
+                const btn = document.createElement("button");
+                btn.type = "button";
+                const isCurrent = item.slug === product.slug;
+                btn.className = "shivam-color-option" + (isCurrent ? " active" : "");
+                btn.title = item.name;
+                btn.setAttribute("aria-label", item.name);
 
-    /* WHATSAPP ENQUIRY LINK */
-    const phone = "919582929878";
-    const message = encodeURIComponent(
-        "Hello Shivam Uniform, I am interested in " + product.name + ". Please share details for bulk order."
-    );
-    document.getElementById("su-whatsapp-btn").href = "https://wa.me/" + phone + "?text=" + message;
+                const key = normalizeColor(item.name);
+                if (key === "whiteonblack" || key === "blackandwhite" || key === "whiteblack") {
+                    btn.style.background = "linear-gradient(135deg, #ffffff 0 50%, #111111 50% 100%)";
+                } else {
+                    btn.style.backgroundColor = colorMap[key] || "#cccccc";
+                }
 
-    function syncColorSwatchWithImage(img){
-        const matchItem = validColors.find(function(item){
-            return item.image && item.image.path === img.path;
+                btn.addEventListener("click", function() {
+                    if (isCurrent) return;
+
+                    // us color ke product ka page, same size ke saath
+                    const u = new URL(window.location.href);
+                    u.searchParams.set("slug", item.slug);
+                    if (selectedSize) {
+                        u.searchParams.set("size", selectedSize);
+                    } else {
+                        u.searchParams.delete("size");
+                    }
+                    window.location.href = u.toString();
+                });
+
+                colorsBox.appendChild(btn);
+            });
+
+            colorNameLabel.textContent = "Selected: " + (product.color || validColors[0].name);
+        }
+
+        /* PRODUCT DETAILS LIST */
+        const detailsBox = document.getElementById("su-product-details-box");
+
+        const detailRows = [
+            { id: "product_sec_name", value: product.name },
+            { id: "product_sec_design", value: product.design },
+            { id: "product_sec_model", value: product.product_code },
+            { id: "product_sec_size", value: validSizes.join(", ") },
+            { id: "product_sec_color", value: validColors.map(function(c) { return c.name; }).join(", ") }
+        ];
+
+        let hasDetails = false;
+
+        detailRows.forEach(function(row) {
+            const span = document.getElementById(row.id);
+            const li = document.getElementById("li_" + row.id);
+            const value = row.value ? String(row.value).trim() : "";
+
+            if (value !== "") {
+                span.textContent = value;
+                li.style.display = "list-item";
+                hasDetails = true;
+            } else {
+                li.style.display = "none";
+            }
         });
 
-        if (matchItem){
-            colorsBox.querySelectorAll(".shivam-color-option").forEach(function(s){
-                s.classList.toggle("active", s.dataset.colorName === matchItem.name);
-            });
-            colorNameLabel.textContent = "Selected: " + matchItem.name;
-        }
+        detailsBox.style.display = hasDetails ? "block" : "none";
+
+        /* META */
+        document.getElementById("su-meta").innerHTML =
+            "Availability: <strong>" + escapeHtml(product.availability || "In Stock") + "</strong> &nbsp;|&nbsp; " + escapeHtml(product.order_type || "");
+
+        updateWhatsapp();
     }
-}
 
-document.addEventListener("DOMContentLoaded", renderProduct);
+    document.addEventListener("DOMContentLoaded", renderProduct);
 </script>
-
-
 
 <?php
 
