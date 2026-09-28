@@ -1,1175 +1,1181 @@
-<?php include "admin_access/db_config.php" ?>
-
 <?php
+include "admin_access/db_config.php";
+
 include "./admin_access/functions/global_info.php";
+
 $global_info = get_global_info($mydb);
+
+include "admin_access/functions/category_info.php";
+$category_info = get_category_info($mydb);
 ?>
 
-
-<!-- =========================================================
-     SHIVAM UNIFORM
-     FINAL COMPACT PREMIUM HEADER
-     WITH SUBTLE BACKGROUND DESIGN
-
-     BRAND:
-     BLUE  : #001641
-     GREEN : #1E712C
-     WHITE : #FFFFFF
-========================================================= -->
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shivamuniform</title>
 
-    <link rel="icon" type="image/x-icon" href="assets/logos/<?php echo htmlspecialchars($global_info['facion_icon'] ?? ''); ?>">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Shivam Uniform</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        #shivam-header,
-        #shivam-header *,
-        #shivam-header *::before,
-        #shivam-header *::after {
-            box-sizing: border-box !important;
-        }
-
-        #shivam-header {
+        :root {
             --blue: #001641;
             --green: #1E712C;
             --white: #FFFFFF;
-
-            width: 100% !important;
-            margin: 0 !important;
-            padding: 0 !important;
-
-            position: sticky !important;
-            top: 0 !important;
-
-            z-index: 999999 !important;
-
-            background: #FFFFFF !important;
-
-            font-family: 'Manrope', sans-serif !important;
-
-            isolation: isolate !important;
+            --light-green: rgba(30, 113, 44, 0.055);
+            --border: rgba(0, 22, 65, 0.09);
         }
 
-
-        /* WP ADMIN BAR */
-
-        body.admin-bar #shivam-header {
-            top: 32px !important;
+        * {
+            box-sizing: border-box;
         }
 
-        @media(max-width:782px) {
-
-            body.admin-bar #shivam-header {
-                top: 46px !important;
-            }
-
+        html {
+            scroll-behavior: smooth;
         }
 
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Manrope', sans-serif;
+        }
 
         /* =========================================================
-   HEADER SHELL
-========================================================= */
+           HEADER
+        ========================================================= */
+
+        #shivam-header {
+            width: 100%;
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            background: #ffffff;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.06);
+        }
 
         #shivam-header .sh-shell {
-            width: 100% !important;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 68px;
 
-            position: relative !important;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
 
-            overflow: hidden !important;
+            padding: 0 30px;
 
-            border-bottom:
-                1px solid rgba(0, 22, 65, .07) !important;
-
-            box-shadow:
-                0 4px 18px rgba(0, 22, 65, .055) !important;
-
-            transition:
-                box-shadow .3s ease !important;
+            position: relative;
 
             /*
-      SUBTLE PREMIUM BACKGROUND DESIGN
-    */
-            background:
-                radial-gradient(circle at 10% 50%,
-                    rgba(30, 113, 44, .07) 0%,
-                    rgba(30, 113, 44, .03) 22%,
-                    transparent 42%),
-                radial-gradient(circle at 88% 0%,
-                    rgba(0, 22, 65, .055) 0%,
-                    rgba(0, 22, 65, .02) 24%,
-                    transparent 45%),
-                linear-gradient(90deg,
-                    #FFFFFF 0%,
-                    #FBFDFC 48%,
-                    #F7FAF8 100%) !important;
+             * IMPORTANT:
+             * Dropdown ko clip hone se bachane ke liye
+             * overflow visible hona chahiye.
+             */
+            overflow: visible;
         }
-
-
-        /* subtle decorative shape */
-
-        #shivam-header .sh-shell::before {
-            content: "" !important;
-
-            position: absolute !important;
-
-            width: 180px !important;
-            height: 180px !important;
-
-            right: -95px !important;
-            top: -115px !important;
-
-            border-radius: 50% !important;
-
-            border:
-                1px solid rgba(30, 113, 44, .08) !important;
-
-            background:
-                rgba(30, 113, 44, .015) !important;
-
-            pointer-events: none !important;
-
-            z-index: 0 !important;
-        }
-
-
-        /* small diagonal detail */
-
-        #shivam-header .sh-shell::after {
-            content: "" !important;
-
-            position: absolute !important;
-
-            width: 120px !important;
-            height: 1px !important;
-
-            left: 28% !important;
-            top: 15px !important;
-
-            background:
-                linear-gradient(90deg,
-                    transparent,
-                    rgba(30, 113, 44, .16),
-                    transparent) !important;
-
-            transform:
-                rotate(-12deg) !important;
-
-            pointer-events: none !important;
-
-            z-index: 0 !important;
-        }
-
-
-        #shivam-header.sh-scrolled .sh-shell {
-            box-shadow:
-                0 8px 24px rgba(0, 22, 65, .10) !important;
-        }
-
 
         /* =========================================================
-   INNER
-========================================================= */
+           LOGO
+        ========================================================= */
 
-        #shivam-header .sh-inner {
-            width: 100% !important;
-            max-width: 1360px !important;
-
-            min-height: 72px !important;
-
-            margin: 0 auto !important;
-
-            padding:
-                0 34px !important;
-
-            display: flex !important;
-
-            align-items: center !important;
-            justify-content: space-between !important;
-
-            gap: 32px !important;
-
-            position: relative !important;
-            z-index: 2 !important;
-
-            transition:
-                min-height .3s ease !important;
+        #shivam-header .sh-logo-wrap {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            text-decoration: none;
         }
-
-
-        #shivam-header.sh-scrolled .sh-inner {
-            min-height: 64px !important;
-        }
-
-
-        /* =========================================================
-   LOGO
-========================================================= */
-
-        #shivam-header .sh-logo-link {
-            display: flex !important;
-
-            align-items: center !important;
-
-            flex: 0 0 auto !important;
-
-            margin: 0 !important;
-            padding: 0 !important;
-
-            text-decoration: none !important;
-
-            background: transparent !important;
-        }
-
 
         #shivam-header .sh-logo {
-            display: block !important;
-
-            width: auto !important;
-            height: 52px !important;
-            max-width: 155px !important;
-
-            object-fit: contain !important;
-
-            margin: 0 !important;
-            padding: 0 !important;
-
-            border: 0 !important;
-
-            filter: none !important;
-
-            transition:
-                height .3s ease,
-                transform .25s ease !important;
+            display: block;
+            width: auto;
+            max-width: 190px;
+            max-height: 52px;
+            object-fit: contain;
         }
-
-
-        #shivam-header .sh-logo-link:hover .sh-logo {
-            transform:
-                translateY(-1px) !important;
-        }
-
-
-        #shivam-header.sh-scrolled .sh-logo {
-            height: 47px !important;
-        }
-
 
         /* =========================================================
-   DESKTOP NAV
-========================================================= */
+           DESKTOP NAV
+        ========================================================= */
 
         #shivam-header .sh-nav {
-            display: flex !important;
-
-            align-items: center !important;
-
-            gap: 5px !important;
-
-            margin: 0 !important;
-            padding: 0 !important;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 5px;
+            height: 68px;
         }
 
+        #shivam-header .sh-nav-link {
+            height: 68px;
 
-        #shivam-header .sh-nav-link,
-        #shivam-header .sh-nav-link:link,
-        #shivam-header .sh-nav-link:visited {
-            min-height: 42px !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
 
-            position: relative !important;
+            padding: 0 15px;
 
-            display: flex !important;
+            position: relative;
 
-            align-items: center !important;
-            justify-content: center !important;
+            color: var(--blue);
+            -webkit-text-fill-color: var(--blue);
 
-            padding:
-                0 14px !important;
+            text-decoration: none;
 
-            margin: 0 !important;
+            font-family: 'Manrope', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
 
-            color: var(--blue) !important;
-
-            -webkit-text-fill-color:
-                var(--blue) !important;
-
-            background: transparent !important;
-
-            border: 0 !important;
-
-            text-decoration: none !important;
-
-            font-family: 'Manrope', sans-serif !important;
-
-            font-size: 13.5px !important;
-            font-weight: 700 !important;
-
-            line-height: 1 !important;
+            white-space: nowrap;
 
             transition:
-                color .25s ease,
-                transform .25s ease !important;
+                color .2s ease,
+                background .2s ease;
         }
-
-
-        /* underline */
-
-        #shivam-header .sh-nav-link::after {
-            content: "" !important;
-
-            position: absolute !important;
-
-            left: 50% !important;
-            bottom: 3px !important;
-
-            width: 0 !important;
-            height: 2px !important;
-
-            transform:
-                translateX(-50%) !important;
-
-            border-radius: 20px !important;
-
-            background: var(--green) !important;
-
-            transition:
-                width .25s ease !important;
-        }
-
 
         #shivam-header .sh-nav-link:hover,
-        #shivam-header .sh-nav-link:focus {
-            color: var(--green) !important;
-
-            -webkit-text-fill-color:
-                var(--green) !important;
-
-            background: transparent !important;
-
-            text-decoration: none !important;
-
-            transform:
-                translateY(-1px) !important;
+        #shivam-header .sh-nav-link.active {
+            color: var(--green);
+            -webkit-text-fill-color: var(--green);
         }
 
+        #shivam-header .sh-nav-link::after {
+            content: "";
+
+            position: absolute;
+
+            left: 15px;
+            right: 15px;
+            bottom: 12px;
+
+            height: 2px;
+
+            background: var(--green);
+
+            transform: scaleX(0);
+            transform-origin: center;
+
+            transition: transform .2s ease;
+        }
 
         #shivam-header .sh-nav-link:hover::after,
-        #shivam-header .sh-nav-link:focus::after {
-            width:
-                calc(100% - 28px) !important;
+        #shivam-header .sh-nav-link.active::after {
+            transform: scaleX(1);
         }
-
-
-        #shivam-header .sh-nav-link.sh-active,
-        #shivam-header .sh-nav-link[aria-current="page"] {
-            color: var(--green) !important;
-
-            -webkit-text-fill-color:
-                var(--green) !important;
-        }
-
-
-        #shivam-header .sh-nav-link.sh-active::after,
-        #shivam-header .sh-nav-link[aria-current="page"]::after {
-            width:
-                calc(100% - 28px) !important;
-        }
-
 
         /* =========================================================
-   CONTACT BUTTON
-========================================================= */
+           DESKTOP PRODUCTS WRAPPER
+        ========================================================= */
 
-        #shivam-header .sh-contact-btn,
-        #shivam-header .sh-contact-btn:visited {
-            min-height: 40px !important;
+        #shivam-header .sh-product-item {
+            height: 68px;
 
-            display: inline-flex !important;
+            position: relative;
 
-            align-items: center !important;
-            justify-content: center !important;
+            display: flex;
+            align-items: center;
+        }
 
-            margin-left: 7px !important;
+        #shivam-header .sh-product-link {
+            padding-right: 25px;
+        }
 
-            padding:
-                0 17px !important;
+        #shivam-header .sh-product-arrow {
+            position: absolute;
 
-            border-radius: 7px !important;
+            right: 8px;
 
-            background:
-                linear-gradient(135deg,
-                    #1E712C 0%,
-                    #2A8440 100%) !important;
+            top: 50%;
 
-            color: #FFFFFF !important;
+            transform: translateY(-50%);
 
-            -webkit-text-fill-color: #FFFFFF !important;
+            font-size: 16px;
+            line-height: 1;
 
-            border:
-                1px solid #1E712C !important;
+            color: var(--green);
+            -webkit-text-fill-color: var(--green);
 
-            text-decoration: none !important;
+            transition: transform .25s ease;
+        }
 
-            font-size: 13px !important;
-            font-weight: 700 !important;
+        #shivam-header .sh-product-item:hover .sh-product-arrow,
+        #shivam-header .sh-product-item:focus-within .sh-product-arrow {
+            transform: translateY(-50%) rotate(90deg);
+        }
+
+        /* =========================================================
+           DESKTOP PRODUCT DROPDOWN
+        ========================================================= */
+
+        #shivam-header .sh-product-dropdown {
+            position: absolute;
+
+            top: calc(100% - 1px);
+            left: 50%;
+
+            transform: translateX(-50%) translateY(10px);
+
+            width: 245px;
+
+            padding: 8px 0;
+
+            margin: 0;
+
+            background: var(--white);
+
+            border: 1px solid var(--border);
+
+            border-radius: 0 0 10px 10px;
 
             box-shadow:
-                0 5px 14px rgba(30, 113, 44, .16) !important;
+                0 12px 35px rgba(0, 22, 65, 0.12);
+
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+
+            transition:
+                opacity .22s ease,
+                visibility .22s ease,
+                transform .22s ease;
+
+            z-index: 99999;
+        }
+
+        #shivam-header .sh-product-item:hover .sh-product-dropdown,
+        #shivam-header .sh-product-item:focus-within .sh-product-dropdown {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+
+            transform: translateX(-50%) translateY(0);
+        }
+
+        #shivam-header .sh-product-dropdown ul {
+            list-style: none;
+
+            padding: 0;
+            margin: 0;
+        }
+
+        #shivam-header .sh-product-dropdown li {
+            width: 100%;
+            padding: 0;
+            margin: 0;
+        }
+
+        #shivam-header .sh-product-dropdown a {
+            width: 100%;
+            min-height: 43px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 18px;
+
+            color: var(--blue);
+            -webkit-text-fill-color: var(--blue);
+
+            background: transparent;
+
+            text-decoration: none;
+
+            font-family: 'Manrope', sans-serif;
+            font-size: 12.5px;
+            font-weight: 600;
+
+            transition:
+                color .2s ease,
+                background .2s ease,
+                padding-left .2s ease;
+        }
+
+        #shivam-header .sh-product-dropdown a:hover {
+            color: var(--green);
+            -webkit-text-fill-color: var(--green);
+
+            background: var(--light-green);
+
+            padding-left: 23px;
+        }
+
+        /* =========================================================
+           MOBILE BUTTON
+        ========================================================= */
+
+        #shivam-header .sh-mobile-toggle {
+            display: none;
+
+            width: 42px;
+            height: 42px;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 0;
+            margin: 0;
+
+            border: 0;
+            outline: 0;
+
+            background: transparent;
+
+            cursor: pointer;
+        }
+
+        #shivam-header .sh-mobile-toggle span {
+            position: absolute;
+
+            width: 23px;
+            height: 2px;
+
+            background: var(--blue);
 
             transition:
                 transform .25s ease,
-                box-shadow .25s ease !important;
+                opacity .25s ease;
         }
 
-
-        #shivam-header .sh-contact-btn:hover {
-            transform:
-                translateY(-2px) !important;
-
-            box-shadow:
-                0 8px 18px rgba(30, 113, 44, .22) !important;
-
-            color: #FFFFFF !important;
-
-            -webkit-text-fill-color: #FFFFFF !important;
+        #shivam-header .sh-mobile-toggle span:nth-child(1) {
+            transform: translateY(-7px);
         }
 
+        #shivam-header .sh-mobile-toggle span:nth-child(2) {
+            transform: translateY(0);
+        }
+
+        #shivam-header .sh-mobile-toggle span:nth-child(3) {
+            transform: translateY(7px);
+        }
+
+        #shivam-header .sh-mobile-toggle.open span:nth-child(1) {
+            transform: rotate(45deg);
+        }
+
+        #shivam-header .sh-mobile-toggle.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        #shivam-header .sh-mobile-toggle.open span:nth-child(3) {
+            transform: rotate(-45deg);
+        }
 
         /* =========================================================
-   SCROLL PROGRESS
-========================================================= */
-
-        #shivam-header .sh-progress {
-            position: absolute !important;
-
-            left: 0 !important;
-            bottom: 0 !important;
-
-            width: 100% !important;
-            height: 2px !important;
-
-            overflow: hidden !important;
-
-            pointer-events: none !important;
-
-            background:
-                rgba(30, 113, 44, .07) !important;
-
-            z-index: 5 !important;
-        }
-
-
-        #shivam-header .sh-progress-line {
-            width: 100% !important;
-            height: 100% !important;
-
-            background: #1E712C !important;
-
-            transform:
-                scaleX(0) !important;
-
-            transform-origin:
-                left center !important;
-
-            will-change: transform !important;
-        }
-
-
-        /* =========================================================
-   MOBILE BUTTON
-========================================================= */
-
-        #shivam-header .sh-menu-btn {
-            display: none !important;
-
-            width: 39px !important;
-            height: 39px !important;
-
-            min-width: 39px !important;
-
-            padding: 0 !important;
-
-            align-items: center !important;
-            justify-content: center !important;
-
-            border:
-                1px solid rgba(0, 22, 65, .18) !important;
-
-            border-radius: 8px !important;
-
-            background:
-                rgba(255, 255, 255, .92) !important;
-
-            cursor: pointer !important;
-
-            box-shadow: none !important;
-
-            transition:
-                border-color .25s ease,
-                background .25s ease !important;
-        }
-
-
-        #shivam-header .sh-menu-btn:hover {
-            border-color:
-                var(--green) !important;
-
-            background:
-                rgba(30, 113, 44, .04) !important;
-        }
-
-
-        #shivam-header .sh-menu-icon {
-            width: 20px !important;
-            height: 15px !important;
-
-            position: relative !important;
-
-            display: block !important;
-        }
-
-
-        #shivam-header .sh-bar {
-            position: absolute !important;
-
-            left: 0 !important;
-
-            width: 20px !important;
-            height: 2px !important;
-
-            border-radius: 20px !important;
-
-            background:
-                var(--blue) !important;
-
-            transition:
-                .3s ease !important;
-        }
-
-
-        #shivam-header .sh-bar:nth-child(1) {
-            top: 0 !important;
-        }
-
-        #shivam-header .sh-bar:nth-child(2) {
-            top: 6.5px !important;
-
-            background:
-                var(--green) !important;
-        }
-
-        #shivam-header .sh-bar:nth-child(3) {
-            top: 13px !important;
-        }
-
-
-        /* open */
-
-        #shivam-header .sh-menu-btn.open .sh-bar:nth-child(1) {
-            top: 6.5px !important;
-
-            transform:
-                rotate(45deg) !important;
-        }
-
-
-        #shivam-header .sh-menu-btn.open .sh-bar:nth-child(2) {
-            opacity: 0 !important;
-        }
-
-
-        #shivam-header .sh-menu-btn.open .sh-bar:nth-child(3) {
-            top: 6.5px !important;
-
-            transform:
-                rotate(-45deg) !important;
-        }
-
-
-        /* =========================================================
-   MOBILE MENU
-========================================================= */
+           MOBILE MENU
+        ========================================================= */
 
         #shivam-header .sh-mobile-menu {
-            display: none !important;
+            display: none;
+
+            position: absolute;
+
+            top: 68px;
+            left: 0;
+            right: 0;
+
+            width: 100%;
+
+            max-height: calc(100vh - 68px);
+
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            background: #ffffff;
+
+            border-top: 1px solid var(--border);
+
+            box-shadow:
+                0 15px 30px rgba(0, 22, 65, 0.10);
+
+            opacity: 0;
+            visibility: hidden;
+
+            transform: translateY(-8px);
+
+            transition:
+                opacity .25s ease,
+                visibility .25s ease,
+                transform .25s ease;
         }
 
-
-        @media(max-width:991px) {
-
-            #shivam-header .sh-inner {
-                min-height: 68px !important;
-
-                padding:
-                    0 20px !important;
-            }
-
-
-            #shivam-header.sh-scrolled .sh-inner {
-                min-height: 62px !important;
-            }
-
-
-            #shivam-header .sh-logo {
-                height: 48px !important;
-
-                max-width: 145px !important;
-            }
-
-
-            #shivam-header.sh-scrolled .sh-logo {
-                height: 44px !important;
-            }
-
-
-            #shivam-header .sh-nav {
-                display: none !important;
-            }
-
-
-            #shivam-header .sh-menu-btn {
-                display: flex !important;
-            }
-
-
-            #shivam-header .sh-mobile-menu {
-                display: block !important;
-
-                position: absolute !important;
-
-                top: 68px !important;
-                left: 0 !important;
-
-                width: 100% !important;
-
-                background:
-                    linear-gradient(180deg,
-                        #FFFFFF 0%,
-                        #F8FBF9 100%) !important;
-
-                border-bottom:
-                    2px solid var(--green) !important;
-
-                box-shadow:
-                    0 14px 28px rgba(0, 22, 65, .10) !important;
-
-                opacity: 0 !important;
-                visibility: hidden !important;
-
-                transform:
-                    translateY(-7px) !important;
-
-                pointer-events: none !important;
-
-                transition:
-                    opacity .25s ease,
-                    visibility .25s ease,
-                    transform .25s ease,
-                    top .3s ease !important;
-
-                z-index: 50 !important;
-            }
-
-
-            #shivam-header.sh-scrolled .sh-mobile-menu {
-                top: 62px !important;
-            }
-
-
-            #shivam-header .sh-mobile-menu.open {
-                opacity: 1 !important;
-
-                visibility: visible !important;
-
-                transform:
-                    translateY(0) !important;
-
-                pointer-events: auto !important;
-            }
-
-
-            #shivam-header .sh-mobile-nav {
-                display: flex !important;
-
-                flex-direction: column !important;
-
-                width: 100% !important;
-
-                padding:
-                    8px 20px 12px !important;
-            }
-
-
-            #shivam-header .sh-mobile-link,
-            #shivam-header .sh-mobile-link:visited {
-                width: 100% !important;
-
-                min-height: 47px !important;
-
-                display: flex !important;
-
-                align-items: center !important;
-                justify-content: space-between !important;
-
-                padding:
-                    0 5px !important;
-
-                color: var(--blue) !important;
-
-                -webkit-text-fill-color:
-                    var(--blue) !important;
-
-                border-bottom:
-                    1px solid rgba(0, 22, 65, .08) !important;
-
-                text-decoration: none !important;
-
-                font-size: 13.5px !important;
-                font-weight: 700 !important;
-
-                background: transparent !important;
-            }
-
-
-            #shivam-header .sh-mobile-link:last-child {
-                border-bottom: 0 !important;
-            }
-
-
-            #shivam-header .sh-mobile-link:hover,
-            #shivam-header .sh-mobile-link.sh-active,
-            #shivam-header .sh-mobile-link[aria-current="page"] {
-                color: var(--green) !important;
-
-                -webkit-text-fill-color:
-                    var(--green) !important;
-            }
-
-
-            #shivam-header .sh-mobile-arrow {
-                color: var(--green) !important;
-
-                -webkit-text-fill-color:
-                    var(--green) !important;
-
-                font-size: 20px !important;
-            }
-
+        #shivam-header .sh-mobile-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
+        #shivam-header .sh-mobile-inner {
+            width: 100%;
+            padding: 8px 18px 18px;
+        }
+
+        #shivam-header .sh-mobile-link {
+            width: 100%;
+            min-height: 47px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 5px;
+
+            border-bottom: 1px solid var(--border);
+
+            color: var(--blue);
+            -webkit-text-fill-color: var(--blue);
+
+            text-decoration: none;
+
+            font-family: 'Manrope', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+
+            transition:
+                color .2s ease,
+                background .2s ease;
+        }
+
+        #shivam-header .sh-mobile-link:hover,
+        #shivam-header .sh-mobile-link.active {
+            color: var(--green);
+            -webkit-text-fill-color: var(--green);
+        }
 
         /* =========================================================
-   MOBILE
-========================================================= */
+           MOBILE PRODUCTS
+        ========================================================= */
 
-        @media(max-width:600px) {
+        #shivam-header .sh-mobile-product-item {
+            width: 100%;
 
-            #shivam-header .sh-shell::before {
-                width: 130px !important;
-                height: 130px !important;
+            border-bottom: 1px solid var(--border);
+        }
 
-                right: -80px !important;
-                top: -80px !important;
+        #shivam-header .sh-mobile-product-btn {
+            width: 100%;
+            min-height: 47px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 5px;
+
+            margin: 0;
+
+            border: 0;
+            border-radius: 0;
+            outline: none;
+
+            background: transparent;
+
+            color: var(--blue);
+            -webkit-text-fill-color: var(--blue);
+
+            font-family: 'Manrope', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            text-align: left;
+
+            transition:
+                color .2s ease,
+                background .2s ease;
+        }
+
+        #shivam-header .sh-mobile-product-btn:hover,
+        #shivam-header .sh-mobile-product-btn.open,
+        #shivam-header .sh-mobile-product-btn.active {
+            color: var(--green);
+            -webkit-text-fill-color: var(--green);
+        }
+
+        #shivam-header .sh-mobile-product-arrow {
+            width: 24px;
+            height: 24px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            color: var(--green);
+            -webkit-text-fill-color: var(--green);
+
+            font-size: 22px;
+            line-height: 1;
+
+            transition: transform .25s ease;
+        }
+
+        #shivam-header .sh-mobile-product-btn.open .sh-mobile-product-arrow {
+            transform: rotate(90deg);
+        }
+
+        /* =========================================================
+           MOBILE PRODUCT DROPDOWN
+        ========================================================= */
+
+        #shivam-header .sh-mobile-product-dropdown {
+            width: 100%;
+
+            max-height: 0;
+
+            overflow: hidden;
+
+            opacity: 0;
+            visibility: hidden;
+
+            background: rgba(30, 113, 44, 0.035);
+
+            transition:
+                max-height .3s ease,
+                opacity .25s ease,
+                visibility .25s ease;
+        }
+
+        #shivam-header .sh-mobile-product-dropdown.open {
+            max-height: 600px;
+
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #shivam-header .sh-mobile-product-dropdown a {
+            width: 100%;
+            min-height: 42px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 5px 0 22px;
+
+            color: var(--blue);
+            -webkit-text-fill-color: var(--blue);
+
+            background: transparent;
+
+            border: 0;
+
+            text-decoration: none;
+
+            font-family: 'Manrope', sans-serif;
+            font-size: 12.5px;
+            font-weight: 600;
+
+            transition:
+                color .2s ease,
+                background .2s ease,
+                padding-left .2s ease;
+        }
+
+        #shivam-header .sh-mobile-product-dropdown a:hover,
+        #shivam-header .sh-mobile-product-dropdown a.active {
+            color: var(--green);
+            -webkit-text-fill-color: var(--green);
+
+            background: rgba(30, 113, 44, 0.06);
+
+            padding-left: 27px;
+        }
+
+        /* =========================================================
+           SCROLL PROGRESS
+        ========================================================= */
+
+        #shivam-header .sh-scroll-progress {
+            position: absolute;
+
+            left: 0;
+            bottom: 0;
+
+            width: 0%;
+            height: 2px;
+
+            background: var(--green);
+
+            z-index: 100000;
+        }
+
+        /* =========================================================
+           DESKTOP / MOBILE RESPONSIVE
+        ========================================================= */
+
+        @media (max-width: 1100px) {
+
+            #shivam-header .sh-shell {
+                padding: 0 20px;
             }
 
-
-            #shivam-header .sh-shell::after {
-                display: none !important;
+            #shivam-header .sh-nav-link {
+                padding-left: 10px;
+                padding-right: 10px;
             }
 
-
-            #shivam-header .sh-inner {
-                min-height: 62px !important;
-
-                padding:
-                    0 14px !important;
+            #shivam-header .sh-nav-link::after {
+                left: 10px;
+                right: 10px;
             }
 
+        }
 
-            #shivam-header.sh-scrolled .sh-inner {
-                min-height: 58px !important;
+        @media (max-width: 991px) {
+
+            #shivam-header .sh-shell {
+                min-height: 62px;
+                padding: 0 18px;
             }
-
 
             #shivam-header .sh-logo {
-                height: 43px !important;
-
-                max-width: 132px !important;
+                max-width: 165px;
+                max-height: 48px;
             }
 
-
-            #shivam-header.sh-scrolled .sh-logo {
-                height: 40px !important;
+            #shivam-header .sh-nav {
+                display: none;
             }
 
-
-            #shivam-header .sh-menu-btn {
-                width: 37px !important;
-                height: 37px !important;
-
-                min-width: 37px !important;
+            #shivam-header .sh-mobile-toggle {
+                display: flex;
+                position: relative;
             }
-
 
             #shivam-header .sh-mobile-menu {
-                top: 62px !important;
+                display: block;
+                top: 62px;
             }
 
+        }
 
-            #shivam-header.sh-scrolled .sh-mobile-menu {
-                top: 58px !important;
+        @media (max-width: 600px) {
+
+            #shivam-header .sh-shell {
+                min-height: 58px;
+                padding: 0 14px;
             }
 
+            #shivam-header .sh-logo {
+                max-width: 145px;
+                max-height: 44px;
+            }
 
-            #shivam-header .sh-mobile-nav {
-                padding:
-                    7px 14px 10px !important;
+            #shivam-header .sh-mobile-menu {
+                top: 58px;
+                max-height: calc(100vh - 58px);
+            }
+
+            #shivam-header .sh-mobile-inner {
+                padding-left: 14px;
+                padding-right: 14px;
             }
 
         }
     </style>
+
 </head>
+
 <body>
+
 
     <header id="shivam-header">
 
         <div class="sh-shell">
 
+            <!-- =====================================================
+             LOGO
+        ====================================================== -->
 
-            <div class="sh-inner">
+            <a
+                href="index.php"
+                class="sh-logo-wrap"
+                aria-label="Shivam Uniform Home">
 
+                <img
+                    class="sh-logo"
+                    src="assets/logos/<?php
+                                        echo htmlspecialchars(
+                                            $global_info['facion_icon'] ?? '',
+                                            ENT_QUOTES,
+                                            'UTF-8'
+                                        );
+                                        ?>"
+                    alt="Shivam Uniform">
 
-                <!-- LOGO -->
-
-                <a
-                    href="index.php"
-                    class="sh-logo-link"
-                    aria-label="Shivam Uniform Home">
-
-                    <img
-                        class="sh-logo"
-                        src="assets/logos/<?php echo htmlspecialchars($global_info['facion_icon'] ?? ''); ?>"
-                        alt="Shivam Uniform">
-
-                </a>
-
-
-
-                <!-- DESKTOP NAV -->
-
-                <nav
-                    class="sh-nav"
-                    aria-label="Primary Navigation">
-
-                    <a
-                        href="index.php"
-                        class="sh-nav-link">
-                        Home
-                    </a>
-                    <a
-                        href="products.php"
-                        class="sh-nav-link">
-                        Products
-                    </a>
+            </a>
 
 
-                    <a
-                        href="about.php"
-                        class="sh-nav-link">
-                        About
-                    </a>
-
-
-                    <a
-                        href="gallary.php"
-                        class="sh-nav-link">
-                        Gallery
-                    </a>
-                    <a
-                        href="login.php"
-                        class="sh-nav-link">
-                        Login
-                    </a>
-
-
-                    <a
-                        href="contact.php"
-                        class="sh-contact-btn">
-                        Contact Us
-                    </a>
-
-                </nav>
-
-
-
-                <!-- MOBILE BUTTON -->
-
-                <button
-                    type="button"
-                    class="sh-menu-btn"
-                    id="shMenuButton"
-                    aria-label="Open Menu"
-                    aria-expanded="false">
-
-                    <span class="sh-menu-icon">
-
-                        <span class="sh-bar"></span>
-                        <span class="sh-bar"></span>
-                        <span class="sh-bar"></span>
-
-                    </span>
-
-                </button>
-
-
-            </div>
-
-
-
-            <!-- SCROLL LINE -->
-
-            <div
-                class="sh-progress"
-                aria-hidden="true">
-
-                <div
-                    class="sh-progress-line"
-                    id="shProgressLine"></div>
-
-            </div>
-
-
-        </div>
-
-
-
-        <!-- MOBILE MENU -->
-
-        <div
-            class="sh-mobile-menu"
-            id="shMobileMenu">
+            <!-- =====================================================
+             DESKTOP NAVIGATION
+        ====================================================== -->
 
             <nav
-                class="sh-mobile-nav"
-                aria-label="Mobile Navigation">
+                class="sh-nav"
+                aria-label="Main Navigation">
+
+                <!-- HOME -->
 
                 <a
                     href="index.php"
-                    class="sh-mobile-link">
-                    <span>Home</span>
-                    <span class="sh-mobile-arrow">›</span>
+                    class="sh-nav-link"
+                    data-page="index.php">
+                    Home
                 </a>
 
-                <a
-                    href="products.php"
-                    class="sh-mobile-link">
-                    <span>Products</span>
-                    <span class="sh-mobile-arrow">›</span>
-                </a>
 
+                <!-- =================================================
+                 PRODUCTS DESKTOP DROPDOWN
+            ================================================== -->
+
+                <div class="sh-product-item">
+
+                    <a
+                        href="products.php"
+                        class="sh-nav-link sh-product-link"
+                        data-page="products.php">
+
+                        Products
+
+                        <span class="sh-product-arrow">
+                            ›
+                        </span>
+
+                    </a>
+
+
+                    <div class="sh-product-dropdown">
+
+                        <ul>
+
+                            <?php if (!empty($category_info)): ?>
+
+                                <?php foreach ($category_info as $category): ?>
+
+                                    <?php
+                                    $category_name =
+                                        $category['root_name']
+                                        ?? $category['category_name']
+                                        ?? $category['name']
+                                        ?? '';
+
+                                    $category_slug =
+                                        trim($category['root_slug'] ?? '');
+
+                                    $category_name =
+                                        trim($category_name);
+                                    ?>
+
+                                    <?php if (
+                                        $category_name !== '' &&
+                                        $category_slug !== ''
+                                    ): ?>
+
+                                        <li>
+                                            <a
+                                                href="product-category.php?category=<?php echo urlencode($category_slug); ?>"
+                                                data-category-link="true">
+                                                <?php
+                                                echo htmlspecialchars(
+                                                    $category_name,
+                                                    ENT_QUOTES,
+                                                    'UTF-8'
+                                                );
+                                                ?>
+                                            </a>
+                                        </li>
+
+                                    <?php endif; ?>
+
+                                <?php endforeach; ?>
+
+                            <?php endif; ?>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ABOUT -->
 
                 <a
                     href="about.php"
-                    class="sh-mobile-link">
-                    <span>About</span>
-                    <span class="sh-mobile-arrow">›</span>
+                    class="sh-nav-link"
+                    data-page="about.php">
+                    About
                 </a>
 
+
+                <!-- GALLERY -->
 
                 <a
-                    href="gallary.php"
-                    class="sh-mobile-link">
-                    <span>Gallery</span>
-                    <span class="sh-mobile-arrow">›</span>
+                    href="gallery.php"
+                    class="sh-nav-link"
+                    data-page="gallery.php">
+                    Gallery
                 </a>
 
+
+                <!-- LOGIN -->
+
+                <a
+                    href="login.php"
+                    class="sh-nav-link"
+                    data-page="login.php">
+                    Login
+                </a>
+
+
+                <!-- CONTACT -->
 
                 <a
                     href="contact.php"
-                    class="sh-mobile-link">
-                    <span>Contact Us</span>
-                    <span class="sh-mobile-arrow">›</span>
+                    class="sh-nav-link"
+                    data-page="contact.php">
+                    Contact Us
                 </a>
 
             </nav>
 
-        </div>
 
+            <!-- =====================================================
+             MOBILE HAMBURGER
+        ====================================================== -->
+
+            <button
+                type="button"
+                class="sh-mobile-toggle"
+                id="shMobileMenuButton"
+                aria-label="Open Menu"
+                aria-expanded="false"
+                aria-controls="shMobileMenu">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </button>
+
+
+            <!-- =====================================================
+             MOBILE MENU
+        ====================================================== -->
+
+            <div
+                class="sh-mobile-menu"
+                id="shMobileMenu">
+
+                <div class="sh-mobile-inner">
+
+
+                    <!-- HOME -->
+
+                    <a
+                        href="index.php"
+                        class="sh-mobile-link"
+                        data-page="index.php">
+                        Home
+                    </a>
+
+
+                    <!-- =================================================
+                     MOBILE PRODUCTS
+                ================================================== -->
+
+                    <div class="sh-mobile-product-item">
+
+                        <button
+                            type="button"
+                            class="sh-mobile-product-btn"
+                            id="shMobileProductButton"
+                            aria-expanded="false"
+                            aria-controls="shMobileProductDropdown">
+
+                            <span>
+                                Products
+                            </span>
+
+                            <span class="sh-mobile-product-arrow">
+                                ›
+                            </span>
+
+                        </button>
+
+
+                        <div
+                            class="sh-mobile-product-dropdown"
+                            id="shMobileProductDropdown">
+
+                            <?php if (!empty($category_info)): ?>
+
+                                <?php foreach ($category_info as $category): ?>
+
+                                    <?php
+                                    $category_name =
+                                        $category['root_name']
+                                        ?? $category['category_name']
+                                        ?? $category['name']
+                                        ?? '';
+
+                                    $category_slug =
+                                        trim($category['root_slug'] ?? '');
+
+                                    $category_name =
+                                        trim($category_name);
+                                    ?>
+
+                                    <?php if (
+                                        $category_name !== '' &&
+                                        $category_slug !== ''
+                                    ): ?>
+
+                                        <a
+                                            href="?category=<?php echo urlencode($category_slug); ?>"
+                                            data-category-link="true">
+
+                                            <?php
+                                            echo htmlspecialchars(
+                                                $category_name,
+                                                ENT_QUOTES,
+                                                'UTF-8'
+                                            );
+                                            ?>
+
+                                        </a>
+
+                                    <?php endif; ?>
+
+                                <?php endforeach; ?>
+
+                            <?php endif; ?>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ABOUT -->
+
+                    <a
+                        href="about.php"
+                        class="sh-mobile-link"
+                        data-page="about.php">
+                        About
+                    </a>
+
+
+                    <!-- GALLERY -->
+
+                    <a
+                        href="gallery.php"
+                        class="sh-mobile-link"
+                        data-page="gallery.php">
+                        Gallery
+                    </a>
+
+
+                    <!-- CONTACT -->
+
+                    <a
+                        href="contact.php"
+                        class="sh-mobile-link"
+                        data-page="contact.php">
+                        Contact Us
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- SCROLL PROGRESS -->
+
+            <div
+                class="sh-scroll-progress"
+                id="shScrollProgress"></div>
+
+        </div>
 
     </header>
 
 
     <script>
-        (function() {
+        document.addEventListener("DOMContentLoaded", function() {
 
-            "use strict";
-
+            /* =========================================================
+               ELEMENTS
+            ========================================================= */
 
             const header =
-                document.getElementById(
-                    "shivam-header"
-                );
-
-
-            const progressLine =
-                document.getElementById(
-                    "shProgressLine"
-                );
-
+                document.getElementById("shivam-header");
 
             const menuButton =
-                document.getElementById(
-                    "shMenuButton"
-                );
-
+                document.getElementById("shMobileMenuButton");
 
             const mobileMenu =
-                document.getElementById(
-                    "shMobileMenu"
-                );
+                document.getElementById("shMobileMenu");
+
+            const mobileProductButton =
+                document.getElementById("shMobileProductButton");
+
+            const mobileProductDropdown =
+                document.getElementById("shMobileProductDropdown");
+
+            const scrollProgress =
+                document.getElementById("shScrollProgress");
 
 
-            if (!header) {
-                return;
-            }
-
-
-
-            /* SCROLL */
-
-            let ticking = false;
-
-
-            function updateHeader() {
-
-                const scrollTop =
-                    window.pageYOffset ||
-                    document.documentElement.scrollTop ||
-                    0;
-
-
-                const maxScroll =
-                    Math.max(
-                        1,
-                        document.documentElement.scrollHeight -
-                        window.innerHeight
-                    );
-
-
-                const progress =
-                    Math.min(
-                        1,
-                        Math.max(
-                            0,
-                            scrollTop / maxScroll
-                        )
-                    );
-
-
-                if (progressLine) {
-
-                    progressLine.style.transform =
-                        "scaleX(" + progress + ")";
-
-                }
-
-
-                if (scrollTop > 25) {
-
-                    header.classList.add(
-                        "sh-scrolled"
-                    );
-
-                } else {
-
-                    header.classList.remove(
-                        "sh-scrolled"
-                    );
-
-                }
-
-
-                ticking = false;
-
-            }
-
-
-            function requestUpdate() {
-
-                if (!ticking) {
-
-                    requestAnimationFrame(
-                        updateHeader
-                    );
-
-                    ticking = true;
-
-                }
-
-            }
-
-
-            window.addEventListener(
-                "scroll",
-                requestUpdate, {
-                    passive: true
-                }
-            );
-
-
-            window.addEventListener(
-                "resize",
-                requestUpdate
-            );
-
-
-            updateHeader();
-
-
-
-            /* MOBILE MENU */
+            /* =========================================================
+               MOBILE MAIN MENU
+            ========================================================= */
 
             if (menuButton && mobileMenu) {
 
-                menuButton.addEventListener(
+                menuButton.addEventListener("click", function(e) {
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const isOpen =
+                        mobileMenu.classList.toggle("open");
+
+                    menuButton.classList.toggle(
+                        "open",
+                        isOpen
+                    );
+
+                    menuButton.setAttribute(
+                        "aria-expanded",
+                        isOpen ? "true" : "false"
+                    );
+
+                });
+
+            }
+
+
+            /* =========================================================
+               MOBILE PRODUCTS DROPDOWN
+            ========================================================= */
+
+            if (
+                mobileProductButton &&
+                mobileProductDropdown
+            ) {
+
+                mobileProductButton.addEventListener(
                     "click",
-                    function() {
+                    function(e) {
 
-                        const opened =
-                            mobileMenu.classList.toggle(
-                                "open"
-                            );
+                        e.preventDefault();
+                        e.stopPropagation();
 
+                        const isOpen =
+                            mobileProductDropdown
+                            .classList
+                            .toggle("open");
 
-                        menuButton.classList.toggle(
+                        mobileProductButton.classList.toggle(
                             "open",
-                            opened
+                            isOpen
                         );
 
+                        mobileProductButton.classList.toggle(
+                            "active",
+                            isOpen
+                        );
 
-                        menuButton.setAttribute(
+                        mobileProductButton.setAttribute(
                             "aria-expanded",
-                            opened ? "true" : "false"
+                            isOpen ? "true" : "false"
                         );
 
                     }
                 );
 
+
+                /* ---------------------------------------------
+                   CATEGORY CLICK
+                --------------------------------------------- */
+
+                mobileProductDropdown
+                    .querySelectorAll("a")
+                    .forEach(function(link) {
+
+                        link.addEventListener(
+                            "click",
+                            function() {
+
+                                mobileProductDropdown
+                                    .classList
+                                    .remove("open");
+
+                                mobileProductButton
+                                    .classList
+                                    .remove("open");
+
+                                mobileProductButton
+                                    .classList
+                                    .remove("active");
+
+                                mobileProductButton.setAttribute(
+                                    "aria-expanded",
+                                    "false"
+                                );
+
+                                if (mobileMenu) {
+
+                                    mobileMenu
+                                        .classList
+                                        .remove("open");
+
+                                }
+
+                                if (menuButton) {
+
+                                    menuButton
+                                        .classList
+                                        .remove("open");
+
+                                    menuButton.setAttribute(
+                                        "aria-expanded",
+                                        "false"
+                                    );
+
+                                }
+
+                            }
+                        );
+
+                    });
+
+            }
+
+
+            /* =========================================================
+               MOBILE NORMAL LINKS
+            ========================================================= */
+
+            if (mobileMenu) {
 
                 mobileMenu
                     .querySelectorAll(
@@ -1181,38 +1187,176 @@ $global_info = get_global_info($mydb);
                             "click",
                             function() {
 
-                                mobileMenu.classList.remove(
-                                    "open"
-                                );
+                                if (mobileMenu) {
 
-                                menuButton.classList.remove(
-                                    "open"
-                                );
+                                    mobileMenu
+                                        .classList
+                                        .remove("open");
 
-                                menuButton.setAttribute(
-                                    "aria-expanded",
-                                    "false"
-                                );
+                                }
+
+                                if (menuButton) {
+
+                                    menuButton
+                                        .classList
+                                        .remove("open");
+
+                                    menuButton.setAttribute(
+                                        "aria-expanded",
+                                        "false"
+                                    );
+
+                                }
 
                             }
                         );
 
                     });
 
+            }
 
-                window.addEventListener(
-                    "resize",
-                    function() {
 
-                        if (window.innerWidth > 991) {
+            /* =========================================================
+               ACTIVE PAGE
+            ========================================================= */
 
-                            mobileMenu.classList.remove(
-                                "open"
-                            );
+            const currentPath =
+                window.location.pathname
+                .split("/")
+                .pop()
+                .toLowerCase();
 
-                            menuButton.classList.remove(
-                                "open"
-                            );
+
+            /* ---------------------------------------------
+               Desktop links
+            --------------------------------------------- */
+
+            document
+                .querySelectorAll(
+                    "#shivam-header .sh-nav-link"
+                )
+                .forEach(function(link) {
+
+                    const page =
+                        (
+                            link.getAttribute(
+                                "data-page"
+                            ) || ""
+                        ).toLowerCase();
+
+                    if (
+                        page &&
+                        page === currentPath
+                    ) {
+
+                        link.classList.add("active");
+
+                    }
+
+                });
+
+
+            /* ---------------------------------------------
+               Mobile normal links
+            --------------------------------------------- */
+
+            document
+                .querySelectorAll(
+                    "#shivam-header .sh-mobile-link"
+                )
+                .forEach(function(link) {
+
+                    const page =
+                        (
+                            link.getAttribute(
+                                "data-page"
+                            ) || ""
+                        ).toLowerCase();
+
+                    if (
+                        page &&
+                        page === currentPath
+                    ) {
+
+                        link.classList.add("active");
+
+                    }
+
+                });
+
+
+            /* =========================================================
+               PRODUCTS ACTIVE STATE
+               If URL contains category_id, Products will be active.
+            ========================================================= */
+
+            const urlParams =
+                new URLSearchParams(
+                    window.location.search
+                );
+
+            const categoryId =
+                urlParams.get("category_id");
+
+
+            if (
+                currentPath === "products.php" ||
+                categoryId
+            ) {
+
+                const desktopProductLink =
+                    document.querySelector(
+                        "#shivam-header .sh-product-link"
+                    );
+
+                if (desktopProductLink) {
+
+                    desktopProductLink
+                        .classList
+                        .add("active");
+
+                }
+
+                if (mobileProductButton) {
+
+                    mobileProductButton
+                        .classList
+                        .add("active");
+
+                }
+
+            }
+
+
+            /* =========================================================
+               CLOSE MOBILE MENU ON OUTSIDE CLICK
+            ========================================================= */
+
+            document.addEventListener(
+                "click",
+                function(e) {
+
+                    if (!header) {
+                        return;
+                    }
+
+                    if (
+                        !header.contains(e.target)
+                    ) {
+
+                        if (mobileMenu) {
+
+                            mobileMenu
+                                .classList
+                                .remove("open");
+
+                        }
+
+                        if (menuButton) {
+
+                            menuButton
+                                .classList
+                                .remove("open");
 
                             menuButton.setAttribute(
                                 "aria-expanded",
@@ -1221,66 +1365,208 @@ $global_info = get_global_info($mydb);
 
                         }
 
+                        if (mobileProductDropdown) {
+
+                            mobileProductDropdown
+                                .classList
+                                .remove("open");
+
+                        }
+
+                        if (mobileProductButton) {
+
+                            mobileProductButton
+                                .classList
+                                .remove("open");
+
+                            mobileProductButton
+                                .classList
+                                .remove("active");
+
+                            mobileProductButton.setAttribute(
+                                "aria-expanded",
+                                "false"
+                            );
+
+                        }
+
                     }
-                );
+
+                }
+            );
+
+
+            /* =========================================================
+               ESC KEY
+            ========================================================= */
+
+            document.addEventListener(
+                "keydown",
+                function(e) {
+
+                    if (e.key !== "Escape") {
+                        return;
+                    }
+
+                    if (mobileMenu) {
+
+                        mobileMenu
+                            .classList
+                            .remove("open");
+
+                    }
+
+                    if (menuButton) {
+
+                        menuButton
+                            .classList
+                            .remove("open");
+
+                        menuButton.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+                    }
+
+                    if (mobileProductDropdown) {
+
+                        mobileProductDropdown
+                            .classList
+                            .remove("open");
+
+                    }
+
+                    if (mobileProductButton) {
+
+                        mobileProductButton
+                            .classList
+                            .remove("open");
+
+                        mobileProductButton
+                            .classList
+                            .remove("active");
+
+                        mobileProductButton.setAttribute(
+                            "aria-expanded",
+                            "false"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            /* =========================================================
+               SCROLL PROGRESS
+            ========================================================= */
+
+            function updateScrollProgress() {
+
+                if (!scrollProgress) {
+                    return;
+                }
+
+                const scrollTop =
+                    window.pageYOffset ||
+                    document.documentElement.scrollTop;
+
+                const documentHeight =
+                    document.documentElement.scrollHeight -
+                    document.documentElement.clientHeight;
+
+                if (documentHeight <= 0) {
+
+                    scrollProgress.style.width = "0%";
+
+                    return;
+                }
+
+                const percentage =
+                    (scrollTop / documentHeight) * 100;
+
+                scrollProgress.style.width =
+                    Math.min(
+                        Math.max(percentage, 0),
+                        100
+                    ) + "%";
 
             }
 
 
+            window.addEventListener(
+                "scroll",
+                updateScrollProgress, {
+                    passive: true
+                }
+            );
 
-            /* ACTIVE PAGE */
-
-            const currentPath =
-                window.location.pathname
-                .replace(/\/+$/, "") || "index.php";
-
-
-            const links =
-                header.querySelectorAll(
-                    ".sh-nav-link, .sh-mobile-link"
-                );
+            updateScrollProgress();
 
 
-            links.forEach(function(link) {
+            /* =========================================================
+               RESIZE
+            ========================================================= */
 
-                try {
+            window.addEventListener(
+                "resize",
+                function() {
 
-                    const linkPath =
-                        new URL(
-                            link.href,
-                            window.location.origin
-                        )
-                        .pathname
-                        .replace(/\/+$/, "") || "index.php";
+                    if (
+                        window.innerWidth > 991
+                    ) {
 
+                        if (mobileMenu) {
 
-                    link.classList.remove(
-                        "sh-active"
-                    );
+                            mobileMenu
+                                .classList
+                                .remove("open");
 
+                        }
 
-                    link.removeAttribute(
-                        "aria-current"
-                    );
+                        if (menuButton) {
 
+                            menuButton
+                                .classList
+                                .remove("open");
 
-                    if (linkPath === currentPath) {
+                            menuButton.setAttribute(
+                                "aria-expanded",
+                                "false"
+                            );
 
-                        link.classList.add(
-                            "sh-active"
-                        );
+                        }
 
-                        link.setAttribute(
-                            "aria-current",
-                            "page"
-                        );
+                        if (mobileProductDropdown) {
+
+                            mobileProductDropdown
+                                .classList
+                                .remove("open");
+
+                        }
+
+                        if (mobileProductButton) {
+
+                            mobileProductButton
+                                .classList
+                                .remove("open");
+
+                            mobileProductButton.setAttribute(
+                                "aria-expanded",
+                                "false"
+                            );
+
+                        }
 
                     }
 
-                } catch (e) {}
+                }
+            );
 
-            });
-
-
-        })();
+        });
     </script>
+
+</body>
+
+</html>
