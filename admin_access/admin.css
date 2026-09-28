@@ -196,14 +196,19 @@
         border: 1px outset #6666663d;
         background-color: #fff;
         z-index: 10;
-
+        cursor: pointer;
     }
 }
 
 
 
 
-
+#haamer_id_adase {
+    position: fixed !important;
+    z-index: 999999 !important;
+    cursor: pointer;
+    pointer-events: auto !important;
+}
 
 /* right slide */
 .right_section_1 {

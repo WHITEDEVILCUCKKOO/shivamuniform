@@ -546,8 +546,41 @@ $brand_success_msg     = $brand_add_result['success_msg'] ?: $brand_update_resul
 $brand_error_msg       = $brand_add_result['error_msg'] ?: $brand_update_result['error_msg'];
 $root_category_options = get_category_info($mydb); // dropdown ke liye
 
+
+$brand_delete_result = handle_brand_delete($mydb);
+$brand_success_msg    = $brand_add_result['success_msg'] ?: $brand_update_result['success_msg'] ?: $brand_delete_result['success_msg'];
+$brand_error_msg      = $brand_add_result['error_msg'] ?: $brand_update_result['error_msg'] ?: $brand_delete_result['error_msg'];
+
 ?>
 
+
+
+<!-- product  -->
+<?php include_once 'admin_access/functions/products.php' ?>
+<?php include_once 'admin_access/functions/category_info.php' ?>
+<?php include_once 'admin_access/functions/brand.php' ?>
+<?php
+
+$product_add_result         = handle_product_add($mydb);
+$product_update_result      = handle_product_update($mydb);
+$product_delete_result      = handle_product_delete($mydb);
+$product_bulk_delete_result = handle_product_bulk_delete($mydb);
+
+$product_success_msg = $product_add_result['success_msg']
+    ?: $product_update_result['success_msg']
+    ?: $product_delete_result['success_msg']
+    ?: $product_bulk_delete_result['success_msg'];
+
+$product_error_msg = $product_add_result['error_msg']
+    ?: $product_update_result['error_msg']
+    ?: $product_delete_result['error_msg']
+    ?: $product_bulk_delete_result['error_msg'];
+
+$product_info          = get_product_info($mydb);
+$root_category_options = get_category_info($mydb);
+$brand_options          = get_brand_info($mydb);
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -561,7 +594,7 @@ $root_category_options = get_category_info($mydb); // dropdown ke liye
     <link rel="stylesheet" href="admin_access/admin.css">
     <link rel="stylesheet" href="admin_access/css/category.css">
 
-    <script src="assets/js/blog.js"></script>
+    <!-- <script src="assets/js/blog.js"></script> -->
 </head>
 
 <body>
@@ -1408,10 +1441,110 @@ $root_category_options = get_category_info($mydb); // dropdown ke liye
                 </section>
 
                 <!-- section 4 home -->
-                <section id="sms_contect_box" class="section_sub_with all_sejmca8974 ">
-                    4
-                </section>
+                <?php include_once 'admin_access/functions/products.php' ?>
+                <?php
 
+                $random_products = get_random_products($mydb, 6);
+
+                ?>
+                <section id="sms_contect_box" class="section_sub_with all_sejmca8974 ">
+
+                    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:18px; padding:10px;">
+
+                        <?php if (!empty($random_products)) { ?>
+
+                            <?php foreach ($random_products as $rp) { ?>
+
+                                <div style="border:1px solid #e5e7eb; border-radius:10px; overflow:hidden; background:#fff; box-shadow:0 1px 3px rgba(0,0,0,0.06);">
+
+                                    <?php if (!empty($rp['product_image'])) { ?>
+                                        <img src="<?php echo htmlspecialchars($rp['product_image']); ?>"
+                                            alt="<?php echo htmlspecialchars($rp['product_name']); ?>"
+                                            style="width:100%; height:160px; object-fit:cover;">
+                                    <?php } else { ?>
+                                        <div style="width:100%; height:160px; background:#f3f4f6; display:flex; align-items:center; justify-content:center; color:#9ca3af; font-size:13px;">
+                                            No Image
+                                        </div>
+                                    <?php } ?>
+
+                                    <div style="padding:12px;">
+
+                                        <h4 style="margin:0 0 6px; font-size:15px; color:#111827;">
+                                            <?php echo htmlspecialchars($rp['product_name']); ?>
+                                        </h4>
+
+                                        <p style="margin:0 0 4px; font-size:13px; color:#6b7280;">
+                                            <?php echo htmlspecialchars($rp['root_name'] ?? '-'); ?>
+                                            <?php if (!empty($rp['brand_name'])) { ?>
+                                                &middot; <?php echo htmlspecialchars($rp['brand_name']); ?>
+                                            <?php } ?>
+                                        </p>
+
+                                        <p style="margin:0; font-size:14px; font-weight:600; color:#111827;">
+                                            <?php if (!empty($rp['sale_price']) && $rp['sale_price'] != $rp['original_price']) { ?>
+                                                <span style="text-decoration:line-through; color:#9ca3af; font-weight:400; margin-right:6px;">
+                                                    ₹<?php echo htmlspecialchars($rp['original_price']); ?>
+                                                </span>
+                                                ₹<?php echo htmlspecialchars($rp['sale_price']); ?>
+                                            <?php } else { ?>
+                                                ₹<?php echo htmlspecialchars($rp['original_price']); ?>
+                                            <?php } ?>
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                            <?php } ?>
+
+                        <?php } else { ?>
+
+                            <p style="text-align:center; color:#9ca3af; grid-column: 1 / -1;">No products found</p>
+
+                        <?php } ?>
+
+                    </div>
+
+                    <div style="display:flex; justify-content:center; margin-top:24px;">
+                        <button style="min-height: 50px;padding: 0 30px;border: none;border-radius: 8px;background: #055096;color: #fff;font-size: 15px;font-weight: 600;cursor: pointer" type="button" class="ihdw9641" onclick="event.preventDefault(); document.getElementById('contect__3').click(); document.getElementById('sms_btn_124').classList.add('active'); document.getElementById('sms_sub_box').classList.add('sub_links_of_show_box'); ">
+                            Click here to edit product
+                        </button>
+                        <!-- <button
+                            type="button"
+                            class="ihdw9641"
+                            onclick="goToEditProductsSection()">
+                            Click here to edit product
+                        </button> -->
+                    </div>
+
+                    <script>
+                        // ===========================================================
+                        // Products wale section (contect_3_contect_box) pe le jaata hai.
+                        // Assumption: tabs "show_active" class se switch hote hain
+                        // (jaisa sidebar ke sections me dikha tha). Agar tumhara
+                        // actual tab-switch mechanism alag hai, isko replace kar dena
+                        // usi function se jo sidebar "Products" link click par chalta hai.
+                        // ===========================================================
+                        function goToEditProductsSection() {
+
+                            var allSections = document.querySelectorAll('.section_sub_with');
+
+                            allSections.forEach(function(sec) {
+                                sec.classList.remove('show_active');
+                            });
+
+                            var targetSection = document.getElementById('contect_3_contect_box');
+
+                            if (targetSection) {
+                                targetSection.classList.add('show_active');
+                                targetSection.scrollIntoView({
+                                    behavior: 'smooth'
+                                });
+                            }
+                        }
+                    </script>
+
+                </section>
                 <!-- section 5 RCS -->
                 <section id="rcs_contect_box" class="section_sub_with all_sejmca8974 ">
                     5
@@ -1450,519 +1583,9 @@ $root_category_options = get_category_info($mydb); // dropdown ke liye
                 <!-- section 12 blog -->
                 <section id="journeys_contect_box" class="section_sub_with all_sejmca8974 ">
 
-                    <div id="orders" class="page " style="width: 80%;margin: auto;">
-                        <div
-                            style="display: flex; justify-content: space-between; margin-bottom: 25px; flex-wrap: wrap; gap: 10px;">
-                            <h2>Blog Management</h2>
-                            <!-- <button class="btn btn-outline">Export CSV</button> -->
-                        </div>
 
-                        <div class="card">
-                            <div class="table-container">
-                                <!-- blog contect add start here -->
-
-                                <div class="blog_nav">
-                                    <ul>
-                                        <li class="search_btr" style="">
-                                            <label for="Search"></label>
-                                            <!-- <input type="text" placeholder="Enter the Blog ID or Title"> -->
-                                        </li>
-                                        <li id="adeac">
-                                            <button id="btn_add_sadcarlod" class="btn btn-primary bhaum-save-btn-2026" onclick="
-                                        let form=document.getElementById('add_newblog_form');
-                                        let btn=document.getElementById('btn_add_sadcarlod');
-                                        let blog_cards=document.getElementById('vaweca');
-
-                                        form.classList.toggle('show_add_from');
-
-                                        blog_cards.classList.toggle('show_add_from')
-                                        btn.innerHTML=form.classList.contains('show_add_from')
-                                        ? 'Add New Blog'
-                                        : 'Cancel';
-                                        ">
-                                                Add New Blog
-                                            </button>
-
-                                        </li>
-                                        <li id="btn_update_sadcarlod" class="show_add_from">
-
-                                            <div style="padding: 0 20px;display: flex;gap: 10px;">
-                                                <div>
-                                                    <button class="btn btn-primary" onclick="cancel_update_blog_btn()">
-                                                        Cancel
-                                                    </button>
-                                                </div>
-                                                <div id="btn_update_sadcarlodasas" class="show_add_from">
-                                                    <button class="btn btn-primary" id="delete_update_blog_sd">
-                                                        Delete Blog
-                                                    </button>
-                                                </div>
-                                            </div>
-
-                                        </li>
-
-                                    </ul>
-                                </div>
-
-                                <!-- line -->
-                                <div class="devidedLine"> Blogs Contect </div>
-
-                                <!-- blogs card -->
-                                <div class="show_bolg" id="vaweca">
-                                    <div class="card_into">
-
-                                        <!-- cards -->
-                                        <?php
-
-                                        $sql = "SELECT * FROM blog ORDER BY blog_id DESC LIMIT 8";
-                                        $result = mysqli_query($mydb, $sql);
-
-                                        while ($blog = mysqli_fetch_assoc($result)) {
-                                        ?>
-
-                                            <div class="blog_card">
-
-                                                <div>
-                                                    <img src="assets/blog/<?php echo $blog['blog_img']; ?>" alt="<?php echo $blog['blog_title']; ?>">
-                                                </div>
-
-                                                <div class="blog_content">
-
-                                                    <div class="blog_meta">
-                                                        <span class="blog_author">
-                                                            <?php echo $blog['blog_author']; ?>
-                                                        </span>
-
-                                                        <span>
-                                                            <!-- <?php echo date("d M Y", $blog['created_at']); ?> -->
-                                                            <?php
-                                                            if ($blog['updated_at'] == "Null") {
-                                                                echo timeAgo($blog['created_at']);
-                                                            } else {
-                                                                echo timeAgo($blog['updated_at']) . " Updated";
-                                                            }
-                                                            ?>
-                                                        </span>
-                                                    </div>
-
-                                                    <h3 class="blog_title">
-                                                        <?php echo $blog['blog_title']; ?>
-                                                    </h3>
-
-                                                    <p class="blog_desc">
-                                                        <?php echo substr(strip_tags($blog['blog_content']), 0, 120); ?>...
-                                                    </p>
-
-                                                    <button onclick="edit_blog('<?php echo $blog['blog_slug']; ?>')" class="blog_btn">
-                                                        Edit Blog
-                                                    </button>
-
-                                                </div>
-
-                                            </div>
-
-                                        <?php } ?>
-
-
-
-                                    </div>
-                                </div>
-
-                                <!-- add new form -->
-                                <div id="add_newblog_form" class="add_fromw show_add_from">
-                                    <section class="blog-upload-section">
-                                        <div class="blog-upload-container">
-                                            <h1 class="blog-upload-title">Create New Blog</h1>
-
-                                            <form id="blogUploadForm" method="POST" enctype="multipart/form-data"
-                                                onsubmit="document.getElementById('blogContentHidden').value = document.getElementById('blogContentEditor').innerHTML;">
-                                                <input type="hidden" name="form_action" value="add_blog">
-
-                                                <!-- Image Upload -->
-                                                <div class="blog-upload-group">
-                                                    <label class="blog-upload-label">Blog Image *</label>
-                                                    <div class="blog-image-upload-area" id="blogImageUploadArea">
-                                                        <input type="file" name="blog_image" id="blogImageInput"
-                                                            accept="image/*" required>
-                                                        <div class="blog-image-placeholder" id="blogImagePlaceholder">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="48"
-                                                                height="48" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="1.5">
-                                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                                                <polyline points="21 15 16 10 5 21" />
-                                                            </svg>
-                                                            <p>Click or drag image here</p>
-                                                        </div>
-                                                        <img id="blogImagePreview" class="blog-image-preview" alt="Preview">
-                                                    </div>
-                                                </div>
-
-                                                <!-- Blog Title -->
-                                                <div class="blog-upload-group">
-                                                    <label class="blog-upload-label" for="blogTitle">Blog Title *</label>
-                                                    <input type="text" name="blog_title" id="blogTitle"
-                                                        class="blog-upload-input" placeholder="Enter blog title" required>
-                                                </div>
-
-                                                <!-- Blog Author -->
-                                                <div class="blog-upload-group">
-                                                    <label class="blog-upload-label" for="blogAuthor">Author Name *</label>
-                                                    <input type="text" name="blog_author" id="blogAuthor"
-                                                        class="blog-upload-input" placeholder="Enter author name" required>
-                                                </div>
-
-                                                <!-- Blog Content Editor -->
-                                                <div class="blog-upload-group">
-                                                    <label class="blog-upload-label">Blog Content *</label>
-
-                                                    <!-- Toolbar -->
-                                                    <div class="blog-editor-toolbar">
-                                                        <select id="blogFontSize" class="blog-toolbar-select" title="Font Size">
-                                                            <option value="1">Small</option>
-                                                            <option value="3" selected>Normal</option>
-                                                            <option value="5">Large</option>
-                                                            <option value="7">Extra Large</option>
-                                                        </select>
-
-                                                        <div class="blog-toolbar-divider"></div>
-
-                                                        <button type="button" class="blog-toolbar-btn" data-command="bold" title="Bold"><strong>B</strong></button>
-                                                        <button type="button" class="blog-toolbar-btn" data-command="italic" title="Italic"><em>I</em></button>
-                                                        <button type="button" class="blog-toolbar-btn" data-command="underline" title="Underline"><u>U</u></button>
-                                                        <button type="button" class="blog-toolbar-btn" data-command="strikeThrough" title="Strikethrough"><s>S</s></button>
-
-                                                        <div class="blog-toolbar-divider"></div>
-
-                                                        <button type="button" class="blog-toolbar-btn" data-command="justifyLeft" title="Align Left">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                                <path d="M3 3h18v2H3V3zm0 4h12v2H3V7zm0 4h18v2H3v-2zm0 4h12v2H3v-2zm0 4h18v2H3v-2z" />
-                                                            </svg>
-                                                        </button>
-                                                        <button type="button" class="blog-toolbar-btn" data-command="justifyCenter" title="Align Center">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                                <path d="M3 3h18v2H3V3zm3 4h12v2H6V7zm-3 4h18v2H3v-2zm3 4h12v2H6v-2zm-3 4h18v2H3v-2z" />
-                                                            </svg>
-                                                        </button>
-                                                        <button type="button" class="blog-toolbar-btn" data-command="justifyRight" title="Align Right">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                                <path d="M3 3h18v2H3V3zm6 4h12v2H9V7zm-6 4h18v2H3v-2zm6 4h12v2H9v-2zm-6 4h18v2H3v-2z" />
-                                                            </svg>
-                                                        </button>
-
-                                                        <div class="blog-toolbar-divider"></div>
-
-                                                        <button type="button" class="blog-toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                                <path d="M4 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm4-15h14v2H8V5zm0 8h14v2H8v-2zm0 8h14v2H8v-2z" />
-                                                            </svg>
-                                                        </button>
-                                                        <button type="button" class="blog-toolbar-btn" data-command="insertOrderedList" title="Numbered List">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                                <path d="M2 5h2v2H3v1h2v1H2V7.5h1v-1H2V5zm0 7h2.5v.5H3v1h1.5V14H2v-2zm0 6h2v.5H3v1h1v.5H2v-1.5h.5v-1H2V18zM8 5h14v2H8V5zm0 6h14v2H8v-2zm0 6h14v2H8v-2z" />
-                                                            </svg>
-                                                        </button>
-
-                                                        <div class="blog-toolbar-divider"></div>
-
-                                                        <button type="button" class="blog-toolbar-btn" id="blogLinkBtn" title="Insert Link">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                                                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                                                            </svg>
-                                                        </button>
-
-                                                        <div class="blog-toolbar-divider"></div>
-
-                                                        <div class="blog-color-picker-wrap">
-                                                            <button type="button" class="blog-toolbar-btn blog-color-btn" title="Text Color">
-                                                                <span class="blog-color-icon">A</span>
-                                                                <span class="blog-color-bar" id="blogTextColorBar"></span>
-                                                            </button>
-                                                            <input type="color" id="blogTextColor" class="blog-color-input" value="#000000">
-                                                        </div>
-
-                                                        <div class="blog-color-picker-wrap">
-                                                            <button type="button" class="blog-toolbar-btn blog-color-btn" title="Background Color">
-                                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
-                                                                </svg>
-                                                                <span class="blog-color-bar" id="blogBgColorBar"></span>
-                                                            </button>
-                                                            <input type="color" id="blogBgColor" class="blog-color-input" value="#ffffff">
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Content Editable Area -->
-                                                    <div id="blogContentEditor" class="blog-content-editor"
-                                                        contenteditable="true" placeholder="Write your blog content here...">
-                                                    </div>
-                                                    <input type="hidden" name="blog_content1252" id="blogContentHidden">
-                                                </div>
-
-                                                <!-- Submit Button -->
-                                                <div class="blog-upload-actions">
-                                                    <button type="submit" name="blog_submit" class="blog-submit-btn">
-                                                        <span class="blog-btn-text">Publish Blog</span>
-                                                        <span class="blog-btn-loader"></span>
-                                                    </button>
-                                                </div>
-
-                                            </form>
-                                        </div>
-                                    </section>
-
-                                    <!-- Link Modal -->
-                                    <div class="blog-modal-overlay" id="blogLinkModal">
-                                        <div class="blog-modal">
-                                            <div class="blog-modal-header">
-                                                <h3>Insert Link</h3>
-                                                <button type="button" class="blog-modal-close" id="blogModalClose">&times;</button>
-                                            </div>
-                                            <div class="blog-modal-body">
-                                                <div class="blog-upload-group">
-                                                    <label class="blog-upload-label" for="blogLinkUrl">URL</label>
-                                                    <input type="url" id="blogLinkUrl" class="blog-upload-input" placeholder="https://example.com">
-                                                </div>
-                                                <div class="blog-upload-group">
-                                                    <label class="blog-upload-label" for="blogLinkText">Link Text</label>
-                                                    <input type="text" id="blogLinkText" class="blog-upload-input" placeholder="Click here">
-                                                </div>
-                                            </div>
-                                            <div class="blog-modal-footer">
-                                                <button type="button" class="blog-modal-btn blog-modal-cancel" id="blogLinkCancel">Cancel</button>
-                                                <button type="button" class="blog-modal-btn blog-modal-confirm" id="blogLinkConfirm">Insert</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- update blog  -->
-                                <div id="update_blog_form" class="add_fromw show_add_from">
-                                    <section class="blog-upload-section">
-                                        <div class="blog-upload-container">
-                                            <h1 class="blog-upload-title">Update Blog</h1>
-
-                                            <form id="blogUploadForm2" method="POST" enctype="multipart/form-data"
-                                                onsubmit="document.getElementById('blogContentHidden2').value = document.getElementById('blogContentEditor2').innerHTML;">
-
-                                                <input type="text" name="blog_id_name" id="blog_id_update" readonly hidden>
-
-                                                <input type="hidden" name="form_action" value="update_blog">
-                                                <div class="blog-upload-group">
-                                                    <label class="blog-upload-label">Blog Image *</label>
-                                                    <div class="blog-image-upload-area" id="blogImageUploadArea2">
-                                                        <input type="file" name="blog_image2" id="blogImageInput2" accept="image/*">
-                                                        <div class="blog-image-placeholder" id="blogImagePlaceholder2">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="48"
-                                                                height="48" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="1.5">
-                                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                                                                <circle cx="8.5" cy="8.5" r="1.5" />
-                                                                <polyline points="21 15 16 10 5 21" />
-                                                            </svg>
-                                                            <p>Click or drag image here</p>
-                                                        </div>
-                                                        <img id="blogImagePreview2" class="blog-image-preview" alt="Preview">
-                                                    </div>
-                                                </div>
-
-                                                <div style="width: 170px;height: 180px;">
-                                                    <img id="blogimg2" alt="" style="object-fit: cover;width: 100%;">
-                                                </div>
-
-                                                <!-- Blog Title -->
-                                                <div class="blog-upload-group">
-                                                    <label class="blog-upload-label" for="blogTitle2">Blog Title *</label>
-                                                    <input type="text" name="blog_title2" id="blogTitle2"
-                                                        class="blog-upload-input" placeholder="Enter blog title" required>
-                                                </div>
-
-                                                <!-- Blog Author -->
-                                                <div class="blog-upload-group">
-                                                    <label class="blog-upload-label" for="blogAuthor2">Author Name *</label>
-                                                    <input type="text" name="blog_author2" id="blogAuthor2"
-                                                        class="blog-upload-input" placeholder="Enter author name" required>
-                                                </div>
-
-                                                <!-- Blog Content Editor -->
-                                                <div class="blog-upload-group">
-                                                    <label class="blog-upload-label">Blog Content *</label>
-
-                                                    <!-- Toolbar -->
-                                                    <div class="blog-editor-toolbar">
-                                                        <select id="blogFontSize2" class="blog-toolbar-select" title="Font Size">
-                                                            <option value="1">Small</option>
-                                                            <option value="3" selected>Normal</option>
-                                                            <option value="5">Large</option>
-                                                            <option value="7">Extra Large</option>
-                                                        </select>
-
-                                                        <div class="blog-toolbar-divider"></div>
-
-                                                        <button type="button" class="blog-toolbar-btn" data-command="bold" title="Bold"><strong>B</strong></button>
-                                                        <button type="button" class="blog-toolbar-btn" data-command="italic" title="Italic"><em>I</em></button>
-                                                        <button type="button" class="blog-toolbar-btn" data-command="underline" title="Underline"><u>U</u></button>
-                                                        <button type="button" class="blog-toolbar-btn" data-command="strikeThrough" title="Strikethrough"><s>S</s></button>
-
-                                                        <div class="blog-toolbar-divider"></div>
-
-                                                        <button type="button" class="blog-toolbar-btn" data-command="justifyLeft" title="Align Left">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                                <path d="M3 3h18v2H3V3zm0 4h12v2H3V7zm0 4h18v2H3v-2zm0 4h12v2H3v-2zm0 4h18v2H3v-2z" />
-                                                            </svg>
-                                                        </button>
-                                                        <button type="button" class="blog-toolbar-btn" data-command="justifyCenter" title="Align Center">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                                <path d="M3 3h18v2H3V3zm3 4h12v2H6V7zm-3 4h18v2H3v-2zm3 4h12v2H6v-2zm-3 4h18v2H3v-2z" />
-                                                            </svg>
-                                                        </button>
-                                                        <button type="button" class="blog-toolbar-btn" data-command="justifyRight" title="Align Right">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                                <path d="M3 3h18v2H3V3zm6 4h12v2H9V7zm-6 4h18v2H3v-2zm6 4h12v2H9v-2zm-6 4h18v2H3v-2z" />
-                                                            </svg>
-                                                        </button>
-
-                                                        <div class="blog-toolbar-divider"></div>
-
-                                                        <button type="button" class="blog-toolbar-btn" data-command="insertUnorderedList" title="Bullet List">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                                <path d="M4 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm4-15h14v2H8V5zm0 8h14v2H8v-2zm0 8h14v2H8v-2z" />
-                                                            </svg>
-                                                        </button>
-                                                        <button type="button" class="blog-toolbar-btn" data-command="insertOrderedList" title="Numbered List">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                                <path d="M2 5h2v2H3v1h2v1H2V7.5h1v-1H2V5zm0 7h2.5v.5H3v1h1.5V14H2v-2zm0 6h2v.5H3v1h1v.5H2v-1.5h.5v-1H2V18zM8 5h14v2H8V5zm0 6h14v2H8v-2zm0 6h14v2H8v-2z" />
-                                                            </svg>
-                                                        </button>
-
-                                                        <div class="blog-toolbar-divider"></div>
-
-                                                        <button type="button" class="blog-toolbar-btn" id="blogLinkBtn2" title="Insert Link">
-                                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-                                                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-                                                            </svg>
-                                                        </button>
-
-                                                        <div class="blog-toolbar-divider"></div>
-
-                                                        <div class="blog-color-picker-wrap">
-                                                            <button type="button" class="blog-toolbar-btn blog-color-btn" title="Text Color">
-                                                                <span class="blog-color-icon">A</span>
-                                                                <span class="blog-color-bar" id="blogTextColorBar2"></span>
-                                                            </button>
-                                                            <input type="color" id="blogTextColor2" class="blog-color-input" value="#000000">
-                                                        </div>
-
-                                                        <div class="blog-color-picker-wrap">
-                                                            <button type="button" class="blog-toolbar-btn blog-color-btn" title="Background Color">
-                                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                                                    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z" />
-                                                                </svg>
-                                                                <span class="blog-color-bar" id="blogBgColorBar2"></span>
-                                                            </button>
-                                                            <input type="color" id="blogBgColor2" class="blog-color-input" value="#ffffff">
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- Content Editable Area -->
-                                                    <div id="blogContentEditor2" class="blog-content-editor"
-                                                        contenteditable="true" placeholder="Write your blog content here...">
-                                                    </div>
-                                                    <input type="hidden" name="blog_content2" id="blogContentHidden2">
-                                                </div>
-
-                                                <!-- Submit Button -->
-                                                <div class="blog-upload-actions">
-                                                    <button type="submit" name="update_blog15515" class="blog-submit-btn">
-                                                        <span class="blog-btn-text">Update Blog</span>
-                                                        <span class="blog-btn-loader"></span>
-                                                    </button>
-                                                </div>
-
-                                            </form>
-                                        </div>
-                                    </section>
-
-                                    <!-- Link Modal -->
-                                    <div class="blog-modal-overlay" id="blogLinkModal2">
-                                        <div class="blog-modal">
-                                            <div class="blog-modal-header">
-                                                <h3>Insert Link</h3>
-                                                <button type="button" class="blog-modal-close" id="blogModalClose2">&times;</button>
-                                            </div>
-                                            <div class="blog-modal-body">
-                                                <div class="blog-upload-group">
-                                                    <label class="blog-upload-label" for="blogLinkUrl2">URL</label>
-                                                    <input type="url" id="blogLinkUrl2" class="blog-upload-input" placeholder="https://example.com">
-                                                </div>
-                                                <div class="blog-upload-group">
-                                                    <label class="blog-upload-label" for="blogLinkText2">Link Text</label>
-                                                    <input type="text" id="blogLinkText2" class="blog-upload-input" placeholder="Click here">
-                                                </div>
-                                            </div>
-                                            <div class="blog-modal-footer">
-                                                <button type="button" class="blog-modal-btn blog-modal-cancel" id="blogLinkCancel2">Cancel</button>
-                                                <button type="button" class="blog-modal-btn blog-modal-confirm" id="blogLinkConfirm2">Insert</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-
-
-                                <!-- blog contect add end here -->
-
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <script>
-                        function edit_blog(slug) {
-                            let update_blog_form = document.getElementById("update_blog_form")
-                            let card_into = document.getElementById("vaweca")
-
-                            let value = slug;
-
-                            edit_blog_api(value)
-
-
-                            document.getElementById("adeac").classList.add("show_add_from")
-                            document.getElementById("btn_update_sadcarlod").classList.remove("show_add_from")
-                            card_into.classList.add("show_add_from")
-                            update_blog_form.classList.remove("show_add_from")
-
-                        }
-
-                        function cancel_update_blog() {
-                            // let update_blog_form = document.getElementById("update_blog_form")
-                            // let card_into = document.getElementById("vaweca")
-
-                            // let detalis_box = document.getElementById("blg-modal-bg")
-                            // let blog_img = document.getElementById("blg-modal-img");
-                            // let blog_title = document.getElementById("blg-modal__title");
-                            // let blg_meta_data = document.getElementById("blg-modal__meta");
-                            // let blg_content_long_desc = document.getElementById("blg-modal-content");
-
-                            // detalis_box.style.opacity = '0';
-                            // detalis_box.style.pointerEvents = 'none';
-
-                            // blog_img.src = `assets/blog/`;
-                            // blog_title.innerHTML = "";
-                            // blg_meta_data.innerHTML = "";
-                            // blg_content_long_desc.innerHTML = "";
-
-                            // document.getElementById("adeac").classList.remove("show_add_from")
-                            // document.getElementById("btn_update_sadcarlod").classList.add("show_add_from")
-                            // card_into.classList.remove("show_add_from")
-                            // update_blog_form.classList.add("show_add_from")
-                        }
-                    </script>
 
                 </section>
-
 
                 <!-- sublink box 1 -->
                 <section id="contect_1_contect_box" class="section_sub_with all_sejmca8974 auto_margin_notwa">
@@ -2005,7 +1628,9 @@ $root_category_options = get_category_info($mydb); // dropdown ke liye
                                         <th>ID</th>
                                         <th>Item Name</th>
                                         <th>Category</th>
-                                        <th>Price</th>
+                                        <th>Status</th>
+                                        <th>Add Date</th>
+                                        <th>Update Date</th>
                                         <th style="text-align: center;">Actions</th>
                                     </tr>
                                 </thead>
@@ -2032,6 +1657,20 @@ $root_category_options = get_category_info($mydb); // dropdown ke liye
 
                                                 <td>
                                                     <?php echo htmlspecialchars($category['root_status']); ?>
+                                                </td>
+                                                <td>
+                                                    <?php //echo htmlspecialchars($brand['created_at']); 
+                                                    ?>
+                                                    <?php echo timeAgo((int)$category['created_at']); ?>
+                                                </td>
+                                                <td>
+                                                    <?php if (empty($category['updated_at'])): ?>
+                                                        <span style="color: green; font-weight: 100;">
+                                                            Not Update Yet
+                                                        </span>
+                                                    <?php else: ?>
+                                                        <?php echo timeAgo((int)$category['updated_at']); ?>
+                                                    <?php endif; ?>
                                                 </td>
 
                                                 <td style="text-align: center;">
@@ -2459,6 +2098,11 @@ $root_category_options = get_category_info($mydb); // dropdown ke liye
                 </section>
 
                 <!-- sublink box 2 -->
+
+                <form action="" method="POST" id="delete_brand_form" style="display:none;">
+                    <input type="hidden" name="delete_brand_id" id="delete_brand_id_input" value="">
+                    <input type="hidden" name="delete_single_brand" value="1">
+                </form>
                 <section id="contect_2_contect_box" class="section_sub_with all_sejmca8974 auto_margin_notwa ">
 
                     <?php if ($brand_success_msg): ?>
@@ -2541,7 +2185,8 @@ $root_category_options = get_category_info($mydb); // dropdown ke liye
                                                 </td>
 
                                                 <td>
-                                                    <?php //echo htmlspecialchars($brand['created_at']); ?>
+                                                    <?php //echo htmlspecialchars($brand['created_at']); 
+                                                    ?>
                                                     <?php echo timeAgo((int)$brand['created_at']); ?>
                                                 </td>
                                                 <td>
@@ -2945,6 +2590,12 @@ $root_category_options = get_category_info($mydb); // dropdown ke liye
                     </div>
 
                     <script>
+                        function doubleCheckDeleteBrand(id) {
+                            if (confirm("Brand #" + id + " delete karna hai? Ye action wapas nahi ho sakta.")) {
+                                document.getElementById('delete_brand_id_input').value = id;
+                                document.getElementById('delete_brand_form').submit();
+                            }
+                        }
                         var brandDataList = <?php echo json_encode($brand_info); ?>;
 
                         function show_add_brandform() {
@@ -3162,239 +2813,1004 @@ $root_category_options = get_category_info($mydb); // dropdown ke liye
                 </section>
 
                 <!-- sublink box 3 -->
-                <!-- sublink box 3 -->
-
-                <?php include 'admin_access/functions/products.php' ?>
-                <?php
-
-                $product_info = get_product_info($mydb);
-
-                ?>
                 <section id="contect_3_contect_box" class="section_sub_with all_sejmca8974 auto_margin_notwa ">
 
-                    <div class="custom-table-container" id="show_product_table">
+                    <?php if ($product_success_msg): ?>
+                        <div class="kd-root-alert kd-root-alert-success" style="color: green;text-align:center;">
+                            <?php echo htmlspecialchars($product_success_msg); ?>
+                        </div>
+                    <?php endif; ?>
 
-                        <span class="sdao97452">
+                    <?php if ($product_error_msg): ?>
+                        <div class="kd-root-alert kd-root-alert-error" style="color: red;text-align:center;>
+                            <?php echo htmlspecialchars($product_error_msg); ?>
+                        </div>
+                    <?php endif; ?>
 
-                            <h2 class="table-title" style="margin:auto 5px;">Product Management</h2>
+                    <div class=" custom-table-container" id="show_product_table">
 
-                            <div style="display:flex; gap:10px; align-items:center;">
+                            <span class="sdao97452">
 
-                                <!-- Ye button sirf tabhi active hoga jab kam se kam 1 checkbox select ho -->
-                                <button
-                                    class="ihdw9641"
-                                    id="delete_selected_btn"
-                                    onclick="deleteSelectedProducts()"
-                                    disabled
-                                    style="background:#dc2626; opacity:0.5; cursor:not-allowed;">
-                                    Delete Selected (<span id="selected_count">0</span>)
-                                </button>
+                                <h2 class="table-title" style="margin:auto 5px;">Product Management</h2>
 
-                                <button class="ihdw9641" id="add_product_btn" onclick="show_add_productform()">
-                                    Add new
-                                </button>
+                                <div style="display:flex; gap:10px; align-items:center;">
 
-                            </div>
-                        </span>
+                                    <!-- Ye button sirf tabhi active hoga jab kam se kam 1 checkbox select ho -->
+                                    <button
+                                        class="ihdw9641"
+                                        id="delete_selected_btn"
+                                        onclick="deleteSelectedProducts()"
+                                        disabled
+                                        style="background:#dc2626; opacity:0.5; cursor:not-allowed;">
+                                        Delete Selected (<span id="selected_count">0</span>)
+                                    </button>
 
-                        <div class="custom-table-wrapper">
+                                    <button class="ihdw9641" id="add_product_btn" onclick="show_add_productform()">
+                                        Add new
+                                    </button>
 
-                            <table class="custom-table">
+                                </div>
+                            </span>
 
-                                <thead>
-                                    <tr>
-                                        <th style="width:36px;">
-                                            <input type="checkbox" id="select_all_products" onclick="toggleAllProducts(this)">
-                                        </th>
-                                        <th>Image</th>
-                                        <th>ID</th>
-                                        <th>Product Name</th>
-                                        <th>SKU</th>
-                                        <th>Category</th>
-                                        <th>Brand</th>
-                                        <th>Price</th>
-                                        <th>Status</th>
-                                        <th style="text-align: center;">Actions</th>
-                                    </tr>
-                                </thead>
+                            <div class="custom-table-wrapper">
 
-                                <tbody id="productTableBody">
+                                <table class="custom-table">
 
-                                    <?php if (!empty($product_info)) { ?>
+                                    <thead>
+                                        <tr>
+                                            <th style="width:36px;">
+                                                <input type="checkbox" id="select_all_products" onclick="toggleAllProducts(this)">
+                                            </th>
+                                            <th>Image</th>
+                                            <th>ID</th>
+                                            <th>Product Name</th>
+                                            <th>Category</th>
+                                            <th>Brand</th>
+                                            <th>Price</th>
+                                            <th>Status</th>
+                                            <th>Add Product</th>
+                                            <th>Last Update</th>
+                                            <th style="text-align: center;">Actions</th>
+                                        </tr>
+                                    </thead>
 
-                                        <?php foreach ($product_info as $product) { ?>
+                                    <tbody id="productTableBody">
+
+                                        <?php if (!empty($product_info)) { ?>
+
+                                            <?php foreach ($product_info as $product) { ?>
+
+                                                <tr>
+
+                                                    <td>
+                                                        <input
+                                                            type="checkbox"
+                                                            class="product-select-checkbox"
+                                                            value="<?php echo (int)$product['product_id']; ?>"
+                                                            onclick="updateSelectedCount()">
+                                                    </td>
+
+                                                    <td>
+                                                        <?php if (!empty($product['product_image'])) { ?>
+                                                            <img src="<?php echo htmlspecialchars($product['product_image']); ?>"
+                                                                alt="<?php echo htmlspecialchars($product['product_name']); ?>"
+                                                                style="width:45px; height:45px; object-fit:cover; border-radius:6px; border:1px solid #ddd;">
+                                                        <?php } else { ?>
+                                                            -
+                                                        <?php } ?>
+                                                    </td>
+
+                                                    <td style="font-weight: 600; color: #111827;">
+                                                        #<?php echo $product['product_id']; ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?php echo htmlspecialchars($product['product_name']); ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?php echo htmlspecialchars($product['root_name'] ?? '-'); ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?php echo htmlspecialchars($product['brand_name'] ?? '-'); ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?php if (!empty($product['sale_price']) && $product['sale_price'] != $product['original_price']) { ?>
+                                                            <span style="text-decoration:line-through; color:#999;">₹<?php echo htmlspecialchars($product['original_price']); ?></span>
+                                                            <span style="color:#111827; font-weight:600;"> ₹<?php echo htmlspecialchars($product['sale_price']); ?></span>
+                                                        <?php } else { ?>
+                                                            ₹<?php echo htmlspecialchars($product['original_price']); ?>
+                                                        <?php } ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?php echo htmlspecialchars($product['product_status']); ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php echo timeAgo((int)$product['created_at']); ?>
+                                                    </td>
+
+                                                    <td>
+                                                        <?php if (empty($brand['updated_at'])): ?>
+                                                            <span style="color: green; font-weight: 100;">
+                                                                Not Update Yet
+                                                            </span>
+                                                        <?php else: ?>
+                                                            <?php echo timeAgo((int)$brand['updated_at']); ?>
+                                                        <?php endif; ?>
+                                                    </td>
+
+                                                    <td style="text-align: center;">
+
+                                                        <button
+                                                            type="button"
+                                                            class="btn-update"
+                                                            onclick="updateProductItem(<?php echo (int)$product['product_id']; ?>)">
+                                                            Update
+                                                        </button>
+
+                                                        <button
+                                                            type="button"
+                                                            class="btn-delete"
+                                                            onclick="doubleCheckDeleteProduct(<?php echo (int)$product['product_id']; ?>)">
+                                                            Delete
+                                                        </button>
+
+                                                    </td>
+
+                                                </tr>
+
+                                            <?php } ?>
+
+                                        <?php } else { ?>
 
                                             <tr>
-
-                                                <td>
-                                                    <input
-                                                        type="checkbox"
-                                                        class="product-select-checkbox"
-                                                        value="<?php echo (int)$product['product_id']; ?>"
-                                                        onclick="updateSelectedCount()">
+                                                <td colspan="10" style="text-align: center;">
+                                                    No products found
                                                 </td>
-
-                                                <td>
-                                                    <?php if (!empty($product['product_img_1'])) { ?>
-                                                        <img src="<?php echo htmlspecialchars($product['product_img_1']); ?>"
-                                                            alt="<?php echo htmlspecialchars($product['product_img_1_alt'] ?? $product['product_name']); ?>"
-                                                            style="width:45px; height:45px; object-fit:cover; border-radius:6px; border:1px solid #ddd;">
-                                                    <?php } else { ?>
-                                                        -
-                                                    <?php } ?>
-                                                </td>
-
-                                                <td style="font-weight: 600; color: #111827;">
-                                                    #<?php echo $product['product_id']; ?>
-                                                </td>
-
-                                                <td>
-                                                    <?php echo htmlspecialchars($product['product_name']); ?>
-                                                </td>
-
-                                                <td>
-                                                    <?php echo htmlspecialchars($product['product_sku']); ?>
-                                                </td>
-
-                                                <td>
-                                                    <?php echo htmlspecialchars($product['root_name'] ?? '-'); ?>
-                                                </td>
-
-                                                <td>
-                                                    <?php echo htmlspecialchars($product['brand_name'] ?? '-'); ?>
-                                                </td>
-
-                                                <td>
-                                                    <?php if (!empty($product['sale_price']) && $product['sale_price'] != $product['original_price']) { ?>
-                                                        <span style="text-decoration:line-through; color:#999;">₹<?php echo htmlspecialchars($product['original_price']); ?></span>
-                                                        <span style="color:#111827; font-weight:600;"> ₹<?php echo htmlspecialchars($product['sale_price']); ?></span>
-                                                    <?php } else { ?>
-                                                        ₹<?php echo htmlspecialchars($product['original_price']); ?>
-                                                    <?php } ?>
-                                                </td>
-
-                                                <td>
-                                                    <?php echo htmlspecialchars($product['product_status']); ?>
-                                                </td>
-
-                                                <td style="text-align: center;">
-
-                                                    <button
-                                                        type="button"
-                                                        class="btn-update"
-                                                        onclick="updateProductItem(<?php echo (int)$product['product_id']; ?>)">
-                                                        Update
-                                                    </button>
-
-                                                    <button
-                                                        type="button"
-                                                        class="btn-delete"
-                                                        onclick="doubleCheckDeleteProduct(<?php echo (int)$product['product_id']; ?>)">
-                                                        Delete
-                                                    </button>
-
-                                                </td>
-
                                             </tr>
 
                                         <?php } ?>
 
-                                    <?php } else { ?>
+                                    </tbody>
 
-                                        <tr>
-                                            <td colspan="10" style="text-align: center;">
-                                                No products found
-                                            </td>
-                                        </tr>
-
-                                    <?php } ?>
-
-                                </tbody>
-
-                            </table>
+                                </table>
+                            </div>
                         </div>
-                    </div>
 
-                    <script>
-                        // ===========================================================
-                        // MULTI-SELECT CHECKBOX LOGIC (design/UI abhi ready hai)
-                        // Delete backend query baad me add hogi
-                        // ===========================================================
+                        <!-- =====================================================
+                         ADD PRODUCT FORM (fresh)
+                    ====================================================== -->
+                        <div class="kd-root-add-wrapper hidden_class" id="add_product_form">
 
-                        function toggleAllProducts(sourceCheckbox) {
+                            <div class="kd-root-add-header">
+                                <div>
+                                    <h4>Add Product Form</h4>
+                                </div>
+                            </div>
 
-                            var checkboxes = document.querySelectorAll('.product-select-checkbox');
+                            <form action="" method="POST" class="kd-root-add-form" enctype="multipart/form-data">
 
-                            checkboxes.forEach(function(cb) {
-                                cb.checked = sourceCheckbox.checked;
-                            });
+                                <div class="kd-root-add-grid">
 
-                            updateSelectedCount();
-                        }
+                                    <!-- Root Category -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-root-id">Root Category <span>*</span></label>
+                                        <select id="kd-product-root-id" name="root_id" required>
+                                            <option value="">Select Category</option>
+                                            <?php foreach ($root_category_options as $root_cat) { ?>
+                                                <option value="<?php echo (int)$root_cat['root_id']; ?>">
+                                                    <?php echo htmlspecialchars($root_cat['root_name']); ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
 
-                        function updateSelectedCount() {
+                                    <!-- Brand -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-brand-id">Brand <span>*</span></label>
+                                        <select id="kd-product-brand-id" name="brand_id" required>
+                                            <option value="">Select Brand</option>
+                                            <?php foreach ($brand_options as $brand_opt) { ?>
+                                                <option value="<?php echo (int)$brand_opt['brand_id']; ?>">
+                                                    <?php echo htmlspecialchars($brand_opt['brand_name']); ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
 
-                            var checkboxes = document.querySelectorAll('.product-select-checkbox');
-                            var checkedBoxes = document.querySelectorAll('.product-select-checkbox:checked');
-                            var deleteBtn = document.getElementById('delete_selected_btn');
-                            var countLabel = document.getElementById('selected_count');
-                            var selectAllBox = document.getElementById('select_all_products');
+                                    <!-- Product Name -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-name">Product Name <span>*</span></label>
+                                        <input type="text" id="kd-product-name" name="product_name"
+                                            placeholder="Enter product name"
+                                            oninput="autoFillFromProductName(this.value)" required>
+                                    </div>
 
-                            countLabel.textContent = checkedBoxes.length;
+                                    <!-- Product Slug -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-slug">Product Slug <span>*</span></label>
+                                        <input type="text" id="kd-product-slug" name="product_slug"
+                                            placeholder="example-product"
+                                            pattern="[a-z0-9-]+"
+                                            oninput="markProductSlugAsManual()" required>
+                                    </div>
 
-                            if (checkedBoxes.length > 0) {
-                                deleteBtn.disabled = false;
-                                deleteBtn.style.opacity = '1';
-                                deleteBtn.style.cursor = 'pointer';
-                            } else {
-                                deleteBtn.disabled = true;
-                                deleteBtn.style.opacity = '0.5';
-                                deleteBtn.style.cursor = 'not-allowed';
+                                    <!-- SKU -->
+                                    <div class="kd-root-field" style="display: none;">
+                                        <label for="kd-product-sku">Product SKU <span>*</span></label>
+                                        <input type="text" id="kd-product-sku" name="product_sku"
+                                            placeholder="e.g. PSG2740">
+                                    </div>
+
+                                    <!-- Status -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-status">Status <span>*</span></label>
+                                        <select id="kd-product-status" name="product_status" required>
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Original Price -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-original-price">Original Price <span>*</span></label>
+                                        <input type="number" step="0.01" id="kd-product-original-price"
+                                            name="original_price" placeholder="0.00" required>
+                                    </div>
+
+                                    <!-- Sale Price -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-sale-price">Sale Price</label>
+                                        <input type="number" step="0.01" id="kd-product-sale-price"
+                                            name="sale_price" placeholder="0.00">
+                                    </div>
+
+                                    <!-- Discount Visibility -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-discount-visibility">Discount Visibility</label>
+                                        <select id="kd-product-discount-visibility" name="discount_visibility">
+                                            <option value="Hide">Hide</option>
+                                            <option value="Show">Show</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Main Product Image -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-image">Main Product Image</label>
+                                        <input type="file" id="kd-product-image" name="product_image"
+                                            accept="image/*"
+                                            onchange="previewSelectedFile(this, 'preview-product-image', 'image')">
+
+                                        <div id="preview-product-image" style="margin-top:8px;"></div>
+
+                                        <button type="button" class="kd-root-reset-btn"
+                                            style="margin-top:6px; padding:4px 10px; font-size:12px;"
+                                            onclick="removeSelectedFile('kd-product-image', 'preview-product-image')">
+                                            Remove
+                                        </button>
+                                    </div>
+
+                                    <!-- Product Description -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-product-description">Product Description</label>
+                                        <textarea id="kd-product-description" name="product_description" rows="5"
+                                            placeholder="Enter product description"
+                                            oninput="autoFillProductMetaDescription(this.value)"></textarea>
+                                    </div>
+
+                                    <!-- Other Info Description -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-product-other-info-desc">Other Info Description</label>
+                                        <textarea id="kd-product-other-info-desc" name="product_other_info_desc" rows="4"
+                                            placeholder="Specifications, warranty info, etc."></textarea>
+                                    </div>
+
+                                    <!-- Meta Title -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-product-meta-title">Meta Title</label>
+                                        <input type="text" id="kd-product-meta-title" name="meta_title"
+                                            maxlength="60" oninput="markProductMetaTitleAsManual()">
+                                    </div>
+
+                                    <!-- Meta Description -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-product-meta-description">Meta Description</label>
+                                        <textarea id="kd-product-meta-description" name="meta_description" rows="3"
+                                            maxlength="160" oninput="markProductMetaDescAsManual()"></textarea>
+                                    </div>
+
+                                    <!-- Meta Keywords -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-product-meta-keywords">Meta Keywords</label>
+                                        <textarea id="kd-product-meta-keywords" name="meta_keywords" rows="2"
+                                            placeholder="keyword 1, keyword 2"></textarea>
+                                    </div>
+
+                                    <!-- Canonical URL -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-product-canonical-url">Canonical URL</label>
+                                        <input type="text" id="kd-product-canonical-url" name="canonical_url"
+                                            placeholder="https://yoursite.com/products/example-product">
+                                    </div>
+
+                                    <!-- OG Title -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-og-title">OG Title</label>
+                                        <input type="text" id="kd-product-og-title" name="og_title" maxlength="60">
+                                    </div>
+
+                                    <!-- OG Description -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-product-og-description">OG Description</label>
+                                        <textarea id="kd-product-og-description" name="og_description" rows="3" maxlength="160"></textarea>
+                                    </div>
+
+                                    <!-- Gallery Images (1 to 10) -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label>Gallery Images (upto 10)</label>
+
+                                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-top:8px;">
+
+                                            <?php for ($i = 1; $i <= 10; $i++) { ?>
+                                                <div style="border:1px solid #eee; border-radius:6px; padding:10px;">
+                                                    <label style="font-size:13px; font-weight:600;">Image <?php echo $i; ?></label>
+
+                                                    <input type="file" id="kd-product-img-<?php echo $i; ?>"
+                                                        name="product_img_<?php echo $i; ?>" accept="image/*"
+                                                        style="width:100%; margin-top:4px;"
+                                                        onchange="previewSelectedFile(this, 'preview-gallery-<?php echo $i; ?>', 'image')">
+
+                                                    <div id="preview-gallery-<?php echo $i; ?>" style="margin-top:6px;"></div>
+
+                                                    <input type="text" name="product_img_<?php echo $i; ?>_alt"
+                                                        placeholder="Alt text" style="width:100%; margin-top:6px;">
+
+                                                    <button type="button" class="kd-root-reset-btn"
+                                                        style="margin-top:6px; padding:3px 8px; font-size:11px;"
+                                                        onclick="removeSelectedFile('kd-product-img-<?php echo $i; ?>', 'preview-gallery-<?php echo $i; ?>')">
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            <?php } ?>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Brochure -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-brochure">Brochure (PDF)</label>
+                                        <input type="file" id="kd-product-brochure" name="product_brochure" accept="application/pdf"
+                                            onchange="previewSelectedFile(this, 'preview-brochure', 'file')">
+
+                                        <div id="preview-brochure" style="margin-top:8px;"></div>
+
+                                        <button type="button" class="kd-root-reset-btn"
+                                            style="margin-top:6px; padding:4px 10px; font-size:12px;"
+                                            onclick="removeSelectedFile('kd-product-brochure', 'preview-brochure')">
+                                            Remove
+                                        </button>
+                                    </div>
+
+                                    <!-- Video Upload (file, with preview + remove) -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-product-video-1">Product Video</label>
+                                        <input type="file" id="kd-product-video-1" name="product_video_1" accept="video/*"
+                                            onchange="previewSelectedFile(this, 'preview-video', 'video')">
+
+                                        <div id="preview-video" style="margin-top:8px;"></div>
+
+                                        <button type="button" class="kd-root-reset-btn"
+                                            style="margin-top:6px; padding:4px 10px; font-size:12px;"
+                                            onclick="removeSelectedFile('kd-product-video-1', 'preview-video')">
+                                            Remove
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                <div class="kd-root-form-actions">
+
+                                    <button type="button" onclick="show_add_productform()" class="kd-root-reset-btn">Cancel</button>
+                                    <button type="button" onclick="resetProductForm()" class="kd-root-reset-btn">Reset</button>
+
+                                    <button type="submit" name="add_product" class="kd-root-submit-btn">
+                                        <i class="fa-solid fa-plus"></i>
+                                        Add Product
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                        <!-- =====================================================
+                         UPDATE PRODUCT FORM (fresh)
+                    ====================================================== -->
+                        <div class="kd-root-add-wrapper hidden_class" id="update_product_form">
+
+                            <div class="kd-root-add-header">
+                                <div>
+                                    <h2 class="kd-root-add-title">Update Product</h2>
+                                    <p class="kd-root-add-subtitle">Update product details, images & video</p>
+                                </div>
+                            </div>
+
+                            <form action="" method="POST" class="kd-root-add-form" enctype="multipart/form-data">
+
+                                <input type="hidden" id="kd-update-product-id" name="product_id" value="">
+                                <input type="hidden" id="kd-update-existing-main-image" name="existing_main_image" value="">
+                                <input type="hidden" id="kd-update-existing-brochure" name="existing_brochure" value="">
+                                <input type="hidden" id="kd-update-existing-video-1" name="existing_video_1" value="">
+                                <?php for ($i = 1; $i <= 10; $i++) { ?>
+                                    <input type="hidden" id="kd-update-existing-img-<?php echo $i; ?>" name="existing_img_<?php echo $i; ?>" value="">
+                                <?php } ?>
+
+                                <div class="kd-root-add-grid">
+
+                                    <!-- Root Category -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-root-id">Root Category <span>*</span></label>
+                                        <select id="kd-update-product-root-id" name="root_id" required>
+                                            <option value="">Select Category</option>
+                                            <?php foreach ($root_category_options as $root_cat) { ?>
+                                                <option value="<?php echo (int)$root_cat['root_id']; ?>">
+                                                    <?php echo htmlspecialchars($root_cat['root_name']); ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+
+                                    <!-- Brand -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-brand-id">Brand <span>*</span></label>
+                                        <select id="kd-update-product-brand-id" name="brand_id" required>
+                                            <option value="">Select Brand</option>
+                                            <?php foreach ($brand_options as $brand_opt) { ?>
+                                                <option value="<?php echo (int)$brand_opt['brand_id']; ?>">
+                                                    <?php echo htmlspecialchars($brand_opt['brand_name']); ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+
+                                    <!-- Product Name -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-name">Product Name <span>*</span></label>
+                                        <input type="text" id="kd-update-product-name" name="product_name"
+                                            placeholder="Enter product name"
+                                            oninput="autoFillFromProductNameUpdate(this.value)" required>
+                                    </div>
+
+                                    <!-- Product Slug -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-slug">Product Slug <span>*</span></label>
+                                        <input type="text" id="kd-update-product-slug" name="product_slug"
+                                            placeholder="example-product"
+                                            pattern="[a-z0-9-]+"
+                                            oninput="markProductSlugAsManualUpdate()" required>
+                                    </div>
+
+                                    <!-- SKU -->
+                                    <div class="kd-root-field" style="display: none;">
+                                        <label for="kd-update-product-sku">Product SKU</label>
+                                        <input type="text" id="kd-update-product-sku" name="product_sku"
+                                            placeholder="e.g. PSG2740">
+                                    </div>
+
+                                    <!-- Status -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-status">Status <span>*</span></label>
+                                        <select id="kd-update-product-status" name="product_status" required>
+                                            <option value="Active">Active</option>
+                                            <option value="Inactive">Inactive</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Original Price -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-original-price">Original Price <span>*</span></label>
+                                        <input type="number" step="0.01" id="kd-update-product-original-price"
+                                            name="original_price" placeholder="0.00" required>
+                                    </div>
+
+                                    <!-- Sale Price -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-sale-price">Sale Price</label>
+                                        <input type="number" step="0.01" id="kd-update-product-sale-price"
+                                            name="sale_price" placeholder="0.00">
+                                    </div>
+
+                                    <!-- Discount Visibility -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-discount-visibility">Discount Visibility</label>
+                                        <select id="kd-update-product-discount-visibility" name="discount_visibility">
+                                            <option value="Hide">Hide</option>
+                                            <option value="Show">Show</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Main Product Image -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-image">Main Product Image</label>
+                                        <input type="file" id="kd-update-product-image" name="product_image"
+                                            accept="image/*"
+                                            onchange="previewSelectedFile(this, 'update-preview-product-image', 'image')">
+
+                                        <div id="update-preview-product-image" style="margin-top:8px;"></div>
+
+                                        <button type="button" class="kd-root-reset-btn"
+                                            style="margin-top:6px; padding:4px 10px; font-size:12px;"
+                                            onclick="removeSelectedFileUpdate('kd-update-product-image', 'update-preview-product-image', 'kd-update-existing-main-image')">
+                                            Remove
+                                        </button>
+                                    </div>
+
+                                    <!-- Product Description -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-update-product-description">Product Description</label>
+                                        <textarea id="kd-update-product-description" name="product_description" rows="5"
+                                            placeholder="Enter product description"
+                                            oninput="autoFillProductMetaDescriptionUpdate(this.value)"></textarea>
+                                    </div>
+
+                                    <!-- Other Info Description -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-update-product-other-info-desc">Other Info Description</label>
+                                        <textarea id="kd-update-product-other-info-desc" name="product_other_info_desc" rows="4"
+                                            placeholder="Specifications, warranty info, etc."></textarea>
+                                    </div>
+
+                                    <!-- Meta Title -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-update-product-meta-title">Meta Title</label>
+                                        <input type="text" id="kd-update-product-meta-title" name="meta_title"
+                                            maxlength="60" oninput="markProductMetaTitleAsManualUpdate()">
+                                    </div>
+
+                                    <!-- Meta Description -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-update-product-meta-description">Meta Description</label>
+                                        <textarea id="kd-update-product-meta-description" name="meta_description" rows="3"
+                                            maxlength="160" oninput="markProductMetaDescAsManualUpdate()"></textarea>
+                                    </div>
+
+                                    <!-- Meta Keywords -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-update-product-meta-keywords">Meta Keywords</label>
+                                        <textarea id="kd-update-product-meta-keywords" name="meta_keywords" rows="2"
+                                            placeholder="keyword 1, keyword 2"></textarea>
+                                    </div>
+
+                                    <!-- Canonical URL -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-update-product-canonical-url">Canonical URL</label>
+                                        <input type="text" id="kd-update-product-canonical-url" name="canonical_url"
+                                            placeholder="https://yoursite.com/products/example-product">
+                                    </div>
+
+                                    <!-- OG Title -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-og-title">OG Title</label>
+                                        <input type="text" id="kd-update-product-og-title" name="og_title" maxlength="60">
+                                    </div>
+
+                                    <!-- OG Description -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label for="kd-update-product-og-description">OG Description</label>
+                                        <textarea id="kd-update-product-og-description" name="og_description" rows="3" maxlength="160"></textarea>
+                                    </div>
+
+                                    <!-- Gallery Images (1 to 10) -->
+                                    <div class="kd-root-field kd-root-full">
+                                        <label>Gallery Images (upto 10)</label>
+
+                                        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:12px; margin-top:8px;">
+
+                                            <?php for ($i = 1; $i <= 10; $i++) { ?>
+                                                <div style="border:1px solid #eee; border-radius:6px; padding:10px;">
+                                                    <label style="font-size:13px; font-weight:600;">Image <?php echo $i; ?></label>
+
+                                                    <input type="file" id="kd-update-product-img-<?php echo $i; ?>"
+                                                        name="product_img_<?php echo $i; ?>" accept="image/*"
+                                                        style="width:100%; margin-top:4px;"
+                                                        onchange="previewSelectedFile(this, 'update-preview-gallery-<?php echo $i; ?>', 'image')">
+
+                                                    <div id="update-preview-gallery-<?php echo $i; ?>" style="margin-top:6px;"></div>
+
+                                                    <input type="text" id="kd-update-product-img-<?php echo $i; ?>-alt"
+                                                        name="product_img_<?php echo $i; ?>_alt"
+                                                        placeholder="Alt text" style="width:100%; margin-top:6px;">
+
+                                                    <button type="button" class="kd-root-reset-btn"
+                                                        style="margin-top:6px; padding:3px 8px; font-size:11px;"
+                                                        onclick="removeSelectedFileUpdate('kd-update-product-img-<?php echo $i; ?>', 'update-preview-gallery-<?php echo $i; ?>', 'kd-update-existing-img-<?php echo $i; ?>')">
+                                                        Remove
+                                                    </button>
+                                                </div>
+                                            <?php } ?>
+
+                                        </div>
+                                    </div>
+
+                                    <!-- Brochure -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-brochure">Brochure (PDF)</label>
+                                        <input type="file" id="kd-update-product-brochure" name="product_brochure" accept="application/pdf"
+                                            onchange="previewSelectedFile(this, 'update-preview-brochure', 'file')">
+
+                                        <div id="update-preview-brochure" style="margin-top:8px;"></div>
+
+                                        <button type="button" class="kd-root-reset-btn"
+                                            style="margin-top:6px; padding:4px 10px; font-size:12px;"
+                                            onclick="removeSelectedFileUpdate('kd-update-product-brochure', 'update-preview-brochure', 'kd-update-existing-brochure')">
+                                            Remove
+                                        </button>
+                                    </div>
+
+                                    <!-- Video Upload -->
+                                    <div class="kd-root-field">
+                                        <label for="kd-update-product-video-1">Product Video</label>
+                                        <input type="file" id="kd-update-product-video-1" name="product_video_1" accept="video/*"
+                                            onchange="previewSelectedFile(this, 'update-preview-video', 'video')">
+
+                                        <div id="update-preview-video" style="margin-top:8px;"></div>
+
+                                        <button type="button" class="kd-root-reset-btn"
+                                            style="margin-top:6px; padding:4px 10px; font-size:12px;"
+                                            onclick="removeSelectedFileUpdate('kd-update-product-video-1', 'update-preview-video', 'kd-update-existing-video-1')">
+                                            Remove
+                                        </button>
+                                    </div>
+
+                                </div>
+
+                                <div class="kd-root-form-actions">
+
+                                    <button type="button" onclick="cancelUpdateProduct()" class="kd-root-reset-btn">Cancel</button>
+
+                                    <button type="submit" name="update_product" class="kd-root-submit-btn">
+                                        <i class="fa-solid fa-pen"></i>
+                                        Update Product
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                        <script>
+                            var productDataList = <?php echo json_encode($product_info); ?>;
+
+                            // ===========================================================
+                            // MULTI-SELECT CHECKBOX LOGIC (design/UI abhi ready hai)
+                            // Delete backend query baad me add hogi
+                            // ===========================================================
+
+                            function toggleAllProducts(sourceCheckbox) {
+
+                                var checkboxes = document.querySelectorAll('.product-select-checkbox');
+
+                                checkboxes.forEach(function(cb) {
+                                    cb.checked = sourceCheckbox.checked;
+                                });
+
+                                updateSelectedCount();
                             }
 
-                            // Select-all checkbox ko sync rakho
-                            selectAllBox.checked = (checkedBoxes.length === checkboxes.length && checkboxes.length > 0);
-                        }
+                            function updateSelectedCount() {
 
-                        function deleteSelectedProducts() {
+                                var checkboxes = document.querySelectorAll('.product-select-checkbox');
+                                var checkedBoxes = document.querySelectorAll('.product-select-checkbox:checked');
+                                var deleteBtn = document.getElementById('delete_selected_btn');
+                                var countLabel = document.getElementById('selected_count');
+                                var selectAllBox = document.getElementById('select_all_products');
 
-                            var checkedBoxes = document.querySelectorAll('.product-select-checkbox:checked');
+                                countLabel.textContent = checkedBoxes.length;
 
-                            if (checkedBoxes.length === 0) {
-                                return;
+                                if (checkedBoxes.length > 0) {
+                                    deleteBtn.disabled = false;
+                                    deleteBtn.style.opacity = '1';
+                                    deleteBtn.style.cursor = 'pointer';
+                                } else {
+                                    deleteBtn.disabled = true;
+                                    deleteBtn.style.opacity = '0.5';
+                                    deleteBtn.style.cursor = 'not-allowed';
+                                }
+
+                                // Select-all checkbox ko sync rakho
+                                selectAllBox.checked = (checkedBoxes.length === checkboxes.length && checkboxes.length > 0);
                             }
 
-                            var selectedIds = Array.from(checkedBoxes).map(function(cb) {
-                                return cb.value;
-                            });
+                            function deleteSelectedProducts() {
 
-                            if (!confirm(selectedIds.length + " product(s) delete karne hain?")) {
-                                return;
+                                var checkedBoxes = document.querySelectorAll('.product-select-checkbox:checked');
+
+                                if (checkedBoxes.length === 0) {
+                                    return;
+                                }
+
+                                var selectedIds = Array.from(checkedBoxes).map(function(cb) {
+                                    return cb.value;
+                                });
+
+                                if (!confirm(selectedIds.length + " product(s) delete karne hain? Ye action wapas nahi ho sakta.")) {
+                                    return;
+                                }
+
+                                document.getElementById('selected_product_ids_input').value = selectedIds.join(',');
+                                document.getElementById('bulk_delete_product_form').submit();
                             }
 
-                            // TODO: Yahan backend delete-multiple query call hogi
-                            // (baad me add karenge - abhi sirf design/UI ready hai)
-                            console.log("Selected Product IDs to delete:", selectedIds);
-                            alert("Delete backend abhi add nahi hua - IDs console me dekh lo: " + selectedIds.join(", "));
-                        }
-
-                        function doubleCheckDeleteProduct(id) {
-                            if (confirm("Product #" + id + " delete karna hai?")) {
-                                // TODO: single product delete backend baad me
-                                console.log("Delete single product:", id);
+                            function doubleCheckDeleteProduct(id) {
+                                if (confirm("Product #" + id + " delete karna hai? Ye action wapas nahi ho sakta.")) {
+                                    document.getElementById('delete_product_id_input').value = id;
+                                    document.getElementById('delete_product_form').submit();
+                                }
                             }
-                        }
 
-                        function updateProductItem(id) {
-                            // TODO: Update form baad me category/brand jaisa hi banega
-                            console.log("Update product:", id);
-                        }
+                            function updateProductItem(id) {
 
-                        function show_add_productform() {
-                            // TODO: Add product form baad me banega
-                            console.log("Show add product form");
-                        }
-                    </script>
+                                var product = productDataList.find(function(item) {
+                                    return parseInt(item.product_id) === parseInt(id);
+                                });
+
+                                if (!product) {
+                                    return;
+                                }
+
+                                document.getElementById('kd-update-product-id').value = product.product_id || '';
+                                document.getElementById('kd-update-product-root-id').value = product.root_id || '';
+                                document.getElementById('kd-update-product-brand-id').value = product.brand_id || '';
+                                document.getElementById('kd-update-product-name').value = product.product_name || '';
+                                document.getElementById('kd-update-product-slug').value = product.product_slug || '';
+                                document.getElementById('kd-update-product-sku').value = product.product_sku || '';
+                                document.getElementById('kd-update-product-status').value = product.product_status || 'Active';
+                                document.getElementById('kd-update-product-original-price').value = product.original_price || '';
+                                document.getElementById('kd-update-product-sale-price').value = product.sale_price || '';
+                                document.getElementById('kd-update-product-discount-visibility').value = product.discount_visibility || 'Hide';
+                                document.getElementById('kd-update-product-description').value = product.product_description || '';
+                                document.getElementById('kd-update-product-other-info-desc').value = product.product_other_info_desc || '';
+                                document.getElementById('kd-update-product-meta-title').value = product.meta_title || '';
+                                document.getElementById('kd-update-product-meta-description').value = product.meta_description || '';
+                                document.getElementById('kd-update-product-meta-keywords').value = product.meta_keywords || '';
+                                document.getElementById('kd-update-product-canonical-url').value = product.canonical_url || '';
+                                document.getElementById('kd-update-product-og-title').value = product.og_title || '';
+                                document.getElementById('kd-update-product-og-description').value = product.og_description || '';
+
+                                // File inputs hamesha khali shuru hote hain, hidden fields me purana path
+                                document.getElementById('kd-update-product-image').value = '';
+                                document.getElementById('kd-update-existing-main-image').value = product.product_image || '';
+                                renderExistingPreview(product.product_image, 'update-preview-product-image', 'image');
+
+                                document.getElementById('kd-update-product-brochure').value = '';
+                                document.getElementById('kd-update-existing-brochure').value = product.product_brochure || '';
+                                renderExistingPreview(product.product_brochure, 'update-preview-brochure', 'file');
+
+                                document.getElementById('kd-update-product-video-1').value = '';
+                                document.getElementById('kd-update-existing-video-1').value = product.product_video_1 || '';
+                                renderExistingPreview(product.product_video_1, 'update-preview-video', 'video');
+
+                                for (var i = 1; i <= 10; i++) {
+                                    var imgKey = 'product_img_' + i;
+                                    var altKey = 'product_img_' + i + '_alt';
+
+                                    document.getElementById('kd-update-product-img-' + i).value = '';
+                                    document.getElementById('kd-update-existing-img-' + i).value = product[imgKey] || '';
+                                    document.getElementById('kd-update-product-img-' + i + '-alt').value = product[altKey] || '';
+                                    renderExistingPreview(product[imgKey], 'update-preview-gallery-' + i, 'image');
+                                }
+
+                                // Is form ke auto-fill flags manual mode me (fields already sahi bhari hain)
+                                isProductSlugManualUpdate = false;
+                                isProductMetaTitleManualUpdate = false;
+                                isProductMetaDescManualUpdate = false;
+
+                                document.getElementById('show_product_table').classList.add('hidden_class');
+                                document.getElementById('update_product_form').classList.remove('hidden_class');
+                            }
+
+                            function cancelUpdateProduct() {
+                                document.getElementById('update_product_form').classList.add('hidden_class');
+                                document.getElementById('show_product_table').classList.remove('hidden_class');
+                            }
+
+                            // Existing (DB me pehle se saved) file ka preview dikhata hai
+                            function renderExistingPreview(url, previewWrapperId, kind) {
+
+                                var wrapper = document.getElementById(previewWrapperId);
+                                wrapper.innerHTML = '';
+
+                                if (!url) {
+                                    return;
+                                }
+
+                                if (kind === 'image') {
+                                    wrapper.innerHTML =
+                                        '<img src="' + url + '" style="max-width:120px; max-height:120px; ' +
+                                        'border:1px solid #ddd; border-radius:6px; object-fit:cover;">';
+                                } else if (kind === 'video') {
+                                    wrapper.innerHTML =
+                                        '<video src="' + url + '" controls style="max-width:240px; max-height:150px; ' +
+                                        'border:1px solid #ddd; border-radius:6px;"></video>';
+                                } else {
+                                    wrapper.innerHTML =
+                                        '<span style="font-size:13px; color:#333;">📄 ' + url.split('/').pop() + '</span>';
+                                }
+                            }
+
+                            // Update form ke "Remove" button - naya selection + preview
+                            // + existing hidden field (purana path) sab clear karta hai
+                            function removeSelectedFileUpdate(inputId, previewWrapperId, hiddenExistingId) {
+                                document.getElementById(inputId).value = '';
+                                document.getElementById(previewWrapperId).innerHTML = '';
+                                document.getElementById(hiddenExistingId).value = '';
+                            }
+
+                            // Update form ke apne auto-fill flags (add form se alag)
+                            var isProductSlugManualUpdate = false;
+                            var isProductMetaTitleManualUpdate = false;
+                            var isProductMetaDescManualUpdate = false;
+
+                            function autoFillFromProductNameUpdate(value) {
+
+                                if (!isProductSlugManualUpdate) {
+                                    document.getElementById('kd-update-product-slug').value = slugifyProduct(value);
+                                }
+
+                                if (!isProductMetaTitleManualUpdate) {
+                                    document.getElementById('kd-update-product-meta-title').value = value.substring(0, 60);
+                                    document.getElementById('kd-update-product-og-title').value = value.substring(0, 60);
+                                }
+                            }
+
+                            function autoFillProductMetaDescriptionUpdate(value) {
+                                if (!isProductMetaDescManualUpdate) {
+                                    document.getElementById('kd-update-product-meta-description').value = value.substring(0, 160);
+                                    document.getElementById('kd-update-product-og-description').value = value.substring(0, 160);
+                                }
+                            }
+
+                            function markProductSlugAsManualUpdate() {
+                                isProductSlugManualUpdate = true;
+                            }
+
+                            function markProductMetaTitleAsManualUpdate() {
+                                isProductMetaTitleManualUpdate = true;
+                            }
+
+                            function markProductMetaDescAsManualUpdate() {
+                                isProductMetaDescManualUpdate = true;
+                            }
+
+                            function show_add_productform() {
+                                document.getElementById('show_product_table').classList.toggle('hidden_class');
+                                document.getElementById('add_product_form').classList.toggle('hidden_class');
+                            }
+
+                            // ===========================================================
+                            // AUTO-FILL: Product Name -> Slug + Meta Title + OG Title
+                            // Description -> Meta Description + OG Description
+                            // ===========================================================
+                            var isProductSlugManual = false;
+                            var isProductMetaTitleManual = false;
+                            var isProductMetaDescManual = false;
+
+                            function slugifyProduct(text) {
+                                return text
+                                    .toString()
+                                    .toLowerCase()
+                                    .trim()
+                                    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                                    .replace(/[^a-z0-9\s-]/g, '')
+                                    .replace(/[\s_-]+/g, '-')
+                                    .replace(/^-+|-+$/g, '');
+                            }
+
+                            function autoFillFromProductName(value) {
+
+                                if (!isProductSlugManual) {
+                                    document.getElementById('kd-product-slug').value = slugifyProduct(value);
+                                }
+
+                                if (!isProductMetaTitleManual) {
+                                    document.getElementById('kd-product-meta-title').value = value.substring(0, 60);
+                                    document.getElementById('kd-product-og-title').value = value.substring(0, 60);
+                                }
+                            }
+
+                            function autoFillProductMetaDescription(value) {
+                                if (!isProductMetaDescManual) {
+                                    document.getElementById('kd-product-meta-description').value = value.substring(0, 160);
+                                    document.getElementById('kd-product-og-description').value = value.substring(0, 160);
+                                }
+                            }
+
+                            function markProductSlugAsManual() {
+                                isProductSlugManual = true;
+                            }
+
+                            function markProductMetaTitleAsManual() {
+                                isProductMetaTitleManual = true;
+                            }
+
+                            function markProductMetaDescAsManual() {
+                                isProductMetaDescManual = true;
+                            }
+
+                            // ===========================================================
+                            // GENERIC FILE PREVIEW + REMOVE
+                            // kind: 'image' | 'video' | 'file'
+                            // ===========================================================
+                            function previewSelectedFile(inputEl, previewWrapperId, kind) {
+
+                                var wrapper = document.getElementById(previewWrapperId);
+                                wrapper.innerHTML = '';
+
+                                if (!inputEl.files || !inputEl.files[0]) {
+                                    return;
+                                }
+
+                                var file = inputEl.files[0];
+                                var url = URL.createObjectURL(file);
+
+                                if (kind === 'image') {
+                                    wrapper.innerHTML =
+                                        '<img src="' + url + '" style="max-width:120px; max-height:120px; ' +
+                                        'border:1px solid #ddd; border-radius:6px; object-fit:cover;">';
+                                } else if (kind === 'video') {
+                                    wrapper.innerHTML =
+                                        '<video src="' + url + '" controls style="max-width:240px; max-height:150px; ' +
+                                        'border:1px solid #ddd; border-radius:6px;"></video>';
+                                } else {
+                                    wrapper.innerHTML =
+                                        '<span style="font-size:13px; color:#333;">📄 ' + file.name + '</span>';
+                                }
+                            }
+
+                            function removeSelectedFile(inputId, previewWrapperId) {
+                                document.getElementById(inputId).value = '';
+                                document.getElementById(previewWrapperId).innerHTML = '';
+                            }
+
+                            // Reset button - poora form + saari previews clear
+                            function resetProductForm() {
+
+                                document.querySelector('#add_product_form form').reset();
+
+                                document.getElementById('preview-product-image').innerHTML = '';
+                                document.getElementById('preview-brochure').innerHTML = '';
+                                document.getElementById('preview-video').innerHTML = '';
+
+                                for (var i = 1; i <= 10; i++) {
+                                    var el = document.getElementById('preview-gallery-' + i);
+                                    if (el) {
+                                        el.innerHTML = '';
+                                    }
+                                }
+
+                                isProductSlugManual = false;
+                                isProductMetaTitleManual = false;
+                                isProductMetaDescManual = false;
+                            }
+                        </script>
+
+                        <!-- Hidden form - single product delete ke liye
+                         (JS ise fill karke submit karta hai) -->
+                        <form action="" method="POST" id="delete_product_form" style="display:none;">
+                            <input type="hidden" name="delete_product_id" id="delete_product_id_input" value="">
+                            <input type="hidden" name="delete_single_product" value="1">
+                        </form>
+
+                        <!-- Hidden form - multiple products (bulk) delete ke liye -->
+                        <form action="" method="POST" id="bulk_delete_product_form" style="display:none;">
+                            <input type="hidden" name="selected_product_ids" id="selected_product_ids_input" value="">
+                            <input type="hidden" name="delete_selected_products" value="1">
+                        </form>
 
                 </section>
 

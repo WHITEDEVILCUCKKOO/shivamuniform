@@ -1,3 +1,101 @@
+<?php
+
+if (isset($_POST['submit_from_home'])) {
+
+    // Form Data
+    $first_name     = trim($_POST['first_name'] ?? '');
+    $last_name      = trim($_POST['last_name'] ?? '');
+    $customer_email = trim($_POST['email'] ?? '');
+    $phone_number   = trim($_POST['phone_number'] ?? '');
+    $message        = trim($_POST['your_message'] ?? '');
+
+    // Current Date & Time
+    $time = date('Y-m-d H:i:s');
+
+    // Basic Validation
+    if (
+        empty($first_name) ||
+        empty($customer_email) ||
+        empty($phone_number)
+    ) {
+
+        echo "<script>
+            alert('Please fill all required fields.');
+            window.history.back();
+        </script>";
+
+        exit;
+    }
+
+    // Email Validation
+    if (!filter_var($customer_email, FILTER_VALIDATE_EMAIL)) {
+
+        echo "<script>
+            alert('Please enter a valid email address.');
+            window.history.back();
+        </script>";
+
+        exit;
+    }
+
+    // Phone Validation - Exactly 10 Digits
+    if (!preg_match('/^[0-9]{10}$/', $phone_number)) {
+
+        echo "<script>
+            alert('Please enter exactly 10 digits phone number.');
+            window.history.back();
+        </script>";
+
+        exit;
+    }
+
+    // Recipient Email
+    $recipient = "shivamuniform605@gmail.com";
+
+    // Email Subject
+    $email_subject = "New Contact Form Submission";
+
+    // Email Content
+    $email_content  = "New Contact Form Submission\n\n";
+
+    $email_content .= "Date : " . $time . "\n";
+    $email_content .= "First Name : " . $first_name . "\n";
+    $email_content .= "Last Name : " . $last_name . "\n";
+    $email_content .= "Email : " . $customer_email . "\n";
+    $email_content .= "Phone Number : " . $phone_number . "\n";
+    $email_content .= "Message : " . $message . "\n";
+
+    // Email Headers
+    $email_headers  = "From: Website Contact Form <no-reply@yourdomain.com>\r\n";
+    $email_headers .= "Reply-To: " . $customer_email . "\r\n";
+    $email_headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
+
+    // Send Email
+    if (mail($recipient, $email_subject, $email_content, $email_headers)) {
+
+        echo "<script>
+            alert('Thank you! Your message has been sent successfully.');
+            window.location.href = window.location.href;
+        </script>";
+
+    } else {
+
+        echo "<script>
+            alert('Mail could not be sent. Please try again later.');
+            window.history.back();
+        </script>";
+    }
+
+}
+?>
+
+
+
+
+
+
+
+
 <!-- =========================================================
      SHIVAM UNIFORM
      CONTACT US PAGE - SECTION 03
@@ -1160,62 +1258,105 @@ button[type="submit"]:hover{
 
 
 
+<form class="sfc-custom-form" method="post">
 
-                <form class="sfc-custom-form" method="post">
+    <div class="sfc-form-row">
 
-                    <div class="sfc-form-row">
+        <div class="sfc-form-group">
 
-                        <div class="sfc-form-group">
-                            <label>First Name <span>*</span></label>
-                            <input type="text" name="first_name" placeholder="First Name" required>
-                        </div>
+            <label>
+                First Name <span>*</span>
+            </label>
 
-                        <div class="sfc-form-group">
-                            <label>Last Name <span>*</span></label>
-                            <input type="text" name="last_name" placeholder="Last Name">
-                        </div>
+            <input
+                type="text"
+                name="first_name"
+                placeholder="First Name"
+                required>
 
-                    </div>
-
-                    <div class="sfc-form-row">
-                        <div class="sfc-form-group">
-                            <label>Email <span>*</span></label>
-
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email Address"
-                                required
-                                autocomplete="email">
-                        </div>
+        </div>
 
 
-                        <div class="sfc-form-group">
-                            <label>Phone Number <span>*</span></label>
+        <div class="sfc-form-group">
 
-                            <input
-                                type="tel"
-                                name="phone_number"
-                                placeholder="Phone Number"
-                                required
-                                inputmode="numeric"
-                                maxlength="10"
-                                pattern="[0-9]{10}"
-                                title="Please enter exactly 10 digits">
-                        </div>
-                    </div>
+            <label>
+                Last Name <span>*</span>
+            </label>
 
-                    <div class="sfc-form-group sfc-message-group">
-                        <label>Your Message <span>*</span></label>
-                        <textarea name="your_message" placeholder="Your Message"></textarea>
-                    </div>
+            <input
+                type="text"
+                name="last_name"
+                placeholder="Last Name">
 
-                    <button type="submit" name="submit_from_home" value="1" class="sfc-submit-btn">
-                        Submit Form
-                    </button>
+        </div>
 
-                </form>
+    </div>
 
+
+    <div class="sfc-form-row">
+
+        <div class="sfc-form-group">
+
+            <label>
+                Email <span>*</span>
+            </label>
+
+            <input
+                type="email"
+                name="email"
+                placeholder="Email Address"
+                required
+                autocomplete="email">
+
+        </div>
+
+
+        <div class="sfc-form-group">
+
+            <label>
+                Phone Number <span>*</span>
+            </label>
+
+            <input
+                type="tel"
+                name="phone_number"
+                placeholder="Phone Number"
+                required
+                inputmode="numeric"
+                maxlength="10"
+                pattern="[0-9]{10}"
+                title="Please enter exactly 10 digits">
+
+        </div>
+
+    </div>
+
+
+    <div class="sfc-form-group sfc-message-group">
+
+        <label>
+            Your Message <span>*</span>
+        </label>
+
+        <textarea
+            name="your_message"
+            placeholder="Your Message"
+            required></textarea>
+
+    </div>
+
+
+    <button
+        type="submit"
+        name="submit_from_home"
+        value="1"
+        class="sfc-submit-btn">
+
+        Submit Form
+
+    </button>
+
+</form>
                 <!-- </div> -->
 
             </div>

@@ -3,7 +3,7 @@
 require_once __DIR__ . '/includes/header.php';
 
 ?>
-
+<?php include"admin_access/db_config.php" ?>
 
 <style>
     /* ============================================================
@@ -858,7 +858,7 @@ require_once __DIR__ . '/includes/header.php';
         <div class="su-summary">
 
             <div class="su-breadcrumb">
-                <a href="index.php">Home</a> / <span id="su-breadcrumb-cat"></span>
+                <a href="index.php">Home</a> / <a href="products.php">Product</a> / <span id="su-breadcrumb-cat"></span>
             </div>
 
             <h1 class="su-product-title" id="su-title"></h1>
@@ -939,220 +939,63 @@ require_once __DIR__ . '/includes/header.php';
 
 
 <!-- =====================================================
-     1) PRODUCT DATA
-     (same array used on the catalogue page — keep both in sync,
-     or better: move this into one shared assets/js/products.js
-     file and include it on both pages)
+     1) PRODUCT DATA - AB DATABASE SE AA RAHA HAI
+     Pehle ye hardcoded JS array tha, ab admin panel ke
+     products.php functions se real data khींch ke JSON
+     me convert kar diya gaya hai. Neeche wali rendering
+     JS bilkul waisi hi hai jaisi pehle thi - design me
+     koi change nahi. (Ye wahi block hai jo catalogue
+     page - products.php - me bhi use hota hai)
 ====================================================== -->
-<script>
-    const products = [
+<?php
 
-        {
-            id: 1,
-            name: "Men's Modi / Nehru Jacket – MP 750",
-            slug: "mens-modi-nehru-jacket-mp-750",
-            product_code: "MP-750",
-            category: "Modi / Nehru Jackets",
-            fabric: "Cotton",
-            design: "",
-            colors: ["Grey", "Maroon", "Black", "Navy Blue"],
-            sizes: ["34", "36", "38", "40", "42", "44", "46"],
-            image1: "Maroon.png",
-            image2: "Black.png",
-            image3: "Grey.png",
-            image4: "Navy Blue.png",
-            image5: "",
-            image6: "",
-            image7: "",
-            image8: "",
-            description: "Premium Men's Modi / Nehru jacket crafted in cotton for a smart and professional appearance. Available in multiple colours and sizes, making it suitable for corporate, hospitality and professional uniform requirements.",
-            availability: "In Stock",
-            order_type: "Bulk Order Available"
-        },
+include_once __DIR__ . '/admin_access/functions/products.php';
+include_once __DIR__ . '/admin_access/functions/category_info.php';
 
-        {
-            id: 2,
-            name: "Waiter's Coat Check-Matching – MP 480",
-            slug: "waiters-coat-check-matching-mp-480",
-            product_code: "MP-480",
-            category: "Waiter Uniforms",
-            fabric: "Premium Fabric",
-            design: "Check-Matching",
-            colors: ["Orange", "Red", "Gray", "Black", "Royal Blue"],
-            sizes: ["34", "36", "38", "40", "42"],
-            image1: "Orange.png",
-            image2: "Black.png",
-            image3: "Grey.png",
-            image4: "Red.png",
-            image5: "Royal Blue.png",
-            image6: "",
-            image7: "",
-            image8: "",
-            description: "Professional check-matching waiter's coat designed for restaurant, hotel, banquet and hospitality service staff.",
-            availability: "In Stock",
-            order_type: "Bulk Order Available"
-        },
+$all_db_products = get_product_info($mydb);
 
-        {
-            id: 3,
-            name: "Kid's Lab Coat – Poly Tusser",
-            slug: "kids-lab-coat-poly-tusser",
-            product_code: "",
-            category: "Lab Coats",
-            fabric: "Poly Tusser",
-            design: "",
-            colors: [],
-            sizes: ["16-18", "20-22", "24-26", "28-30"],
-            image1: "img_1.png",
-            image2: "",
-            image3: "",
-            image4: "",
-            image5: "",
-            image6: "",
-            image7: "",
-            image8: "",
-            description: "Kid's Lab Coat made from Poly Tusser fabric, designed for a clean, smart and professional appearance.",
-            availability: "In Stock",
-            order_type: "Bulk Order Available"
-        },
+$catalogue_products = [];
 
-        {
-            id: 4,
-            name: "Personal Security Officer Uniforms",
-            slug: "personal-security-officer-uniforms",
-            product_code: "",
-            category: "Security Uniforms",
-            fabric: "",
-            design: "",
-            colors: ["Dark Grey", "Fawn", "Navy", "Black"],
-            sizes: [],
-            image1: "Dark Grey.png",
-            image2: "Fawn.png",
-            image3: "Navy.png",
-            image4: "Black.png",
-            image5: "",
-            image6: "",
-            image7: "",
-            image8: "",
-            description: "Professional Personal Security Officer Uniforms designed for security personnel, officers and professional security teams.",
-            availability: "In Stock",
-            order_type: "Bulk Order Available"
-        },
+foreach ($all_db_products as $p) {
 
-        {
-            id: 5,
-            name: "Plain Adjustable Apron – M-195",
-            slug: "plain-adjustable-apron-m-195",
-            product_code: "M-195",
-            category: "Aprons",
-            fabric: "Micro/Tusser",
-            design: "Plain Adjustable Apron",
-            colors: ["Maroon", "Navy", "Yellow", "Red", "Grey", "Black", "Green", "White"],
-            sizes: [],
-            image1: "White.png",
-            image2: "Green.png",
-            image3: "Black.png",
-            image4: "Grey.png",
-            image5: "Red.png",
-            image6: "Yellow.png",
-            image7: "Navy.png",
-            image8: "Maroon.png",
-            description: "Professional plain adjustable apron designed for kitchen, restaurant, café, hotel and hospitality staff.",
-            availability: "In Stock",
-            order_type: "Bulk Order Available"
-        },
+    if (($p['product_status'] ?? '') !== 'Active') {
+        continue;
+    }
 
-        {
-            id: 6,
-            name: "Service Plain Apron – M-240",
-            slug: "service-plain-apron-m-240",
-            product_code: "M-240",
-            category: "Aprons",
-            fabric: "Non Denim",
-            design: "Service Plain Apron",
-            colors: ["Khaki", "Navy", "Black", "Red"],
-            sizes: [],
-            image1: "Black.png",
-            image2: "Navy.png",
-            image3: "Khaki.png",
-            image4: "Red.png",
-            image5: "",
-            image6: "",
-            image7: "",
-            image8: "",
-            description: "Professional service apron designed for restaurant, café, hotel and hospitality staff.",
-            availability: "In Stock",
-            order_type: "Bulk Order Available"
-        },
+    $main_image_filename = !empty($p['product_image']) ? basename($p['product_image']) : '';
 
-        {
-            id: 7,
-            name: "Men's 4 Button Waistcoat",
-            slug: "mens-4-button-waistcoat",
-            product_code: "",
-            category: "Corporate Waistcoats",
-            fabric: "Cotton",
-            design: "4 Button, 2 Pockets",
-            colors: ["Black", "Grey", "Maroon", "Navy Blue", "Fawn"],
-            sizes: ["36", "38", "40", "42", "44", "46"],
-            image1: "Grey.png",
-            image2: "Black.png",
-            image3: "Maroon.png",
-            image4: "Navy Blue.png",
-            image5: "Fawn.png",
-            image6: "",
-            image7: "",
-            image8: "",
-            description: "Professional Men's waistcoat designed for corporate and hospitality uniform requirements.",
-            availability: "In Stock",
-            order_type: "Bulk Order Available"
-        },
+    $gallery_images = [];
+    for ($i = 2; $i <= 8; $i++) {
+        $gallery_images[$i] = !empty($p['product_img_' . $i]) ? basename($p['product_img_' . $i]) : '';
+    }
 
-        {
-            id: 8,
-            name: "Black & White Check Apron – M-240",
-            slug: "black-white-check-apron-m-240",
-            product_code: "M-240",
-            category: "Aprons",
-            fabric: "Polyester",
-            design: "Check Apron",
-            colors: [],
-            sizes: [],
-            image1: "img_1.png",
-            image2: "",
-            image3: "",
-            image4: "",
-            image5: "",
-            image6: "",
-            image7: "",
-            image8: "",
-            description: "Professional check apron designed for kitchen, restaurant, café, bakery and hospitality staff.",
-            availability: "In Stock",
-            order_type: "Bulk Order Available"
-        }, {
-            id: 9,
-            name: "Lining Adjustable Apron – M-240",
-            slug: "lining-adjustable-apron–m-240",
-            product_code: "M-240",
-            category: "Aprons",
-            fabric: "Polyester",
-            design: "Lining Adjustable Apron",
-            colors: ["Yellow on Black", "White on Black", "Grey on Black"],
-            image1: "White on Black.png",
-            image2: "Grey on Black.png",
-            image3: "Yellow on Black.png",
-            image4: "",
-            image5: "",
-            image6: "",
-            image7: "",
-            image8: "",
-            image: "img_1.png",
-            description: "Professional adjustable apron designed for hospitality, kitchen, restaurant and service staff. Made with durable polyester fabric for a smart, comfortable and professional appearance.",
-            availability: "In Stock",
-            order_type: "Bulk Order Available"
-        }
-
+    $catalogue_products[] = [
+        'id'           => (int) $p['product_id'],
+        'name'         => $p['product_name'],
+        'slug'         => $p['product_slug'],
+        'product_code' => $p['product_sku'] ?? '',
+        'category'     => $p['root_name'] ?: 'Uniform Collection',
+        'fabric'       => '',
+        'design'       => '',
+        'colors'       => [],
+        'sizes'        => [],
+        'image1'       => $main_image_filename,
+        'image2'       => $gallery_images[2],
+        'image3'       => $gallery_images[3],
+        'image4'       => $gallery_images[4],
+        'image5'       => $gallery_images[5],
+        'image6'       => $gallery_images[6],
+        'image7'       => $gallery_images[7],
+        'image8'       => $gallery_images[8],
+        'description'  => $p['product_description'] ?? '',
+        'availability' => 'In Stock',
+        'order_type'   => 'Bulk Order Available',
     ];
+}
+
+?>
+<script>
+    const products = <?php echo json_encode($catalogue_products, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE); ?>;
 </script>
 
 
@@ -1195,7 +1038,7 @@ require_once __DIR__ . '/includes/header.php';
      3) RENDERING LOGIC
 ====================================================== -->
 <script>
-const IMAGE_FOLDER_BASE = "assets/products_images/"; // product_<id> folder ka base path
+const IMAGE_FOLDER_BASE = "assets/products/"; // product_<id> folder ka base path
 
 function getSlugFromUrl(){
     const params = new URLSearchParams(window.location.search);
