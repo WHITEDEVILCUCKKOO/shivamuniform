@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2026 at 07:53 AM
+-- Generation Time: Sep 28, 2026 at 05:09 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -67,6 +67,13 @@ CREATE TABLE `brands` (
   `created_at` varchar(112) NOT NULL,
   `updated_at` varchar(113) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `brands`
+--
+
+INSERT INTO `brands` (`brand_id`, `root_id`, `brand_name`, `brand_slug`, `brand_logo`, `brand_description`, `meta_title`, `meta_description`, `meta_keywords`, `brand_status`, `created_at`, `updated_at`) VALUES
+(25, 27, 'asdasd', 'asdasd', 'assets/brands/asdasd-1790512031.png', 'ghuyg', 'asdasd', 'ghuyg', '54465', 'Active', '1790512031', '');
 
 -- --------------------------------------------------------
 
@@ -151,6 +158,14 @@ CREATE TABLE `products` (
   `updated_at` varchar(113) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`product_id`, `root_id`, `brand_id`, `product_name`, `product_slug`, `product_sku`, `product_color`, `product_size`, `product_image`, `product_description`, `meta_title`, `meta_description`, `meta_keywords`, `canonical_url`, `og_title`, `og_description`, `product_other_info_desc`, `original_price`, `sale_price`, `discount_visibility`, `product_status`, `product_views`, `created_at`, `updated_at`) VALUES
+(31, 27, 25, 'fs fsf wfwfsd', 'fs-fsf-wfwfsd', '', '', '', 'assets/products/product_31/main.png', 'jujb', 'fs fsf wfwfsd', 'jujb', 'ihiuh', '', 'fs fsf wfwfsd', 'jujb', 'ghuuh', 5614.00, 54.00, 'Show', 'Active', 0, '1790512064', ''),
+(37, 28, 25, 'swe', 'swewewe', '', '', '', 'assets/products/product_37/main.jpeg', 'dffs', 'swe', 'dffs', '', '', 'swe', 'dffs', 'hii ihid\r\n\r\naojsduoasjdopuapodjopajsd\r\n\r\njasdijhdias\r\n>\r\ndja\r\n;kaspdkas', 132123.00, 123.00, 'Show', 'Active', 0, '1790512268', '1790564820');
+
 -- --------------------------------------------------------
 
 --
@@ -182,6 +197,14 @@ CREATE TABLE `products_images` (
   `product_brochure` varchar(255) NOT NULL,
   `product_video_1` varchar(233) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products_images`
+--
+
+INSERT INTO `products_images` (`product_id`, `product_img_1`, `product_img_1_alt`, `product_img_2`, `product_img_2_alt`, `product_img_3`, `product_img_3_alt`, `product_img_4`, `product_img_4_alt`, `product_img_5`, `product_img_5_alt`, `product_img_6`, `product_img_6_alt`, `product_img_7`, `product_img_7_alt`, `product_img_8`, `product_img_8_alt`, `product_img_9`, `product_img_9_alt`, `product_img_10`, `product_img_10_alt`, `product_brochure`, `product_video_1`) VALUES
+(31, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''),
+(37, 'assets/products/product_37/gallery_1.png', '', 'assets/products/product_37/gallery_2.png', '', 'assets/products/product_37/gallery_3.png', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', 'assets/products/product_37/video_1.mp4');
 
 -- --------------------------------------------------------
 
@@ -291,7 +314,7 @@ ALTER TABLE `login_users`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `root_categories`
