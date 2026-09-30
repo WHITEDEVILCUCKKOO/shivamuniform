@@ -590,7 +590,7 @@ $brand_options          = get_brand_info($mydb);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="assets/logos/<?php echo htmlspecialchars($global_info['facion_icon'] ?? ''); ?>">
-    <title>Eagletfly Admin</title>
+    <title>Shivamuniform Admin</title>
     <link rel="stylesheet" href="admin_access/admin.css">
     <link rel="stylesheet" href="admin_access/css/category.css">
 
