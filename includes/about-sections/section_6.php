@@ -689,7 +689,7 @@
             <div class="scc-image">
 
                 <img
-                    src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=1200&q=88"
+                    src="assets/exods_img/10th Summer Uniform.png" style="    object-position: top !important;"
                     alt="Uniform fabric and craftsmanship"
                     loading="lazy"
                 >

@@ -835,7 +835,7 @@
                 -->
 
                 <img
-                    src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=900&q=88"
+                    src="assets/exods_img/1st Winter Uniform Image.png"
                     alt="School Uniforms by Shivam Uniform"
                     loading="lazy"
                 >

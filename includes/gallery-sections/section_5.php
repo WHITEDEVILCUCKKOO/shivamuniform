@@ -708,7 +708,7 @@
             <div class="sgc-main-image">
 
                 <img
-                    src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1400&q=90"
+                    src="assets/exods_img/priwhjraerl.png"
                     alt="Professional uniform team"
                     loading="lazy">
 

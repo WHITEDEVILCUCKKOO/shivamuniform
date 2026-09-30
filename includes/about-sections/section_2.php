@@ -806,7 +806,7 @@
             <div class="sas-image">
 
                 <img
-                    src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=88"
+                    src="assets/exods_img/About Us.png"
                     alt="Shivam Uniform professional team"
                     loading="lazy"
                 >

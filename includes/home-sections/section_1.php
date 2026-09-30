@@ -95,13 +95,14 @@
 
     z-index:1 !important;
 
-    background:
+    /* background:
     linear-gradient(
         90deg,
         rgba(0,22,65,.94) 0%,
         rgba(0,22,65,.82) 48%,
         rgba(0,22,65,.92) 100%
-    ) !important;
+    ) !important; */
+         background: rgb(0 22 65 / 92%);
 }
 
 
@@ -749,8 +750,8 @@
     ====================================== -->
 
     <img
-        class="sufh-bg"
-        src="https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=1800&q=88"
+        class="sufh-bg" style="    object-position: center 10% !important;"
+        src="assets/exods_img/Uniform Banner Image.png"
         alt="Uniform solutions by Shivam Uniform"
         loading="eager"
         fetchpriority="high"
@@ -853,7 +854,7 @@
 
 
             <a
-                href="gallary.php"
+                href="gallery.php"
                 class="sufh-btn sufh-btn-primary"
             >
 

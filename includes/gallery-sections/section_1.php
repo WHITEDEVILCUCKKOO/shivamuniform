@@ -918,7 +918,7 @@
             <div class="sgh-image-main">
 
                 <img
-                    src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=1200&q=88"
+                    src="assets/exods_img/2nd banner back.png"
                     alt="Professional uniform team"
                     loading="eager"
                 >
@@ -945,7 +945,7 @@
             <div class="sgh-image-small">
 
                 <img
-                    src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=800&q=88"
+                    src="assets/exods_img/2nd about banner.png"
                     alt="School uniform"
                     loading="eager"
                 >

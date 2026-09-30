@@ -650,10 +650,10 @@
 
             <!-- CARD 01 -->
 
-            <a href="gallary.php" class="scs-card">
+            <a href="gallery.php" class="scs-card">
 
                 <img
-                    src="https://shivamuniform.hiralgems.com/wp-content/uploads/2026/09/image-uniform-1.png"
+                    src="assets/exods_img/8th Summer Uniform.png"
                     alt="School Uniforms"
                     loading="lazy"
                 >
@@ -685,12 +685,12 @@
 
             <!-- CARD 02 -->
 
-            <a href="gallary.php" class="scs-card">
+            <a href="gallery.php" class="scs-card">
 
                 <img
-                    src="https://shivamuniform.hiralgems.com/wp-content/uploads/2026/09/image-uniform-2.png"
+                    src="assets/exods_img/1st Image for Industrial.png"
                     alt="Industrial Uniforms"
-                    loading="lazy"
+                    loading="lazy" style="object-position: center 20% !important;"
                 >
 
                 <div class="scs-overlay"></div>
@@ -720,12 +720,12 @@
 
             <!-- CARD 03 -->
 
-            <a href="gallary.php" class="scs-card">
+            <a href="gallery.php" class="scs-card">
 
                 <img
-                    src="https://shivamuniform.hiralgems.com/wp-content/uploads/2026/09/image-uniform-3.png"
+                    src="assets/exods_img/Corporate Uniform.png"
                     alt="Corporate Uniforms"
-                    loading="lazy"
+                    loading="lazy" style="object-position: center 20% !important;"
                 >
 
                 <div class="scs-overlay"></div>
@@ -755,10 +755,10 @@
 
             <!-- CARD 04 -->
 
-            <a href="gallary.php" class="scs-card">
+            <a href="gallery.php" class="scs-card">
 
                 <img
-                    src="https://shivamuniform.hiralgems.com/wp-content/uploads/2026/09/image-uniform-4.png"
+                    src="assets/exods_img/1st security image.png"
                     alt="Security Uniforms"
                     loading="lazy"
                 >
@@ -790,12 +790,12 @@
 
             <!-- CARD 05 -->
 
-            <a href="gallary.php" class="scs-card">
+            <a href="gallery.php" class="scs-card">
 
                 <img
-                    src="https://shivamuniform.hiralgems.com/wp-content/uploads/2026/09/image-uniform-5.png"
+                    src="assets/exods_img/1st Housekeeping.png"
                     alt="Housekeeping Uniforms"
-                    loading="lazy"
+                    loading="lazy" style="object-position: center 10% !important;"
                 >
 
                 <div class="scs-overlay"></div>
@@ -825,12 +825,12 @@
 
             <!-- CARD 06 -->
 
-            <a href="gallary.php" class="scs-card">
+            <a href="gallery.php" class="scs-card">
 
                 <img
-                    src="https://shivamuniform.hiralgems.com/wp-content/uploads/2026/09/image-uniform-6.png"
+                    src="assets/exods_img/1st Hotel Image.png"
                     alt="Hotel Uniforms"
-                    loading="lazy"
+                    loading="lazy" style="object-position: center 20% !important;"
                 >
 
                 <div class="scs-overlay"></div>
@@ -865,7 +865,7 @@
 
         <div class="scs-action">
 
-            <a href="gallary.php" class="scs-btn">
+            <a href="gallery.php" class="scs-btn">
 
                 View Complete Collection
 
