@@ -16,7 +16,7 @@ require_once __DIR__ . '/includes/header.php';
     <?php require_once __DIR__ . '/includes/gallery-sections/section_3.php'; ?>
 
     <!-- section 4 -->
-    <?php require_once __DIR__ . '/includes/gallery-sections/section_4.php'; ?>
+
 
     <!-- section 5 -->
     <?php require_once __DIR__ . '/includes/gallery-sections/section_5.php'; ?>

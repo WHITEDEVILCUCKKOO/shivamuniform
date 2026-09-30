@@ -759,7 +759,7 @@
             <article class="sgs-item">
 
                 <img
-                    src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1000&q=88"
+                    src="assets/exods_img/hsihdi4.png"
                     alt="School uniforms"
                     loading="lazy"
                 >
@@ -793,9 +793,9 @@
             <article class="sgs-item">
 
                 <img
-                    src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=800&q=88"
+                    src="assets/exods_img/hsihdi3.png"
                     alt="Corporate uniforms"
-                    loading="lazy"
+                    loading="lazy" style="object-position: center 10% !important;"
                 >
 
 
@@ -820,7 +820,7 @@
             <article class="sgs-item">
 
                 <img
-                    src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=800&q=88"
+                    src="assets/exods_img/hsihdi1.png"
                     alt="Industrial uniforms"
                     loading="lazy"
                 >
@@ -847,9 +847,9 @@
             <article class="sgs-item">
 
                 <img
-                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1100&q=88"
+                    src="assets/exods_img/hsihdi2.png"
                     alt="Hospitality uniforms"
-                    loading="lazy"
+                    loading="lazy" style="object-position: center 10% !important;"
                 >
 
 

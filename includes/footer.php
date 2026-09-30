@@ -719,7 +719,7 @@
 
 
                     <li>
-                        <a href="gallary.php">
+                        <a href="gallery.php">
                             Gallery
                         </a>
                     </li>

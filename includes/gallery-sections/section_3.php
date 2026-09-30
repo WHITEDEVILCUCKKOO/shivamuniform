@@ -11,7 +11,7 @@
      GREEN : #1E712C
      WHITE : #FFFFFF
 ========================================================= -->
-
+<?php include"admin_access/db_config.php" ?>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -584,364 +584,64 @@
         <div class="sgg-grid">
 
 
+
+    <?php
+
+            $sql8748524 = "SELECT 
+                    products.*, 
+                    brands.*, 
+                    root_categories.*
+                FROM products
+                INNER JOIN brands 
+                    ON products.brand_id = brands.brand_id
+                INNER JOIN root_categories 
+                    ON products.root_id = root_categories.root_id
+                WHERE products.product_status = 'Active' ORDER BY RAND()
+                LIMIT 16";
+
+            $result8748524 = mysqli_query($mydb, $sql8748524);
+
+            if ($result8748524 && mysqli_num_rows($result8748524) > 0) {
+
+                while ($product8748524 = mysqli_fetch_assoc($result8748524)) {
+
+                    $product_image = $product8748524['product_image'];
+                    $product_slug  = $product8748524['product_slug'];
+                    $product_name  = $product8748524['product_name'];
+                    $product_id  = $product8748524['product_id'];
+                    $barnd_name  = $product8748524['brand_name'];
+                    $product_slug  = $product8748524['product_slug'];
+
+            ?>
+
+
+
             <!-- 01 -->
 
-            <div class="sgg-item">
+            <div class="sgg-item" style="cursor: pointer;"  onclick="window.location.href='product_details.php?slug=<?php echo htmlspecialchars($product_slug); ?>'">
 
                 <img
-                    src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=700&q=88"
-                    alt="School Uniform"
+                    src="<?php echo htmlspecialchars($product_image); ?>"
+                    alt="<?php echo htmlspecialchars($product_name); ?>"
                     loading="lazy"
                 >
 
                 <div class="sgg-caption">
-                    <span>School</span>
-                    <h3>School Uniforms</h3>
+                    <span><?php echo htmlspecialchars($barnd_name); ?></span>
+                    <h3><?php echo htmlspecialchars($product_name); ?></h3>
                 </div>
 
             </div>
 
 
-            <!-- 02 -->
+            
+            <?php
 
-            <div class="sgg-item">
+                }
+            }
 
-                <img
-                    src="https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=700&q=88"
-                    alt="Student Uniform"
-                    loading="lazy"
-                >
+            ?>
 
-                <div class="sgg-caption">
-                    <span>School</span>
-                    <h3>Student Uniforms</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 03 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=700&q=88"
-                    alt="Corporate Uniform"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Corporate</span>
-                    <h3>Corporate Teamwear</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 04 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=700&q=88"
-                    alt="Professional Corporate Team"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Corporate</span>
-                    <h3>Professional Wear</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 05 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=700&q=88"
-                    alt="Industrial Uniform"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Industrial</span>
-                    <h3>Industrial Workwear</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 06 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=700&q=88"
-                    alt="Industrial Team Uniform"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Industrial</span>
-                    <h3>Workplace Uniforms</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 07 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=700&q=88"
-                    alt="Hospitality Uniform"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Hospitality</span>
-                    <h3>Hotel Teamwear</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 08 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&w=700&q=88"
-                    alt="Service Uniform"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Service</span>
-                    <h3>Service Uniforms</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 09 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=700&q=88"
-                    alt="Housekeeping Uniform"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Housekeeping</span>
-                    <h3>Housekeeping Wear</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 10 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=700&q=88"
-                    alt="Industrial Workwear"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Industrial</span>
-                    <h3>Practical Workwear</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 11 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=700&q=88"
-                    alt="Office Uniform"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Corporate</span>
-                    <h3>Office Uniforms</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 12 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=700&q=88"
-                    alt="Team Uniform"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Professional</span>
-                    <h3>Team Uniforms</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 13 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1529390079861-591de354faf5?auto=format&fit=crop&w=700&q=88"
-                    alt="Event Team Uniform"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Events</span>
-                    <h3>Event Teamwear</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 14 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=700&q=88"
-                    alt="Coordinated Uniforms"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Team</span>
-                    <h3>Coordinated Uniforms</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 15 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=700&q=88"
-                    alt="Restaurant Teamwear"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Hospitality</span>
-                    <h3>Restaurant Teamwear</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 16 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1556745757-8d76bdb6984b?auto=format&fit=crop&w=700&q=88"
-                    alt="Front Desk Uniform"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Service</span>
-                    <h3>Front Desk Uniforms</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 17 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?auto=format&fit=crop&w=700&q=88"
-                    alt="Corporate Staff Uniform"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Corporate</span>
-                    <h3>Staff Uniforms</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 18 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=700&q=88"
-                    alt="Professional Workplace Wear"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Professional</span>
-                    <h3>Workplace Wear</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 19 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=700&q=88"
-                    alt="Professional Team Identity"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Team</span>
-                    <h3>Professional Identity</h3>
-                </div>
-
-            </div>
-
-
-            <!-- 20 -->
-
-            <div class="sgg-item">
-
-                <img
-                    src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=700&q=88"
-                    alt="Custom Teamwear"
-                    loading="lazy"
-                >
-
-                <div class="sgg-caption">
-                    <span>Uniforms</span>
-                    <h3>Custom Teamwear</h3>
-                </div>
-
-            </div>
 
 
         </div>
