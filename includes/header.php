@@ -21,7 +21,7 @@ $category_info = get_category_info($mydb);
         content="width=device-width, initial-scale=1.0">
 
     <title>Shivam Uniform</title>
-
+<link rel="icon" type="image/x-icon" href="assets/logos/<?php echo htmlspecialchars($global_info['facion_icon'] ?? ''); ?>">
     <link
         rel="preconnect"
         href="https://fonts.googleapis.com">
