@@ -1,11 +1,23 @@
 <?php
 
+/* ===== SEO: About Page ===== */
+$seo_title       = "About Us - Shivam Uniform | Trusted Uniform Manufacturer";
+$seo_description = "Know about Shivam Uniform, a trusted uniform manufacturer. Explore our journey, quality fabrics, manufacturing process and commitment to customers.";
+$seo_keywords    = "about Shivam Uniform, uniform manufacturer, school uniform maker, corporate uniform supplier";
+
+$seo_schema = [
+    "@context"    => "https://schema.org",
+    "@type"       => "AboutPage",
+    "name"        => "About Shivam Uniform",
+    "description" => $seo_description
+];
+
 require_once __DIR__ . '/includes/header.php';
 
 ?>
 
 <main style="overflow: hidden;">
-    
+
     <!-- section 1 -->
     <?php require_once __DIR__ . '/includes/about-sections/section_1.php'; ?>
 
@@ -29,7 +41,6 @@ require_once __DIR__ . '/includes/header.php';
 
     <!-- section 8 -->
     <?php require_once __DIR__ . '/includes/about-sections/section_8.php'; ?>
-
 
 </main>
 

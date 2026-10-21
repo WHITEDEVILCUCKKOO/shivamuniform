@@ -1,5 +1,17 @@
 <?php
 
+/* ===== SEO: Products Page ===== */
+$seo_title       = "Our Products - School, Corporate & Industrial Uniforms | Shivam Uniform";
+$seo_description = "Explore the complete Shivam Uniform range: school, corporate, hospital, security and industrial uniforms. Bulk orders and custom sizes available.";
+$seo_keywords    = "uniform products, school uniform, corporate uniform, hospital uniform, security uniform, bulk uniform order";
+
+$seo_schema = [
+    "@context"    => "https://schema.org",
+    "@type"       => "CollectionPage",
+    "name"        => "Shivam Uniform Products",
+    "description" => $seo_description
+];
+
 require_once __DIR__ . '/includes/header.php';
 
 ?>

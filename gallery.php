@@ -1,5 +1,17 @@
 <?php
 
+/* ===== SEO: Gallery Page ===== */
+$seo_title       = "Gallery - Shivam Uniform | Our Uniform Collection & Work";
+$seo_description = "Browse the Shivam Uniform gallery. See our school, corporate, hospital and industrial uniforms, manufacturing work and delivered orders.";
+$seo_keywords    = "uniform gallery, school uniform photos, corporate uniform designs, Shivam Uniform work";
+
+$seo_schema = [
+    "@context"    => "https://schema.org",
+    "@type"       => "ImageGallery",
+    "name"        => "Shivam Uniform Gallery",
+    "description" => $seo_description
+];
+
 require_once __DIR__ . '/includes/header.php';
 
 ?>

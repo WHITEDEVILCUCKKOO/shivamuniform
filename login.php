@@ -15,7 +15,10 @@ if(isset($_SESSION['user_id'])){
 <?php include"admin_access/db_config.php" ?>
 
 <?php
+include "admin_access/db_config.php";
+include "./admin_access/functions/global_info.php";
 
+$global_info = get_global_info($mydb);
 
 if(isset($_POST['login_main'])){
 

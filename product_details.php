@@ -1,10 +1,102 @@
 <?php
 
+include "admin_access/db_config.php";
+
+/* ===== SEO: Product Detail Page ===== */
+
+$seo_product = null;
+$slug = isset($_GET['slug']) ? trim($_GET['slug']) : '';
+
+if ($slug !== '') {
+    $stmt = mysqli_prepare(
+        $mydb,
+        "SELECT p.product_id, p.product_name, p.product_slug, p.product_description,
+                p.product_image, p.product_sku, p.product_color, c.root_name
+         FROM products p
+         LEFT JOIN root_categories c ON p.root_id = c.root_id
+         WHERE p.product_slug = ? AND p.product_status = 'Active'
+         LIMIT 1"
+    );
+
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "s", $slug);
+        mysqli_stmt_execute($stmt);
+        $res = mysqli_stmt_get_result($stmt);
+        $seo_product = $res ? mysqli_fetch_assoc($res) : null;
+        mysqli_stmt_close($stmt);
+    }
+}
+
+$pr_protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+$pr_base     = $pr_protocol . "://" . $_SERVER['HTTP_HOST'];
+
+if ($seo_product) {
+
+    $p_name  = trim($seo_product['product_name']);
+    $p_cat   = trim($seo_product['root_name'] ?? '') ?: 'Uniform';
+    $p_color = trim($seo_product['product_color'] ?? '');
+    $p_sku   = trim($seo_product['product_sku'] ?? '');
+
+    // Description: HTML hata ke 155 characters tak
+    $p_desc = trim(preg_replace('/\s+/', ' ', strip_tags($seo_product['product_description'] ?? '')));
+
+    $seo_title       = $p_name . " | Shivam Uniform";
+    $seo_description = $p_desc !== ''
+        ? mb_substr($p_desc, 0, 155)
+        : "Buy " . $p_name . " from Shivam Uniform. Bulk orders and customization available.";
+    $seo_keywords    = $p_name . ", " . $p_cat . ", Shivam Uniform, bulk uniform order";
+    $seo_type        = "website";
+
+    // Product image
+    $p_image_file = !empty($seo_product['product_image']) ? basename($seo_product['product_image']) : '';
+    $p_image_path = $p_image_file !== ''
+        ? "assets/products/product_" . (int) $seo_product['product_id'] . "/" . rawurlencode($p_image_file)
+        : '';
+    if ($p_image_path !== '') {
+        $seo_image = $p_image_path;
+    }
+
+    // IMPORTANT: har product ka apna canonical (?slug= ke saath)
+    $seo_canonical = $pr_base . strtok($_SERVER['REQUEST_URI'], '?') . '?slug=' . urlencode($seo_product['product_slug']);
+
+    // Schema: Product + Breadcrumb
+    $product_schema = [
+        "@type"       => "Product",
+        "name"        => $p_name,
+        "description" => $seo_description,
+        "category"    => $p_cat,
+        "brand"       => ["@type" => "Brand", "name" => "Shivam Uniform"]
+    ];
+    if ($p_image_path !== '')  $product_schema["image"] = $pr_base . '/' . $p_image_path;
+    if ($p_sku !== '')         $product_schema["sku"]   = $p_sku;
+    if ($p_color !== '')       $product_schema["color"] = $p_color;
+
+    $seo_schema = [
+        "@context" => "https://schema.org",
+        "@graph"   => [
+            $product_schema,
+            [
+                "@type" => "BreadcrumbList",
+                "itemListElement" => [
+                    ["@type" => "ListItem", "position" => 1, "name" => "Home",     "item" => $pr_base . "/index.php"],
+                    ["@type" => "ListItem", "position" => 2, "name" => "Products", "item" => $pr_base . "/products.php"],
+                    ["@type" => "ListItem", "position" => 3, "name" => $p_name,    "item" => $seo_canonical]
+                ]
+            ]
+        ]
+    ];
+
+} else {
+    // Product nahi mila: Google ko 404 aur noindex do
+    http_response_code(404);
+    $seo_title       = "Product Not Found | Shivam Uniform";
+    $seo_description = "The product you are looking for is not available. Browse our uniform collection.";
+    $seo_robots      = "noindex, nofollow";
+}
+
 require_once __DIR__ . '/includes/header.php';
 
 ?>
-<?php include "admin_access/db_config.php" ?>
-
 <style>
     /* ============================================================
    SHIVAM UNIFORM - PRODUCT DETAIL PAGE
@@ -193,11 +285,16 @@ require_once __DIR__ . '/includes/header.php';
     }
 
     .su-short-desc {
-        margin: 15px 0;
-        color: var(--su-text);
-        font-size: 14px;
-        line-height: 1.72;
-    }
+    margin: 15px 0;
+    color: var(--su-text);
+    font-size: 14px;
+    line-height: 1.72;
+
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
 
     .su-specs {
         position: relative;
@@ -508,6 +605,35 @@ require_once __DIR__ . '/includes/header.php';
     .su-description-text {
         margin: 0 0 28px;
         color: #65727d;
+    }
+
+    /* OTHER INFO + PRODUCT DETAILS (inside Description tab) */
+    .su-other-info-box,
+    #su-product-details-box {
+        margin-top: 6px;
+        margin-bottom: 24px;
+        padding-top: 20px;
+        border-top: 1px solid #dbe5df;
+    }
+
+    .su-other-info-title,
+    #su-product-details-box h3 {
+        margin: 0 0 10px;
+        color: var(--su-navy);
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    #su-other-info-text {
+        margin-bottom: 0;
+        white-space: pre-line;
+        /* textarea ki new lines preserve hongi */
+        overflow-wrap: anywhere;
+    }
+
+    .lisre_awb {
+        margin: 0;
+        padding-left: 18px;
     }
 
     .su-additional-grid {
@@ -886,24 +1012,35 @@ require_once __DIR__ . '/includes/header.php';
                 <button type="button" class="su-tab-btn active" id="su-description-tab" data-tab="description" role="tab">Description</button>
                 <button type="button" class="su-tab-btn" id="su-additional-tab" data-tab="additional" role="tab" style="display:none;">Additional information</button>
             </div>
+
+            <!-- DESCRIPTION PANEL -->
             <div class="su-tab-panel active" id="su-description-panel" role="tabpanel">
                 <h2 class="su-description-title" id="su-tab-description-title"></h2>
                 <p class="su-description-text" id="su-tab-description-text"></p>
+
+                <!-- OTHER INFO DESCRIPTION (product_other_info_desc) -->
+                <div class="su-other-info-box" id="su-other-info-box" style="display:none;">
+                    <h3 class="su-other-info-title">Other Information</h3>
+                    <p class="su-description-text" id="su-other-info-text"></p>
+                </div>
+
+                <!-- PRODUCT DETAILS -->
+                <div id="su-product-details-box" style="display:none;">
+                    <h3>Product Details</h3>
+
+                    <ul class="lisre_awb">
+                        <li id="li_product_sec_name"><b>Product: </b><span class="jojsa" id="product_sec_name"></span></li>
+                        <li id="li_product_sec_design"><b>Design: </b><span class="jojsa" id="product_sec_design"></span></li>
+                        <li id="li_product_sec_model"><b>Model: </b><span class="jojsa" id="product_sec_model"></span></li>
+                        <li id="li_product_sec_size"><b>Available Sizes: </b><span class="jojsa" id="product_sec_size"></span></li>
+                        <li id="li_product_sec_color"><b>Available Colours: </b><span class="jojsa" id="product_sec_color"></span></li>
+                    </ul>
+                </div>
             </div>
+
+            <!-- ADDITIONAL INFO PANEL -->
             <div class="su-tab-panel" id="su-additional-panel" role="tabpanel" style="display:none;">
                 <div class="su-additional-grid" id="su-additional-content"></div>
-            </div>
-
-            <div id="su-product-details-box" style="display:none;">
-                <h3>Product Details</h3>
-
-                <ul class="lisre_awb">
-                    <li id="li_product_sec_name"><b>Product: </b><span class="jojsa" id="product_sec_name"></span></li>
-                    <li id="li_product_sec_design"><b>Design: </b><span class="jojsa" id="product_sec_design"></span></li>
-                    <li id="li_product_sec_model"><b>Model: </b><span class="jojsa" id="product_sec_model"></span></li>
-                    <li id="li_product_sec_size"><b>Available Sizes: </b><span class="jojsa" id="product_sec_size"></span></li>
-                    <li id="li_product_sec_color"><b>Available Colours: </b><span class="jojsa" id="product_sec_color"></span></li>
-                </ul>
             </div>
         </div>
     </section>
@@ -917,10 +1054,6 @@ require_once __DIR__ . '/includes/header.php';
 
 <!-- =====================================================
      1) PRODUCT DATA (DATABASE SE)
-     NOTE: yahan apni alag query hai (pi.* nahi), taaki
-     products_images row na ho to product_id NULL na ho jaye.
-     Isliye admin_access/functions/products.php ko change
-     karne ki zaroorat nahi.
 ====================================================== -->
 <?php
 
@@ -974,6 +1107,7 @@ if ($detail_result) {
             'image7'       => $gallery_images[7],
             'image8'       => $gallery_images[8],
             'description'  => $p['product_description'] ?? '',
+            'other_info'   => $p['product_other_info_desc'] ?? '',   // NEW
             'availability' => 'In Stock',
             'order_type'   => 'Bulk Order Available',
         ];
@@ -1067,7 +1201,6 @@ if ($detail_result) {
             list.push({ name: c, slug: p.slug });
         });
 
-        // Sirf ek hi color hai to bhi dikhega (apna khud ka)
         return list;
     }
 
@@ -1157,6 +1290,18 @@ if ($detail_result) {
 
         document.getElementById("su-tab-description-title").textContent = product.name || "Product Description";
         document.getElementById("su-tab-description-text").textContent = product.description || "";
+
+        /* OTHER INFO DESCRIPTION */
+        const otherInfoBox = document.getElementById("su-other-info-box");
+        const otherInfoText = document.getElementById("su-other-info-text");
+        const otherInfo = String(product.other_info || "").trim();
+
+        if (otherInfo !== "") {
+            otherInfoText.textContent = otherInfo;
+            otherInfoBox.style.display = "block";
+        } else {
+            otherInfoBox.style.display = "none";
+        }
 
         additionalContent.innerHTML = "";
 
