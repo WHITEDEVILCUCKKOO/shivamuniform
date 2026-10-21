@@ -1,8 +1,11 @@
 <?php
 
-require_once __DIR__ . '/includes/header.php';
 
 include_once __DIR__ . '/admin_access/db_config.php';
+
+
+
+
 
 // =========================================================
 // 1) URL SE CATEGORY SLUG + BRAND SLUG
@@ -78,6 +81,122 @@ if ($category) {
 }
 
 $base_url = 'product-category.php?category=' . urlencode($category_slug);
+
+
+
+
+
+// seo
+
+/* =========================================================
+   SEO: Category Page
+========================================================= */
+
+$seo_proto = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+$seo_host  = $seo_proto . "://" . $_SERVER['HTTP_HOST'];
+$seo_path  = strtok($_SERVER['REQUEST_URI'], '?');
+
+if ($category) {
+
+    $c_name = trim($category['root_name']);
+    $c_desc = trim(preg_replace('/\s+/', ' ', strip_tags($category['root_description'] ?? '')));
+    $c_url  = $seo_host . $seo_path . '?category=' . urlencode($category['root_slug']);
+
+    if ($active_brand) {
+        $b_name          = trim($active_brand['brand_name']);
+        $seo_title       = $b_name . " " . $c_name . " | Shivam Uniform";
+        $seo_description = "Buy " . $b_name . " " . $c_name . " from Shivam Uniform. Bulk orders, custom sizes and best prices available.";
+        $seo_keywords    = $b_name . ", " . $c_name . ", Shivam Uniform, bulk uniform order";
+        $seo_canonical   = $c_url . '&brand=' . urlencode($active_brand['brand_slug']);
+    } else {
+        $seo_title       = $c_name . " - Buy Online | Shivam Uniform";
+        $seo_description = $c_desc !== ''
+            ? mb_substr($c_desc, 0, 155)
+            : "Explore " . $c_name . " from Shivam Uniform. Premium quality, bulk orders, custom sizes and best prices.";
+        $seo_keywords    = $c_name . ", Shivam Uniform, uniform manufacturer, bulk uniform order";
+        $seo_canonical   = $c_url;
+    }
+
+    // Pehle product ki image social preview ke liye
+    if (!empty($products[0]['product_image'])) {
+        $seo_image = 'assets/products/product_' . (int) $products[0]['product_id'] . '/' . rawurlencode(basename($products[0]['product_image']));
+    }
+
+    // Products ki list (pehle 20)
+    $seo_items = [];
+    $seo_pos   = 1;
+    foreach (array_slice($products, 0, 20) as $seo_p) {
+        $seo_items[] = [
+            "@type"    => "ListItem",
+            "position" => $seo_pos++,
+            "name"     => $seo_p['product_name'],
+            "url"      => $seo_host . "/product_details.php?slug=" . urlencode($seo_p['product_slug'])
+        ];
+    }
+
+    $seo_schema = [
+        "@context" => "https://schema.org",
+        "@graph"   => [
+            [
+                "@type"       => "CollectionPage",
+                "name"        => $seo_title,
+                "description" => $seo_description,
+                "url"         => $seo_canonical,
+                "mainEntity"  => ["@type" => "ItemList", "itemListElement" => $seo_items]
+            ],
+            [
+                "@type" => "BreadcrumbList",
+                "itemListElement" => [
+                    ["@type" => "ListItem", "position" => 1, "name" => "Home",     "item" => $seo_host . "/index.php"],
+                    ["@type" => "ListItem", "position" => 2, "name" => "Products", "item" => $seo_host . "/products.php"],
+                    ["@type" => "ListItem", "position" => 3, "name" => $c_name,    "item" => $c_url]
+                ]
+            ]
+        ]
+    ];
+
+} else {
+    // Category nahi mili: 404 + noindex
+    http_response_code(404);
+    $seo_title       = "Category Not Found | Shivam Uniform";
+    $seo_description = "The category you are looking for is not available. Browse our uniform collection.";
+    $seo_robots      = "noindex, nofollow";
+}
+
+/* Header in 3 variables ko overwrite karta hai, isliye save karke restore kar rahe hain */
+$keep_base_url = $base_url;
+$keep_category = $category;
+$keep_cat_slug = $category_slug;
+
+require_once __DIR__ . '/includes/header.php';
+
+$base_url      = $keep_base_url;
+$category      = $keep_category;
+$category_slug = $keep_cat_slug;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ?>
 

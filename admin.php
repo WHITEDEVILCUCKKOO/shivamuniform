@@ -2933,12 +2933,12 @@ $brand_options          = get_brand_info($mydb);
                                                     </td>
 
                                                     <td>
-                                                        <?php if (empty($brand['updated_at'])): ?>
+                                                        <?php if (empty($product['updated_at'])): ?>
                                                             <span style="color: green; font-weight: 100;">
                                                                 Not Update Yet
                                                             </span>
                                                         <?php else: ?>
-                                                            <?php echo timeAgo((int)$brand['updated_at']); ?>
+                                                            <?php echo timeAgo((int)$product['updated_at']); ?>
                                                         <?php endif; ?>
                                                     </td>
 
