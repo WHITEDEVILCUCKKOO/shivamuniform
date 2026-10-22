@@ -7,15 +7,19 @@
 function get_product_info($mydb)
 {
     $query = "SELECT
-                p.*,
-                c.root_name,
-                b.brand_name,
-                pi.*
-              FROM products p
-              LEFT JOIN root_categories c ON p.root_id = c.root_id
-              LEFT JOIN brands b ON p.brand_id = b.brand_id
-              LEFT JOIN products_images pi ON p.product_id = pi.product_id
-              ORDER BY p.product_id DESC";
+    p.*,
+    c.root_name,
+    b.brand_name,
+    pi.*
+FROM products p
+LEFT JOIN root_categories c
+    ON p.root_id = c.root_id
+LEFT JOIN brands b
+    ON p.brand_id = b.brand_id
+LEFT JOIN products_images pi
+    ON p.product_id = pi.product_id
+WHERE c.root_slug != 'ready-stock'
+ORDER BY p.product_id DESC;";
 
     $result = mysqli_query($mydb, $query);
 
@@ -32,6 +36,70 @@ function get_product_info($mydb)
     return $product_info;
 }
 
+
+function get_product_info_admin_all_show($mydb)
+{
+    $query = "SELECT
+    p.*,
+    c.root_name,
+    b.brand_name,
+    pi.*
+FROM products p
+LEFT JOIN root_categories c
+    ON p.root_id = c.root_id
+LEFT JOIN brands b
+    ON p.brand_id = b.brand_id
+LEFT JOIN products_images pi
+    ON p.product_id = pi.product_id
+ORDER BY p.product_id DESC;";
+
+
+    $result = mysqli_query($mydb, $query);
+
+    if (!$result) {
+        return [];
+    }
+
+    $product_info = [];
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $product_info[] = $row;
+    }
+
+    return $product_info;
+}
+
+function get_product_info_ready_stock($mydb)
+{
+    $query = "SELECT
+    p.*,
+    c.root_name,
+    b.brand_name,
+    pi.*
+FROM products p
+LEFT JOIN root_categories c
+    ON p.root_id = c.root_id
+LEFT JOIN brands b
+    ON p.brand_id = b.brand_id
+LEFT JOIN products_images pi
+    ON p.product_id = pi.product_id
+WHERE c.root_slug = 'ready-stock'
+ORDER BY p.product_id DESC;";
+
+    $result = mysqli_query($mydb, $query);
+
+    if (!$result) {
+        return [];
+    }
+
+    $product_info = [];
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $product_info[] = $row;
+    }
+
+    return $product_info;
+}
 
 // =========================================================
 // GET RANDOM PRODUCTS (home page ya kisi bhi widget ke liye)

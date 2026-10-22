@@ -183,21 +183,6 @@ $category_slug = $keep_cat_slug;
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ?>
 
 <style>
@@ -319,7 +304,7 @@ $category_slug = $keep_cat_slug;
         <!-- PRODUCTS -->
         <div class="su-product-grid">
         <?php if (empty($products)): ?>
-            <div class="su-products-empty">No products are currently available.</div>
+            <div class="su-products-empty">Comming Soon...</div>
         <?php else: ?>
             <?php foreach ($products as $p):
                 $url = 'product_details.php?slug=' . urlencode($p['product_slug']);

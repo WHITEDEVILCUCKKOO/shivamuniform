@@ -577,6 +577,7 @@ $product_error_msg = $product_add_result['error_msg']
     ?: $product_bulk_delete_result['error_msg'];
 
 $product_info          = get_product_info($mydb);
+$get_product_info_admin_all_show = get_product_info_admin_all_show($mydb);
 $root_category_options = get_category_info($mydb);
 $brand_options          = get_brand_info($mydb);
 
@@ -2876,9 +2877,9 @@ $brand_options          = get_brand_info($mydb);
 
                                     <tbody id="productTableBody">
 
-                                        <?php if (!empty($product_info)) { ?>
+                                        <?php if (!empty($get_product_info_admin_all_show)) { ?>
 
-                                            <?php foreach ($product_info as $product) { ?>
+                                            <?php foreach ($get_product_info_admin_all_show as $product) { ?>
 
                                                 <tr>
 
@@ -3512,7 +3513,7 @@ $brand_options          = get_brand_info($mydb);
                         </div>
 
                         <script>
-                            var productDataList = <?php echo json_encode($product_info); ?>;
+                            var productDataList = <?php echo json_encode($get_product_info_admin_all_show); ?>;
 
                             // ===========================================================
                             // MULTI-SELECT CHECKBOX LOGIC (design/UI abhi ready hai)

@@ -5,7 +5,8 @@ include "./admin_access/functions/global_info.php";
 $global_info = get_global_info($mydb);
 
 include "admin_access/functions/category_info.php";
-$category_info = get_category_info($mydb);
+$category_info = get_category_info_without_ready_stock($mydb);
+
 
 /* =========================================================
    SEO SETTINGS
@@ -591,6 +592,7 @@ $seo_schema = $seo_schema ?? null;
             <nav class="sh-nav" aria-label="Main Navigation">
 
                 <a href="index.php" class="sh-nav-link" data-page="index.php">Home</a>
+                <a href="ready_stock.php" class="sh-nav-link" data-page="ready_stock.php">Ready Stock</a>
 
                 <div class="sh-product-item">
 
@@ -646,6 +648,7 @@ $seo_schema = $seo_schema ?? null;
                 <div class="sh-mobile-inner">
 
                     <a href="index.php" class="sh-mobile-link" data-page="index.php">Home</a>
+                    <a href="ready_stock.php" class="sh-mobile-link" data-page="ready_stock.php">Ready Stock</a>
 
                     <div class="sh-mobile-product-item">
 

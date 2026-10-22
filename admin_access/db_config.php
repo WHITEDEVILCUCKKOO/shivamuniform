@@ -1,9 +1,43 @@
-<?php
-// $mydb = mysqli_connect("host","user_name","password","database_name");
 
-// $mydb = mysqli_connect("localhost", "shivamuniform_shivamuniform_user", "shivamuniform_db_user", "shivamuniform_shivamuniform_db");
-$mydb = mysqli_connect("localhost", "root", "", "shivamuniform_db");
+<?php
+
+// Detect local development environment
+$isLocal = in_array($_SERVER['SERVER_NAME'] ?? '', [
+    'localhost',
+    '127.0.0.1'
+]);
+
+if ($isLocal) {
+
+    // Local XAMPP / WAMP
+    $host = "localhost";
+    $user = "root";
+    $password = "";
+    $database = "shivamuniform_db";
+
+} else {
+
+    // Live / Hosting
+    $host = "localhost";
+    $user = "shivamuniform_shivamuniform_user";
+    $password = "shivamuniform_db_user";
+    $database = "shivamuniform_shivamuniform_db";
+}
+
+$mydb = mysqli_connect(
+    $host,
+    $user,
+    $password,
+    $database
+);
 
 if (!$mydb) {
-    die("Database connection failed: " . mysqli_connect_error());
+    die(
+        "Database connection failed.<br>" .
+        "Host: " . htmlspecialchars($host) . "<br>" .
+        "Database: " . htmlspecialchars($database) . "<br>" .
+        "Error: " . htmlspecialchars(mysqli_connect_error())
+    );
 }
+
+mysqli_set_charset($mydb, "utf8mb4");

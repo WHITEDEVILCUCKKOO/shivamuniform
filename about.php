@@ -17,7 +17,7 @@ require_once __DIR__ . '/includes/header.php';
 ?>
 
 <main style="overflow: hidden;">
-
+    
     <!-- section 1 -->
     <?php require_once __DIR__ . '/includes/about-sections/section_1.php'; ?>
 
@@ -41,6 +41,7 @@ require_once __DIR__ . '/includes/header.php';
 
     <!-- section 8 -->
     <?php require_once __DIR__ . '/includes/about-sections/section_8.php'; ?>
+
 
 </main>
 

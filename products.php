@@ -15,7 +15,7 @@ $seo_schema = [
 require_once __DIR__ . '/includes/header.php';
 
 ?>
-<?php include"admin_access/db_config.php" ?>
+<?php include "admin_access/db_config.php" ?>
 
 
 <style>
@@ -279,6 +279,60 @@ require_once __DIR__ . '/includes/header.php';
     border-radius: 14px;
 }
 
+/* ===== PAGINATION ===== */
+.su-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 42px;
+}
+
+.su-page-btn {
+    min-width: 40px;
+    height: 40px;
+    padding: 0 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--navy);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .25s ease, border-color .25s ease, color .25s ease, transform .25s ease;
+}
+
+.su-page-btn:hover:not(:disabled):not(.active) {
+    background: #f2f8f4;
+    border-color: rgba(6, 113, 46, .35);
+    color: var(--green);
+    transform: translateY(-2px);
+}
+
+.su-page-btn.active {
+    background: var(--green);
+    border-color: var(--green);
+    color: #ffffff;
+    cursor: default;
+}
+
+.su-page-btn:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+}
+
+.su-page-dots {
+    color: var(--muted);
+    font-weight: 700;
+    padding: 0 4px;
+}
+
 @media(max-width:1050px) {
     .su-product-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
     .su-product-image { height: 235px; }
@@ -301,6 +355,7 @@ require_once __DIR__ . '/includes/header.php';
     .su-product-divider { margin-bottom: 8px; }
     .su-product-button { min-height: 37px; padding: 0 6px 0 9px; font-size: 9px; }
     .su-product-arrow { width: 22px; height: 22px; flex-basis: 22px; font-size: 11px; }
+    .su-pagination { margin-top: 32px; }
 }
 
 @media(max-width:480px) {
@@ -313,6 +368,8 @@ require_once __DIR__ . '/includes/header.php';
     .su-product-title { font-size: 14px; }
     .su-product-bottom { padding-top: 10px; }
     .su-product-button { min-height: 40px; padding: 0 7px 0 12px; font-size: 10px; }
+    .su-pagination { gap: 6px; margin-top: 30px; }
+    .su-page-btn { min-width: 36px; height: 36px; padding: 0 10px; font-size: 12px; }
 }
 </style>
 
@@ -338,38 +395,34 @@ require_once __DIR__ . '/includes/header.php';
             <!-- JS yahan cards inject karega -->
         </div>
 
+        <!-- PAGINATION -->
+        <div class="su-pagination" id="su-pagination"></div>
+
     </div>
 </section>
 
 
 <!-- =====================================================
-     1) PRODUCT DATA - AB DATABASE SE AA RAHA HAI
-     Pehle ye hardcoded JS array tha, ab admin panel ke
-     products.php functions se real data khींch ke JSON
-     me convert kar diya gaya hai. Neeche wali rendering
-     JS (createProductCard, renderProducts) bilkul waisi
-     hi hai jaisi pehle thi - design me koi change nahi.
+     1) PRODUCT DATA - DATABASE SE
 ====================================================== -->
 <?php
 
 include_once __DIR__ . '/admin_access/functions/products.php';
 include_once __DIR__ . '/admin_access/functions/category_info.php';
 
-// Saare products fetch karo (functions already root_categories,
-// brands aur products_images sab join kar ke deta hai)
+// Saare products fetch karo
 $all_db_products = get_product_info($mydb);
 
 $catalogue_products = [];
 
 foreach ($all_db_products as $p) {
 
-    // Sirf Active products hi public catalogue me dikhne chahiye
+    // Sirf Active products public catalogue me dikhenge
     if (($p['product_status'] ?? '') !== 'Active') {
         continue;
     }
 
-    // Main image ka sirf filename nikalo (jaise "main.jpg")
-    // kyunki neeche wala JS khud "assets/products/product_<id>/" jod dega
+    // Main image ka sirf filename
     $main_image_filename = !empty($p['product_image']) ? basename($p['product_image']) : '';
 
     // Gallery images (2 se 8 tak) ke filenames
@@ -409,14 +462,12 @@ const products = <?php echo json_encode($catalogue_products, JSON_UNESCAPED_SLAS
 
 
 <!-- =====================================================
-     2) RENDERING LOGIC
-     Catalogue card me HAMESHA image1 use hoga.
-     (Iss script me koi change nahi kiya gaya - sirf
-     IMAGE_FOLDER_BASE ko real upload folder se match
-     kiya hai: assets/products/product_<id>/)
+     2) RENDERING + PAGINATION LOGIC
 ====================================================== -->
 <script>
 const IMAGE_FOLDER_BASE = "assets/products/"; // product_<id> folder ka base path
+const PRODUCTS_PER_PAGE = 12;                 // ek page pe kitne cards
+let currentPage = 1;
 
 function getImagePath(product) {
     // pattern: assets/products/product_<id>/<image1>
@@ -426,7 +477,6 @@ function getImagePath(product) {
 function createProductCard(product) {
 
     const productUrl = `product_details.php?slug=${encodeURIComponent(product.slug)}`;
-    // ↑ agar product.php me id se link chahiye to: `product.php?id=${product.id}`
 
     const imageSrc = getImagePath(product);
     const categoryName = product.category || "Uniform Collection";
@@ -465,6 +515,7 @@ function createProductCard(product) {
 
 function renderProducts() {
     const grid = document.getElementById("su-product-grid");
+    const pagination = document.getElementById("su-pagination");
 
     if (!products || products.length === 0) {
         grid.innerHTML = `
@@ -472,13 +523,69 @@ function renderProducts() {
                 No products are currently available.
             </div>
         `;
+        pagination.innerHTML = "";
         return;
     }
 
-    grid.innerHTML = products.map(createProductCard).join("");
+    const totalPages = Math.ceil(products.length / PRODUCTS_PER_PAGE);
+
+    // safety: page range ke bahar na jaye
+    if (currentPage > totalPages) currentPage = totalPages;
+    if (currentPage < 1) currentPage = 1;
+
+    const start = (currentPage - 1) * PRODUCTS_PER_PAGE;
+    const pageProducts = products.slice(start, start + PRODUCTS_PER_PAGE);
+
+    grid.innerHTML = pageProducts.map(createProductCard).join("");
+    renderPagination(totalPages);
 }
 
-document.addEventListener("DOMContentLoaded", renderProducts);
+function renderPagination(totalPages) {
+    const box = document.getElementById("su-pagination");
+
+    // sirf 1 page hai to pagination mat dikhao
+    if (totalPages <= 1) {
+        box.innerHTML = "";
+        return;
+    }
+
+    let html = "";
+
+    // Previous
+    html += `<button type="button" class="su-page-btn" data-page="${currentPage - 1}" ${currentPage === 1 ? "disabled" : ""}>&larr; Prev</button>`;
+
+    // Page numbers (zyada pages ho to ... ke saath)
+    for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+            html += `<button type="button" class="su-page-btn ${i === currentPage ? "active" : ""}" data-page="${i}">${i}</button>`;
+        } else if (i === currentPage - 2 || i === currentPage + 2) {
+            html += `<span class="su-page-dots">...</span>`;
+        }
+    }
+
+    // Next
+    html += `<button type="button" class="su-page-btn" data-page="${currentPage + 1}" ${currentPage === totalPages ? "disabled" : ""}>Next &rarr;</button>`;
+
+    box.innerHTML = html;
+}
+
+function goToPage(page) {
+    currentPage = page;
+    renderProducts();
+
+    // page change hone par products section ke top par scroll
+    document.getElementById("shivam-products").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    renderProducts();
+
+    document.getElementById("su-pagination").addEventListener("click", function (e) {
+        const btn = e.target.closest(".su-page-btn");
+        if (!btn || btn.disabled || btn.classList.contains("active")) return;
+        goToPage(parseInt(btn.dataset.page, 10));
+    });
+});
 </script>
 
 

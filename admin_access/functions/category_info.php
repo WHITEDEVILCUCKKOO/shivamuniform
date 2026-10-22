@@ -23,6 +23,27 @@ function get_category_info($mydb)
 }
 
 
+function get_category_info_without_ready_stock($mydb)
+{
+    $query = "SELECT * FROM root_categories WHERE root_slug NOT IN ('ready-stock') ORDER BY root_id DESC;";
+
+    $result = mysqli_query($mydb, $query);
+
+    if (!$result) {
+        return [];
+    }
+
+    $category_info = [];
+
+    while ($row = mysqli_fetch_assoc($result)) {
+        $category_info[] = $row;
+    }
+
+    return $category_info;
+}
+
+
+
 // =========================================================
 // ADD NEW CATEGORY
 // =========================================================
