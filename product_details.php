@@ -97,6 +97,7 @@ if ($seo_product) {
 require_once __DIR__ . '/includes/header.php';
 
 ?>
+
 <style>
     /* ============================================================
    SHIVAM UNIFORM - PRODUCT DETAIL PAGE

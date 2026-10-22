@@ -10,7 +10,13 @@ function get_brand_info($mydb)
               LEFT JOIN root_categories c ON b.root_id = c.root_id
               ORDER BY b.brand_id DESC";
 
-    $result = mysqli_query($mydb, $query);
+    // Fallback: database read failure should not crash the admin page.
+    try {
+        $result = mysqli_query($mydb, $query);
+    } catch (mysqli_sql_exception $e) {
+        error_log('get_brand_info DB error: ' . $e->getMessage());
+        return [];
+    }
 
     if (!$result) {
         return [];
@@ -55,34 +61,47 @@ function add_brand_info(
         created_at
     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    $stmt = mysqli_prepare($mydb, $query);
+    // Any database failure is returned to the caller instead of crashing PHP.
+    try {
+        $stmt = mysqli_prepare($mydb, $query);
+        if (!$stmt) {
+            error_log('add_brand_info prepare error: ' . mysqli_error($mydb));
+            return 'DATABASE_ERROR';
+        }
 
-    if (!$stmt) {
-        // Prepare hi fail ho gaya (jaise galat column naam)
-        return 'PREPARE_ERROR: ' . mysqli_error($mydb);
+        $created_at = time();
+
+        mysqli_stmt_bind_param(
+            $stmt,
+            "issssssssi",
+            $root_id,
+            $brand_name,
+            $brand_slug,
+            $brand_logo,
+            $brand_description,
+            $meta_title,
+            $meta_description,
+            $meta_keywords,
+            $brand_status,
+            $created_at
+        );
+
+        $result = mysqli_stmt_execute($stmt);
+    } catch (mysqli_sql_exception $e) {
+        error_log('add_brand_info DB error: ' . $e->getMessage());
+        if (isset($stmt) && $stmt instanceof mysqli_stmt) {
+            mysqli_stmt_close($stmt);
+        }
+        return $e->getMessage();
+    } catch (Throwable $e) {
+        error_log('add_brand_info error: ' . $e->getMessage());
+        if (isset($stmt) && $stmt instanceof mysqli_stmt) {
+            mysqli_stmt_close($stmt);
+        }
+        return 'DATABASE_ERROR';
     }
 
-    $created_at = time();
-
-    mysqli_stmt_bind_param(
-        $stmt,
-        "isssssssss",
-        $root_id,
-        $brand_name,
-        $brand_slug,
-        $brand_logo,
-        $brand_description,
-        $meta_title,
-        $meta_description,
-        $meta_keywords,
-        $brand_status,
-        $created_at
-    );
-
-    $result = mysqli_stmt_execute($stmt);
-
     if (!$result) {
-        // Close karne se PEHLE hi error nikal lo, warna kho jayega
         $error = mysqli_stmt_error($stmt);
         mysqli_stmt_close($stmt);
         return $error !== '' ? $error : 'Unknown DB error (execute failed)';
@@ -124,10 +143,50 @@ function handle_brand_add($mydb)
         return $response;
     }
 
+    // Duplicate slug check: existing brand slug ko dobara add na karein.
+    try {
+        $check_stmt = mysqli_prepare(
+            $mydb,
+            "SELECT brand_id FROM brands WHERE brand_slug = ? LIMIT 1"
+        );
+    } catch (Throwable $e) {
+        error_log('handle_brand_add slug check prepare error: ' . $e->getMessage());
+        $response['error_msg'] = "Brand validate nahi ho paya. Please try again.";
+        return $response;
+    }
+
+    if (!$check_stmt) {
+        $response['error_msg'] = "Brand validate nahi ho paya. Please try again.";
+        return $response;
+    }
+
+    try {
+        mysqli_stmt_bind_param($check_stmt, "s", $brand_slug);
+        mysqli_stmt_execute($check_stmt);
+        $check_result = mysqli_stmt_get_result($check_stmt);
+        $slug_exists = $check_result && mysqli_num_rows($check_result) > 0;
+    } catch (Throwable $e) {
+        error_log('handle_brand_add slug validation error: ' . $e->getMessage());
+        mysqli_stmt_close($check_stmt);
+        $response['error_msg'] = "Brand validate nahi ho paya. Please try again.";
+        return $response;
+    }
+
+    mysqli_stmt_close($check_stmt);
+
+    if ($slug_exists) {
+        $response['error_msg'] = 'Brand slug "' . htmlspecialchars($brand_slug, ENT_QUOTES, 'UTF-8') . '" pehle se maujood hai. Existing brand ko update karein ya alag slug use karein.';
+        return $response;
+    }
+
     // ---------------------------------------------------------
     // IMAGE UPLOAD - assets/brands/ folder me save hoga
     // ---------------------------------------------------------
-    if (isset($_FILES['brand_logo']) && $_FILES['brand_logo']['error'] === UPLOAD_ERR_OK) {
+    if (isset($_FILES['brand_logo']) && ($_FILES['brand_logo']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
+        if (($_FILES['brand_logo']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+            $response['error_msg'] = "Image upload nahi ho paya. Please dobara try karein.";
+            return $response; // upload error => database INSERT/UPDATE nahi chalega
+        }
 
         $upload_dir = 'assets/brands/';
 
@@ -178,7 +237,8 @@ function handle_brand_add($mydb)
         if (stripos($db_error, 'Duplicate entry') !== false) {
             $response['error_msg'] = "Ye Brand Slug (\"" . htmlspecialchars($brand_slug) . "\") pehle se kisi aur brand me use ho raha hai. Alag slug daalo.";
         } else {
-            $response['error_msg'] = "Brand add fail ho gaya: " . htmlspecialchars($db_error ?: 'Unknown error');
+            error_log('Brand add database error: ' . $db_error);
+            $response['error_msg'] = "Brand add nahi ho paya. Details server log mein save ki gayi hain. Please dobara try karein.";
         }
     }
 
@@ -218,10 +278,51 @@ function handle_brand_update($mydb)
         return $response;
     }
 
+    // Same slug doosre brand ke paas hai ya nahi check karein.
+    // Current brand ko exclude kiya gaya hai, taaki apna slug unchanged reh sake.
+    try {
+        $check_stmt = mysqli_prepare(
+            $mydb,
+            "SELECT brand_id FROM brands WHERE brand_slug = ? AND brand_id <> ? LIMIT 1"
+        );
+    } catch (Throwable $e) {
+        error_log('handle_brand_update slug check prepare error: ' . $e->getMessage());
+        $response['error_msg'] = "Brand validate nahi ho paya. Please try again.";
+        return $response;
+    }
+
+    if (!$check_stmt) {
+        $response['error_msg'] = "Brand validate nahi ho paya. Please try again.";
+        return $response;
+    }
+
+    try {
+        mysqli_stmt_bind_param($check_stmt, "si", $brand_slug, $brand_id);
+        mysqli_stmt_execute($check_stmt);
+        $check_result = mysqli_stmt_get_result($check_stmt);
+        $slug_exists = $check_result && mysqli_num_rows($check_result) > 0;
+    } catch (Throwable $e) {
+        error_log('handle_brand_update slug validation error: ' . $e->getMessage());
+        mysqli_stmt_close($check_stmt);
+        $response['error_msg'] = "Brand validate nahi ho paya. Please try again.";
+        return $response;
+    }
+
+    mysqli_stmt_close($check_stmt);
+
+    if ($slug_exists) {
+        $response['error_msg'] = 'Brand slug "' . htmlspecialchars($brand_slug, ENT_QUOTES, 'UTF-8') . '" kisi doosre brand ke paas hai. Alag slug use karein.';
+        return $response;
+    }
+
     // ---------------------------------------------------------
     // Agar nayi image select ki hai to usse upload karo
     // ---------------------------------------------------------
-    if (isset($_FILES['brand_logo']) && $_FILES['brand_logo']['error'] === UPLOAD_ERR_OK) {
+    if (isset($_FILES['brand_logo']) && ($_FILES['brand_logo']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_NO_FILE) {
+        if (($_FILES['brand_logo']['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) {
+            $response['error_msg'] = "Image upload nahi ho paya. Please dobara try karein.";
+            return $response; // upload error => database INSERT/UPDATE nahi chalega
+        }
 
         $upload_dir = 'assets/brands/';
 
@@ -261,41 +362,57 @@ function handle_brand_update($mydb)
                 updated_at        = ?
               WHERE brand_id = ?";
 
-    $stmt = mysqli_prepare($mydb, $query);
+    try {
+        $stmt = mysqli_prepare($mydb, $query);
+    } catch (Throwable $e) {
+        error_log('handle_brand_update prepare error: ' . $e->getMessage());
+        $response['error_msg'] = "Brand update nahi ho paya. Please try again.";
+        return $response;
+    }
 
     if (!$stmt) {
-        $response['error_msg'] = "Query prepare fail ho gayi.";
+        $response['error_msg'] = "Brand update nahi ho paya. Please try again.";
         return $response;
     }
 
     $updated_at = time();
 
-    mysqli_stmt_bind_param(
-        $stmt,
-        "isssssssssi",
-        $root_id,
-        $brand_name,
-        $brand_slug,
-        $brand_logo,
-        $brand_description,
-        $meta_title,
-        $meta_description,
-        $meta_keywords,
-        $brand_status,
-        $updated_at,
-        $brand_id
-    );
+    try {
+        mysqli_stmt_bind_param(
+            $stmt,
+            "issssssssii",
+            $root_id,
+            $brand_name,
+            $brand_slug,
+            $brand_logo,
+            $brand_description,
+            $meta_title,
+            $meta_description,
+            $meta_keywords,
+            $brand_status,
+            $updated_at,
+            $brand_id
+        );
 
-    if (mysqli_stmt_execute($stmt)) {
-        $response['success_msg'] = "Brand updated successfully!";
-    } else {
-
-        $db_error = mysqli_error($mydb);
-
-        if (stripos($db_error, 'Duplicate entry') !== false) {
-            $response['error_msg'] = "Ye Brand Slug (\"" . htmlspecialchars($brand_slug) . "\") pehle se kisi aur brand me use ho raha hai. Alag slug daalo.";
+        $updated = mysqli_stmt_execute($stmt);
+        if ($updated) {
+            $response['success_msg'] = "Brand updated successfully!";
         } else {
-            $response['error_msg'] = "Update fail ho gaya: " . htmlspecialchars($db_error ?: 'Unknown error');
+            $db_error = mysqli_stmt_error($stmt);
+            if (stripos($db_error, 'Duplicate entry') !== false) {
+                $response['error_msg'] = 'Brand slug "' . htmlspecialchars($brand_slug, ENT_QUOTES, 'UTF-8') . '" pehle se kisi aur brand ke paas hai. Alag slug use karein.';
+            } else {
+                error_log('Brand update database error: ' . $db_error);
+                $response['error_msg'] = "Brand update nahi ho paya. Please dobara try karein.";
+            }
+        }
+    } catch (Throwable $e) {
+        $db_error = $e->getMessage();
+        if (stripos($db_error, 'Duplicate entry') !== false) {
+            $response['error_msg'] = 'Brand slug "' . htmlspecialchars($brand_slug, ENT_QUOTES, 'UTF-8') . '" pehle se kisi aur brand ke paas hai. Alag slug use karein.';
+        } else {
+            error_log('Brand update database error: ' . $db_error);
+            $response['error_msg'] = "Brand update nahi ho paya. Please dobara try karein.";
         }
     }
 
@@ -310,38 +427,68 @@ function handle_brand_update($mydb)
 // =========================================================
 function delete_brand_info($mydb, $brand_id)
 {
-    // Pehle logo file ka path nikal lo taaki delete kar sakein
-    $logo_path = '';
-
-    $check_stmt = mysqli_prepare($mydb, "SELECT brand_logo FROM brands WHERE brand_id = ? LIMIT 1");
-    if ($check_stmt) {
-        mysqli_stmt_bind_param($check_stmt, "i", $brand_id);
-        mysqli_stmt_execute($check_stmt);
-        $result = mysqli_stmt_get_result($check_stmt);
-        $row    = $result ? mysqli_fetch_assoc($result) : null;
-        $logo_path = $row['brand_logo'] ?? '';
-        mysqli_stmt_close($check_stmt);
-    }
-
-    // Ab brand row delete karo
-    $stmt = mysqli_prepare($mydb, "DELETE FROM brands WHERE brand_id = ?");
-
-    if (!$stmt) {
+    // Validate before running any SQL.
+    $brand_id = (int) $brand_id;
+    if ($brand_id <= 0) {
         return false;
     }
 
-    mysqli_stmt_bind_param($stmt, "i", $brand_id);
-    $result = mysqli_stmt_execute($stmt);
-    mysqli_stmt_close($stmt);
+    $logo_path = '';
+    $check_stmt = null;
+    $stmt = null;
 
-    // Row delete hone ke baad uski logo file bhi hata do
-    if ($result && $logo_path !== '' && file_exists($logo_path)) {
-        unlink($logo_path);
+    try {
+        // First get the logo path. A DB error stops deletion safely.
+        $check_stmt = mysqli_prepare(
+            $mydb,
+            "SELECT brand_logo FROM brands WHERE brand_id = ? LIMIT 1"
+        );
+        if (!$check_stmt) {
+            error_log('delete_brand_info select prepare error: ' . mysqli_error($mydb));
+            return false;
+        }
+
+        mysqli_stmt_bind_param($check_stmt, "i", $brand_id);
+        mysqli_stmt_execute($check_stmt);
+        $result = mysqli_stmt_get_result($check_stmt);
+        $row = $result ? mysqli_fetch_assoc($result) : null;
+        $logo_path = $row['brand_logo'] ?? '';
+        mysqli_stmt_close($check_stmt);
+        $check_stmt = null;
+
+        // Only delete after the lookup succeeds.
+        $stmt = mysqli_prepare($mydb, "DELETE FROM brands WHERE brand_id = ?");
+        if (!$stmt) {
+            error_log('delete_brand_info delete prepare error: ' . mysqli_error($mydb));
+            return false;
+        }
+
+        mysqli_stmt_bind_param($stmt, "i", $brand_id);
+        $result = mysqli_stmt_execute($stmt);
+        mysqli_stmt_close($stmt);
+        $stmt = null;
+
+        if (!$result) {
+            return false;
+        }
+
+        // Remove logo only after successful DB deletion.
+        if ($logo_path !== '' && is_file($logo_path)) {
+            @unlink($logo_path);
+        }
+
+        return true;
+    } catch (Throwable $e) {
+        error_log('delete_brand_info error: ' . $e->getMessage());
+        if ($check_stmt instanceof mysqli_stmt) {
+            mysqli_stmt_close($check_stmt);
+        }
+        if ($stmt instanceof mysqli_stmt) {
+            mysqli_stmt_close($stmt);
+        }
+        return false;
     }
-
-    return $result;
 }
-
 
 // =========================================================
 // HANDLE DELETE BRAND (reads $_POST khud)

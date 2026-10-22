@@ -22,6 +22,7 @@ require_once __DIR__ . '/includes/header.php';
     <?php require_once __DIR__ . '/includes/gallery-sections/section_1.php'; ?>
 
     <!-- section 2 -->
+    <?php require_once __DIR__ . '/includes/gallery-sections/section_2_0.php'; ?>
     <?php require_once __DIR__ . '/includes/gallery-sections/section_2.php'; ?>
 
     <!-- section 3 -->
