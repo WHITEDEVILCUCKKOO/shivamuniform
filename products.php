@@ -463,11 +463,6 @@ const products = <?php echo json_encode($catalogue_products, JSON_UNESCAPED_SLAS
 
 <!-- =====================================================
      2) RENDERING + PAGINATION LOGIC
-====================================================== -->
-<script>
-const IMAGE_FOLDER_BASE = "assets/products/"; // product_<id> folder ka base path
-const PRODUCTS_PER_PAGE = 12;                 // ek page pe kitne cards
-let currentPage = 1;
 
 function getImagePath(product) {
     // pattern: assets/products/product_<id>/<image1>
