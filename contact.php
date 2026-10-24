@@ -1,7 +1,7 @@
 <?php
 
 /* ===== SEO: Contact Page ===== */
-$seo_title       = "Contact Us - Shivam Uniform | Get a Free Quote  ";
+$seo_title       = "Contact Us - Shivam Uniform | Get a Free Quote";
 $seo_description = "Contact Shivam Uniform for bulk school, corporate and industrial uniform orders. Call, email or visit us to get a quote and custom size details.";
 $seo_keywords    = "contact Shivam Uniform, uniform manufacturer contact, bulk uniform order, uniform quote Delhi";
 
