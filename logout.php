@@ -1,4 +1,7 @@
 <?php
+// Logout code 
+
+
 session_start();
 
 session_unset();
